@@ -213,10 +213,12 @@
 .ambient-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
+  filter: blur(80px);
   pointer-events: none;
   z-index: 0;
-  opacity: 0.45;
+  opacity: 0.4;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 .orb-1 {
@@ -3509,6 +3511,19 @@
 }
 
 @media (max-width: 768px) {
+  .ambient-orb {
+    animation: none !important;
+    filter: blur(40px) !important;
+    opacity: 0.3 !important;
+    width: 260px !important;
+    height: 260px !important;
+  }
+
+  .glass-panel {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
   .hero-section {
     padding-top: 6.5rem;
   }

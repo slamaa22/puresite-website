@@ -65,6 +65,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToPricing, onExploreDemos })
         <div className="hero-visual-wrapper">
           <div className="visual-perspective-card glass-panel">
             <picture>
+              <source media="(max-width: 640px)" srcSet="/assets/hero-showcase-mobile.webp" type="image/webp" />
               <source srcSet="/assets/hero-showcase.webp" type="image/webp" />
               <img 
                 src="/assets/hero-showcase.jpg" 
