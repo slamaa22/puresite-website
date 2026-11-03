@@ -11,25 +11,54 @@ interface PricingCalculatorProps {
   onRequestQuote: (calculation: ProjectCalculation, selectedDetails: string[]) => void;
 }
 
+type PresetKey = 'starter' | 'business' | 'scale' | 'custom';
+
+const PRESET_CONFIGS: Record<'starter' | 'business' | 'scale', Record<string, number>> = {
+  starter: {
+    'B-01': 1,
+    'F-04': 1,
+    'M-01': 1
+  },
+  business: {
+    'B-02': 1,
+    'F-01': 1,
+    'T-03': 1,
+    'C-03': 1,
+    'M-02': 1
+  },
+  scale: {
+    'B-03': 1,
+    'F-01': 1,
+    'F-02': 1,
+    'T-01': 1,
+    'T-04': 1,
+    'M-02': 1
+  }
+};
+
+const createConfigFromPreset = (preset: Record<string, number>): SelectedConfig => {
+  const cfg: SelectedConfig = {};
+  Object.entries(preset).forEach(([code, qty]) => {
+    cfg[code] = { selected: true, quantity: qty };
+  });
+  return cfg;
+};
+
 export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   onOpenDemo,
   onRequestQuote
 }) => {
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all');
   const [selectedConfig, setSelectedConfig] = useState<SelectedConfig>(() => {
-    // Default smart starter preset: B-02 (Business Mehrseitig) + F-04 (Dark/Light) + M-01 (Hosting)
-    return {
-      'B-02': { selected: true, quantity: 1 },
-      'F-04': { selected: true, quantity: 1 },
-      'C-03': { selected: true, quantity: 1 },
-      'M-01': { selected: true, quantity: 1 }
-    };
+    return createConfigFromPreset(PRESET_CONFIGS.business);
   });
+  const [isCustomMode, setIsCustomMode] = useState<boolean>(false);
   const [useTax, setUseTax] = useState<boolean>(false); // 0% Kleinunternehmer vs 20% Regelbesteuerung
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   // Toggle selection
   const toggleModule = (code: string) => {
+    setIsCustomMode(false);
     setSelectedConfig(prev => {
       const current = prev[code];
       const isSelected = current ? current.selected : false;
@@ -52,6 +81,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
   // Update quantity
   const updateQuantity = (code: string, delta: number) => {
+    setIsCustomMode(false);
     setSelectedConfig(prev => {
       const current = prev[code] || { selected: true, quantity: 1 };
       const newQty = Math.max(1, (current.quantity || 1) + delta);
@@ -66,32 +96,36 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   };
 
   // Presets
-  const setPreset = (type: 'starter' | 'business' | 'scale') => {
-    if (type === 'starter') {
-      setSelectedConfig({
-        'B-01': { selected: true, quantity: 1 },
-        'F-04': { selected: true, quantity: 1 },
-        'M-01': { selected: true, quantity: 1 }
-      });
-    } else if (type === 'business') {
-      setSelectedConfig({
-        'B-02': { selected: true, quantity: 1 },
-        'F-01': { selected: true, quantity: 1 },
-        'T-03': { selected: true, quantity: 1 },
-        'C-03': { selected: true, quantity: 1 },
-        'M-02': { selected: true, quantity: 1 }
-      });
-    } else {
-      setSelectedConfig({
-        'B-03': { selected: true, quantity: 1 },
-        'F-01': { selected: true, quantity: 1 },
-        'F-02': { selected: true, quantity: 1 },
-        'T-01': { selected: true, quantity: 1 },
-        'T-04': { selected: true, quantity: 1 },
-        'M-02': { selected: true, quantity: 1 }
-      });
+  const setPreset = (type: PresetKey) => {
+    if (type === 'custom') {
+      setIsCustomMode(true);
+      return;
     }
+    setIsCustomMode(false);
+    setSelectedConfig(createConfigFromPreset(PRESET_CONFIGS[type]));
   };
+
+  // Determine which preset is currently active (or custom)
+  const activePreset = useMemo<PresetKey>(() => {
+    if (isCustomMode) return 'custom';
+
+    const selectedEntries = Object.entries(selectedConfig).filter(
+      ([_, val]) => val && val.selected && (val.quantity || 1) > 0
+    );
+
+    for (const [presetKey, presetMap] of Object.entries(PRESET_CONFIGS) as ['starter' | 'business' | 'scale', Record<string, number>][]) {
+      const presetKeys = Object.keys(presetMap);
+      if (selectedEntries.length !== presetKeys.length) continue;
+
+      const allMatch = selectedEntries.every(([code, val]) => {
+        return presetMap[code] === (val.quantity || 1);
+      });
+
+      if (allMatch) return presetKey;
+    }
+
+    return 'custom';
+  }, [selectedConfig, isCustomMode]);
 
   // Filter modules
   const filteredModules = useMemo(() => {
@@ -234,14 +268,33 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
           {/* Quick Presets */}
           <div className="presets-bar">
             <span className="preset-label">Beliebte Konfigurationen:</span>
-            <button className="preset-pill" onClick={() => setPreset('starter')}>
+            <button 
+              type="button"
+              className={`preset-pill ${activePreset === 'starter' ? 'active' : ''}`} 
+              onClick={() => setPreset('starter')}
+            >
               <span>🚀 Solo-Starter</span> <small className="preset-sub">(One-Pager)</small>
             </button>
-            <button className="preset-pill active" onClick={() => setPreset('business')}>
+            <button 
+              type="button"
+              className={`preset-pill ${activePreset === 'business' ? 'active' : ''}`} 
+              onClick={() => setPreset('business')}
+            >
               <span>💼 B2B Business</span> <small className="preset-sub">(Mehrseitig + Rechner)</small>
             </button>
-            <button className="preset-pill" onClick={() => setPreset('scale')}>
+            <button 
+              type="button"
+              className={`preset-pill ${activePreset === 'scale' ? 'active' : ''}`} 
+              onClick={() => setPreset('scale')}
+            >
               <span>👑 Corporate</span> <small className="preset-sub">(Design-System + CMS)</small>
+            </button>
+            <button 
+              type="button"
+              className={`preset-pill ${activePreset === 'custom' ? 'active' : ''}`} 
+              onClick={() => setPreset('custom')}
+            >
+              <span>⚡ Benutzerdefiniert</span> <small className="preset-sub">(Individuell)</small>
             </button>
           </div>
         </div>
