@@ -335,6 +335,17 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
     return `Weiter zu ${step.nextStepName} →`;
   }, [currentStepIndex, countInCurrentStep]);
 
+  // Smooth scroll to top of configurator on mobile step change
+  const scrollToConfiguratorTop = () => {
+    const el = document.getElementById('pricing');
+    if (el) {
+      const topOffset = el.getBoundingClientRect().top + window.pageYOffset - 65;
+      if (window.pageYOffset > topOffset) {
+        window.scrollTo({ top: topOffset, behavior: 'smooth' });
+      }
+    }
+  };
+
   // Navigation handlers
   const handleNextStep = () => {
     if (currentStepIndex === 0 && countInCurrentStep === 0) {
@@ -345,16 +356,19 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
       return;
     }
     setCurrentStepIndex(prev => Math.min(WIZARD_STEPS.length - 1, prev + 1));
+    scrollToConfiguratorTop();
   };
 
   const handlePrevStep = () => {
     if (currentStepIndex > 0) {
       setCurrentStepIndex(prev => prev - 1);
+      scrollToConfiguratorTop();
     }
   };
 
   const handleGoToStep = (stepIdx: number) => {
     setCurrentStepIndex(stepIdx);
+    scrollToConfiguratorTop();
   };
 
   // Helper count per category for stepper tabs
@@ -485,7 +499,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                     <span className="stepper-tab-number">
                       {isPast ? <Check size={12} /> : step.id}
                     </span>
-                    <span className="stepper-tab-text">{step.shortLabel}</span>
+                    <span className="stepper-tab-text">{step.shortLabel.replace(/^[0-9]+\.\s*/, '')}</span>
                     {step.category !== 'summary' && count > 0 && (
                       <span className="stepper-tab-count">{count}</span>
                     )}
@@ -877,6 +891,41 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
             </div>
           </div>
 
+        </div>
+
+        {/* Mobile Sticky Action Dock (Always visible on mobile viewports for effortless navigation) */}
+        <div className="wizard-mobile-dock glass-panel">
+          <div className="mobile-dock-left">
+            {currentStepIndex > 0 && (
+              <button 
+                type="button" 
+                className="btn-mobile-dock-back"
+                onClick={handlePrevStep}
+                aria-label="Vorheriger Schritt"
+                title="Zurück"
+              >
+                <ArrowLeft size={16} />
+              </button>
+            )}
+            <div className="mobile-dock-price">
+              <span className="mobile-dock-label">Gesamt:</span>
+              <strong className="mobile-dock-sum">{calculation.oneTimeGross.toLocaleString('de-AT')} €</strong>
+              {calculation.mrrNet > 0 && (
+                <span className="mobile-dock-mrr">+{calculation.mrrNet}€/m</span>
+              )}
+            </div>
+          </div>
+
+          <div className="mobile-dock-right">
+            <button 
+              type="button"
+              className={`btn-mobile-dock-next ${countInCurrentStep === 0 && currentStepIndex > 0 ? 'skip-mode' : ''}`}
+              onClick={handleNextStep}
+            >
+              <span>{nextButtonText.replace(/→$/, '').trim()}</span>
+              <ArrowRight size={15} />
+            </button>
+          </div>
         </div>
 
       </div>
