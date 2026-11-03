@@ -6301,6 +6301,211 @@
   color: #ff5f56;
 }
 
+/* Mobile Comparison Bento Cards (Möglichkeit 1) */
+.comparison-mobile-cards {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .comparison-desktop-table {
+    display: none !important;
+  }
+
+  .comparison-mobile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .comparison-bento-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: var(--transition-normal);
+  }
+
+  [data-theme="light"] .comparison-bento-card {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  }
+
+  .bento-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bento-card-idx {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .bento-card-title {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: var(--text-pure);
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  /* Winner Box (PureSite Highlight) */
+  .bento-winner-box {
+    background: rgba(88, 252, 165, 0.05);
+    border: 1px solid rgba(88, 252, 165, 0.35);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 0 16px rgba(88, 252, 165, 0.06);
+  }
+
+  [data-theme="light"] .bento-winner-box {
+    background: rgba(5, 150, 105, 0.07);
+    border-color: rgba(5, 150, 105, 0.3);
+    box-shadow: 0 2px 10px rgba(5, 150, 105, 0.08);
+  }
+
+  .bento-winner-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .bento-brand-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--text-pure);
+  }
+
+  .bento-dot-pulse {
+    width: 6.5px;
+    height: 6.5px;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    background-color: var(--pure-mint);
+    box-shadow: 0 0 6px var(--pure-mint);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  [data-theme="light"] .bento-dot-pulse {
+    background-color: #059669;
+    box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.25);
+  }
+
+  .bento-best-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: var(--radius-xs);
+    background: rgba(88, 252, 165, 0.18);
+    color: var(--pure-mint);
+    border: 1px solid rgba(88, 252, 165, 0.4);
+  }
+
+  [data-theme="light"] .bento-best-badge {
+    background: #ecfdf5;
+    color: #047857;
+    border-color: #a7f3d0;
+  }
+
+  .bento-winner-value {
+    display: flex;
+    align-items: flex-start;
+    font-size: 0.88rem;
+    color: var(--text-pure);
+    line-height: 1.4;
+  }
+
+  .bento-winner-value strong {
+    color: var(--pure-mint);
+    font-weight: 700;
+  }
+
+  [data-theme="light"] .bento-winner-value strong {
+    color: #047857;
+  }
+
+  .bento-winner-value code {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 3px 7px;
+    border-radius: 4px;
+    color: var(--pure-mint);
+    border: 1px solid rgba(88, 252, 165, 0.25);
+  }
+
+  [data-theme="light"] .bento-winner-value code {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+  }
+
+  /* Competitors Block */
+  .bento-competitors-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 2px;
+  }
+
+  .bento-comp-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 0.82rem;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+  }
+
+  [data-theme="light"] .bento-comp-row {
+    background: #f8fafc;
+    border-color: rgba(15, 23, 42, 0.07);
+  }
+
+  .bento-comp-name {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+
+  .bento-comp-val {
+    display: flex;
+    align-items: flex-start;
+    color: var(--text-secondary);
+    line-height: 1.35;
+  }
+
+  .bento-comp-val .text-danger {
+    color: #f43f5e;
+    margin-top: 2px;
+  }
+
+  [data-theme="light"] .bento-comp-val .text-danger {
+    color: #e11d48;
+  }
+}
+
 /* -------------------------------------------------------------------------
    ABOUT US / HTL KAINDORF FOUNDERS
    ------------------------------------------------------------------------- */
