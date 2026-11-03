@@ -463,53 +463,52 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   };
 
   return (
-    <section id="preise" className="pricing-section fullpage-wizard-section">
-      <div className="container fullpage-wizard-container">
+    <section id="preise" className="band section-shell fullpage-wizard-section" aria-labelledby="calculator-title">
+      <div className="section-head">
+        <h2 id="calculator-title">Festpreis-Kalkulator</h2>
+        <span className="section-head-meta">Schritt {currentStepIndex + 1} von 6 · 100% verbindlich online</span>
+      </div>
+
+      <div className="fullpage-wizard-container">
         
         {/* Top Header Deck: Title & Presets */}
         <div className="wizard-full-header">
           <div className="header-left-title">
-            <span className="wizard-pill-badge">
-              <Sparkles size={13} /> Interaktiver Festpreis-Konfigurator
-            </span>
-            <h2 className="wizard-full-heading">
-              Gestalte deinen <span className="gradient-text">Webauftritt</span>
-            </h2>
-            <p className="wizard-full-sub">
-              Wähle links Schritt für Schritt deine Bausteine. Rechts siehst du in Echtzeit, was konfiguriert wurde.
+            <p className="services-lead" style={{ margin: 0 }}>
+              Wähle links deine Bausteine. Rechts siehst du in Echtzeit deine verbindliche Festpreis-Kalkulation.
             </p>
           </div>
 
           <div className="wizard-presets-deck">
-            <span className="preset-deck-label">Schnellwahl:</span>
+            <span className="preset-deck-label">Preset:</span>
             <div className="preset-pill-group">
               <button 
                 type="button" 
                 className={`preset-pill-item ${activePreset === 'starter' ? 'active' : ''}`}
                 onClick={() => setPreset('starter')}
               >
-                🚀 Solo-Starter
+                Solo-Starter
               </button>
               <button 
                 type="button" 
                 className={`preset-pill-item ${activePreset === 'business' ? 'active' : ''}`}
                 onClick={() => setPreset('business')}
               >
-                💼 B2B Business
+                B2B Business
               </button>
               <button 
                 type="button" 
                 className={`preset-pill-item ${activePreset === 'scale' ? 'active' : ''}`}
                 onClick={() => setPreset('scale')}
               >
-                👑 Corporate
+                Corporate
               </button>
               <button 
                 type="button" 
                 className={`preset-pill-item ${activePreset === 'custom' ? 'active' : ''}`}
                 onClick={() => setPreset('custom')}
               >
-                ⚡ Individuell
+                Individuell
               </button>
             </div>
           </div>

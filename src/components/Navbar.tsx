@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Menu, X, ArrowRight, Code2 } from 'lucide-react';
+import { Terminal, ArrowRight, Menu, X, Sun, Moon } from 'lucide-react';
 
 interface NavbarProps {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
   onOpenContact: () => void;
+  onOpenTerminal: () => void;
   onOpenLegal: (tab: 'impressum' | 'datenschutz') => void;
 }
 
@@ -12,17 +13,26 @@ export const Navbar: React.FC<NavbarProps> = ({
   theme,
   onToggleTheme,
   onOpenContact,
+  onOpenTerminal,
   onOpenLegal
 }) => {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [timeShort, setTimeShort] = useState('');
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    const updateTime = () => {
+      const now = new Date();
+      setTimeShort(
+        now.toLocaleTimeString('de-AT', {
+          timeZone: 'Europe/Vienna',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      );
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    updateTime();
+    const interval = setInterval(updateTime, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const scrollTo = (id: string) => {
@@ -34,54 +44,83 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className={`navbar-header ${scrolled ? 'scrolled glass-panel' : ''}`}>
-      <div className="container navbar-container">
-        {/* Logo */}
-        <a href="#hero" className="navbar-brand" onClick={(e) => { e.preventDefault(); scrollTo('hero'); }}>
-          <div className="brand-logo-icon">
-            <img src="/assets/puresite-logo.png" alt="PureSite Logo" className="brand-logo-img" />
-          </div>
-          <div className="brand-text-wrap">
-            <span className="brand-name">Pure<span className="gradient-text">Site</span></span>
-            <span className="brand-sub">Webdesign & Software</span>
-          </div>
+    <header className="site-header">
+      <div className="site-header-bar">
+        {/* Brand */}
+        <a 
+          href="#hero" 
+          className="brand" 
+          onClick={(e) => { e.preventDefault(); scrollTo('hero'); }}
+          aria-label="PureSite Home"
+        >
+          <span className="brand-prompt" aria-hidden="true">$</span>
+          <span className="brand-title">PureSite</span>
+          <span className="brand-tag">AT</span>
         </a>
 
-        {/* Desktop Navigation Links */}
-        <nav className="navbar-nav desktop-nav">
-          <button className="nav-link" onClick={() => scrollTo('preise')}>
-            Preise & Demos
+        {/* Desktop Navigation Links with 1px border cells */}
+        <nav className="site-nav" aria-label="Hauptnavigation">
+          <button className="nav-item-btn" onClick={() => scrollTo('preise')}>
+            <span className="nav-num">01</span> Kalkulator
           </button>
-          <button className="nav-link" onClick={() => scrollTo('warum-wir')}>
-            Warum PureSite?
+          <button className="nav-item-btn" onClick={() => scrollTo('demos')}>
+            <span className="nav-num">02</span> Live-Demos
           </button>
-          <button className="nav-link" onClick={() => scrollTo('ueber-uns')}>
-            Über uns
+          <button className="nav-item-btn" onClick={() => scrollTo('warum-wir')}>
+            <span className="nav-num">03</span> Vergleich
           </button>
-          <button className="nav-link" onClick={() => scrollTo('prozess')}>
-            Ablauf
+          <button className="nav-item-btn" onClick={() => scrollTo('ueber-uns')}>
+            <span className="nav-num">04</span> Über uns
           </button>
-          <button className="nav-link" onClick={() => scrollTo('faq')}>
-            FAQ
+          <button className="nav-item-btn" onClick={() => scrollTo('prozess')}>
+            <span className="nav-num">05</span> Ablauf
+          </button>
+          <button className="nav-item-btn" onClick={() => scrollTo('faq')}>
+            <span className="nav-num">06</span> FAQ
           </button>
         </nav>
 
-        {/* Right Action buttons */}
-        <div className="navbar-actions">
-          {/* Theme Switcher Button */}
+        <span className="header-spacer" aria-hidden="true"></span>
+
+        {/* Header Utils */}
+        <div className="header-utils">
+          {/* Terminal Shortcut Button */}
           <button 
-            className="theme-toggle-btn"
-            onClick={onToggleTheme}
-            aria-label="Theme wechseln"
-            title={theme === 'dark' ? 'Zu Light Mode wechseln' : 'Zu Dark Mode wechseln'}
+            type="button" 
+            className="header-terminal-btn" 
+            onClick={onOpenTerminal}
+            title="Terminal öffnen (Taste ~)"
+            aria-label="Terminal öffnen"
           >
-            {theme === 'dark' ? <Sun size={18} className="text-amber" /> : <Moon size={18} />}
+            <Terminal size={14} />
+            <span className="key-hint">~</span>
           </button>
 
-          {/* Primary CTA */}
-          <button className="btn-navbar-cta" onClick={() => scrollTo('preise')}>
-            <span>Konfigurator</span>
-            <ArrowRight size={15} />
+          {/* Clock Header Item */}
+          <div className="header-clock" title="Lokalzeit Steiermark">
+            <span className="clock-pulse-dot"></span>
+            <span className="tabular-time">{timeShort}</span>
+            <span className="clock-region">Graz</span>
+          </div>
+
+          {/* Theme Toggle Button with swatch */}
+          <button 
+            className="theme-toggle" 
+            type="button" 
+            onClick={onToggleTheme}
+            aria-label={theme === 'dark' ? 'Zu hellem Papier wechseln' : 'Zu dunklem Modus wechseln'}
+            title="Design wechseln"
+          >
+            <span className="theme-toggle-swatch" aria-hidden="true"></span>
+            <span className="theme-toggle-label">
+              {theme === 'dark' ? 'Light' : 'Dark'}
+            </span>
+          </button>
+
+          {/* Direct CTA */}
+          <button className="header-cta-btn" onClick={() => scrollTo('preise')}>
+            <span>Konfigurieren</span>
+            <ArrowRight size={13} />
           </button>
 
           {/* Mobile hamburger */}
@@ -90,35 +129,43 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Menü öffnen"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="mobile-menu-drawer glass-panel">
-          <button className="mobile-nav-link" onClick={() => scrollTo('preise')}>
-            Preise & Demos
+        <div className="site-mobile-drawer">
+          <button className="mobile-drawer-link" onClick={() => scrollTo('preise')}>
+            <span className="nav-num">01</span> Modul-Kalkulator
           </button>
-          <button className="mobile-nav-link" onClick={() => scrollTo('warum-wir')}>
-            Warum PureSite?
+          <button className="mobile-drawer-link" onClick={() => scrollTo('demos')}>
+            <span className="nav-num">02</span> 18 Live-Demos
           </button>
-          <button className="mobile-nav-link" onClick={() => scrollTo('ueber-uns')}>
-            Über uns
+          <button className="mobile-drawer-link" onClick={() => scrollTo('warum-wir')}>
+            <span className="nav-num">03</span> Vergleich (Kein WordPress)
           </button>
-          <button className="mobile-nav-link" onClick={() => scrollTo('prozess')}>
-            Projekt-Ablauf
+          <button className="mobile-drawer-link" onClick={() => scrollTo('ueber-uns')}>
+            <span className="nav-num">04</span> Über uns (HTL Kaindorf)
           </button>
-          <button className="mobile-nav-link" onClick={() => scrollTo('faq')}>
-            Häufige Fragen (FAQ)
+          <button className="mobile-drawer-link" onClick={() => scrollTo('prozess')}>
+            <span className="nav-num">05</span> Projekt-Ablauf
           </button>
-          <button className="mobile-nav-link" onClick={() => { setMobileMenuOpen(false); onOpenLegal('impressum'); }}>
-            Impressum & Datenschutz
+          <button className="mobile-drawer-link" onClick={() => scrollTo('faq')}>
+            <span className="nav-num">06</span> Häufige Fragen
           </button>
-          <button className="btn-primary-sm w-100 mt-2" onClick={() => { setMobileMenuOpen(false); onOpenContact(); }}>
-            Jetzt Projekt unverbindlich anfragen
-          </button>
+          
+          <div className="mobile-drawer-actions">
+            <button className="button primary w-100" onClick={() => { setMobileMenuOpen(false); scrollTo('preise'); }}>
+              Website jetzt konfigurieren →
+            </button>
+            <button className="button secondary w-100 mt-2" onClick={() => { setMobileMenuOpen(false); onOpenTerminal(); }}>
+              <Terminal size={14} /> Terminal öffnen (~)</button>
+            <button className="mobile-legal-btn" onClick={() => { setMobileMenuOpen(false); onOpenLegal('impressum'); }}>
+              Impressum & Datenschutz
+            </button>
+          </div>
         </div>
       )}
     </header>

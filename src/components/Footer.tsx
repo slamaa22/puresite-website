@@ -1,12 +1,19 @@
-import React from 'react';
-import { Code2, ArrowUp, Mail, MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { Terminal, Copy, Check, ArrowUp, Mail, MapPin, Heart } from 'lucide-react';
 
 interface FooterProps {
   onOpenLegal: (tab: 'impressum' | 'datenschutz') => void;
   onOpenContact: () => void;
+  onOpenTerminal?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenContact }) => {
+export const Footer: React.FC<FooterProps> = ({ 
+  onOpenLegal, 
+  onOpenContact,
+  onOpenTerminal 
+}) => {
+  const [copied, setCopied] = useState(false);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -16,70 +23,93 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenContact }) =>
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleCopyCurl = () => {
+    navigator.clipboard.writeText('curl -sL puresite.at/angebot');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <footer className="site-footer">
-      <div className="container footer-container">
-        <div className="footer-top-grid">
-          {/* Brand info */}
-          <div className="footer-col brand-col">
-            <div className="navbar-brand">
-              <div className="brand-logo-icon">
-                <img src="/assets/puresite-logo.png" alt="PureSite Logo" className="brand-logo-img" />
-              </div>
-              <div className="brand-text-wrap">
-                <span className="brand-name">Pure<span className="gradient-text">Site</span></span>
-                <span className="brand-sub">Webdesign & Software</span>
-              </div>
-            </div>
-            <p className="footer-desc">
-              Wir bauen modulare, rasend schnelle Websites für moderne Betriebe. 100% Code-Qualität, keine leeren Agentur-Versprechen.
+      <div className="section-shell footer-shell">
+        <div className="footer-main-grid">
+          {/* Brand Info & Mission */}
+          <div className="footer-about-col">
+            <a href="#hero" className="footer-mark" onClick={(e) => { e.preventDefault(); scrollToTop(); }}>
+              <span className="brand-prompt">$</span>
+              <span>PureSite</span>
+            </a>
+            <p className="footer-bio">
+              Handgeschriebene, hochperformante Websites für Betriebe aus der Steiermark und ganz Österreich. Keine WordPress-Baukästen, keine versteckten Kosten.
             </p>
-            <div className="footer-austria-badge">
-              <span>🇦🇹</span>
-              <span>Webdesign & Softwareentwicklung aus der Steiermark</span>
+            <div className="footer-place">
+              46°59'N 15°26'E · HTL Kaindorf Alumni · Graz & Steiermark
+            </div>
+
+            {/* Terminal Curl Box (Signature Johannes Grof) */}
+            <div className="footer-terminal-box">
+              <div className="curl-row">
+                <code><span>$</span> curl -sL puresite.at/angebot</code>
+                <button 
+                  className="curl-copy-btn" 
+                  onClick={handleCopyCurl} 
+                  title="Befehl kopieren"
+                  aria-label="Curl Befehl kopieren"
+                >
+                  {copied ? <Check size={13} className="text-signal-green" /> : <Copy size={13} />}
+                </button>
+              </div>
+              {onOpenTerminal && (
+                <button className="footer-term-open-btn" onClick={onOpenTerminal}>
+                  <Terminal size={12} />
+                  <span>Terminal öffnen (Taste ~)</span>
+                </button>
+              )}
             </div>
           </div>
 
           {/* Navigation Links */}
-          <div className="footer-col">
-            <h5 className="footer-heading">Navigation</h5>
-            <ul className="footer-nav-list">
+          <div className="footer-nav-col">
+            <h5 className="footer-col-title">Navigation</h5>
+            <ul className="footer-links-list">
               <li><button onClick={() => scrollToSection('hero')}>Startseite</button></li>
-              <li><button onClick={() => scrollToSection('preise')}>Modul-Preisliste & Demos</button></li>
+              <li><button onClick={() => scrollToSection('preise')}>Modul-Kalkulator</button></li>
+              <li><button onClick={() => scrollToSection('demos')}>18 Live-Demos</button></li>
               <li><button onClick={() => scrollToSection('warum-wir')}>Warum PureSite?</button></li>
               <li><button onClick={() => scrollToSection('ueber-uns')}>Über uns</button></li>
-              <li><button onClick={() => scrollToSection('prozess')}>Projekt-Ablauf</button></li>
-              <li><button onClick={() => scrollToSection('faq')}>Häufige Fragen (FAQ)</button></li>
+              <li><button onClick={() => scrollToSection('prozess')}>Ablauf</button></li>
+              <li><button onClick={() => scrollToSection('faq')}>Häufige Fragen</button></li>
             </ul>
           </div>
 
           {/* Module Categories */}
-          <div className="footer-col">
-            <h5 className="footer-heading">Modul-Katalog</h5>
-            <ul className="footer-nav-list">
-              <li><button onClick={() => scrollToSection('preise')}>1. Basis-Pakete (One-Pager & Business)</button></li>
-              <li><button onClick={() => scrollToSection('preise')}>2. Frontend (Rechner & Animationen)</button></li>
-              <li><button onClick={() => scrollToSection('preise')}>3. Backend (Headless CMS & Funnel)</button></li>
-              <li><button onClick={() => scrollToSection('preise')}>4. Content (Copywriting & SEO)</button></li>
-              <li><button onClick={() => scrollToSection('preise')}>5. Wartung (NVMe-Hosting & Pro Support)</button></li>
+          <div className="footer-nav-col">
+            <h5 className="footer-col-title">Module</h5>
+            <ul className="footer-links-list">
+              <li><button onClick={() => scrollToSection('preise')}>Basis-Pakete (B-01 bis B-03)</button></li>
+              <li><button onClick={() => scrollToSection('preise')}>Interaktive Rechner (F-01)</button></li>
+              <li><button onClick={() => scrollToSection('preise')}>Design-Switcher (F-04)</button></li>
+              <li><button onClick={() => scrollToSection('preise')}>Online-Terminbuchung (T-03)</button></li>
+              <li><button onClick={() => scrollToSection('preise')}>Headless CMS (T-01)</button></li>
+              <li><button onClick={() => scrollToSection('preise')}>NVMe-Hosting Österreich (M-01)</button></li>
             </ul>
           </div>
 
-          {/* Contact & Legal */}
-          <div className="footer-col">
-            <h5 className="footer-heading">Kontakt & Rechtliches</h5>
-            <div className="footer-contact-items">
-              <div className="contact-item">
-                <Mail size={16} className="text-cyan" />
+          {/* Contact & Direct Line */}
+          <div className="footer-nav-col">
+            <h5 className="footer-col-title">Kontakt</h5>
+            <div className="footer-contact-details">
+              <div className="contact-line">
+                <Mail size={14} className="text-signal" />
                 <a href="mailto:office@puresite.at">office@puresite.at</a>
               </div>
-              <div className="contact-item">
-                <MapPin size={16} className="text-cyan" />
-                <span>Kaindorf, Steiermark, Österreich</span>
+              <div className="contact-line">
+                <MapPin size={14} className="text-signal" />
+                <span>Kaindorf / Graz, Steiermark</span>
               </div>
             </div>
 
-            <div className="footer-legal-links mt-3">
+            <div className="footer-legal-bar">
               <button onClick={() => onOpenLegal('impressum')}>Impressum</button>
               <span className="dot-sep">·</span>
               <button onClick={() => onOpenLegal('datenschutz')}>Datenschutz (DSGVO)</button>
@@ -87,14 +117,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onOpenContact }) =>
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom Bar with Heartbeat and Back to Top */}
         <div className="footer-bottom-bar">
-          <div className="footer-copy">
-            © {new Date().getFullYear()} PureSite – Alle Rechte vorbehalten. Handcrafted with modern React & TypeScript.
+          <div className="footer-love-text">
+            Handcrafted with <Heart size={13} className="footer-heart-icon" /> by Maximilian Schlacher & Loreno Zanaboni in der Steiermark, Österreich.
           </div>
-          <button className="back-to-top-btn" onClick={scrollToTop} aria-label="Nach oben scrollen">
-            <span>Nach oben</span>
-            <ArrowUp size={16} />
+          <button className="back-to-top-btn" onClick={scrollToTop} aria-label="Nach oben springen">
+            <span>Zurück nach oben</span>
+            <ArrowUp size={14} />
           </button>
         </div>
       </div>

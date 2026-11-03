@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Sparkles, ChevronDown } from 'lucide-react';
 
 export const FAQSection: React.FC = () => {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   const faqs = [
+    {
+      q: 'Warum verwendet PureSite kein WordPress?',
+      a: 'WordPress wurde 2003 für Weblogs erfunden und ist heute durch hunderte Plugins oft quälend langsam, wartungsintensiv und ein permanentes Ziel für Sicherheitslücken. Wir entwickeln mit modernen Frameworks (React 19 & TypeScript): Deine Seite lädt in unter 0.5 Sekunden, ist DSGVO-konform ohne Cookie-Tracking-Pflicht und benötigt praktisch keinen Wartungsaufwand.'
+    },
     {
       q: 'Warum arbeitet PureSite mit einem modularen Baustein-Konzept?',
       a: 'Klassische Agenturen verlangen Pauschalen von 5.000 € bis 10.000 €, in denen Leistungen eingerechnet sind, die du gar nicht benötigst. Mit unserem Bausteinkonzept zahlst du ausschließlich das, was für deinen Betrieb echten Mehrwert bringt. Zudem kannst du jedes Feature vorab in unserer Live-Demo testen.'
@@ -24,52 +27,42 @@ export const FAQSection: React.FC = () => {
     {
       q: 'Kann ich später weitere Module nachbestellen?',
       a: 'Absolut. Weil wir mit moderner, modularer Softwarearchitektur arbeiten, lässt sich deine Website jederzeit flexibel erweitern – beispielsweise um einen Bewerber-Funnel, einen Blog, Mehrsprachigkeit oder einen individuellen Preisrechner.'
-    },
-    {
-      q: 'Warum verwendet PureSite kein WordPress?',
-      a: 'WordPress wurde 2003 für Blogs erfunden und ist heute durch hunderte Plugins oft langsam, fehleranfällig und ein permanentes Ziel für Hacker-Angriffe. Wir entwickeln mit modernen Frameworks (React & Vite): Deine Seite lädt in unter 0.5 Sekunden, ist DSGVO-konform ohne Cookie-Tracking-Pflicht und benötigt nahezu null Wartungsaufwand.'
     }
   ];
 
   return (
-    <section id="faq" className="faq-section">
-      <div className="container">
-        <div className="section-head text-center">
-          <div className="badge-pill">
-            <Sparkles size={14} /> Häufige Fragen
-          </div>
-          <h2 className="section-title">
-            Alles, was du über <span className="gradient-text">PureSite</span> wissen musst.
-          </h2>
-          <p className="section-subtitle">
-            Transparenz ist unser oberstes Gebot. Hier beantworten wir die wichtigsten Fragen zu unserem Modulsystem und der Zusammenarbeit.
-          </p>
-        </div>
+    <section id="faq" className="band section-shell" aria-labelledby="faq-title">
+      <div className="section-head">
+        <h2 id="faq-title">Häufige Fragen (FAQ)</h2>
+        <span className="section-head-meta">Transparente Antworten ohne Agentur-Floskeln</span>
+      </div>
 
-        <div className="faq-accordion-wrap">
-          {faqs.map((faq, idx) => {
-            const isOpen = openIdx === idx;
-            return (
-              <div 
-                key={idx} 
-                className={`faq-item glass-panel ${isOpen ? 'open' : ''}`}
+      <div className="faq-artisan-list">
+        {faqs.map((faq, idx) => {
+          const isOpen = openIdx === idx;
+          return (
+            <div 
+              key={idx} 
+              className={`faq-artisan-item ${isOpen ? 'is-open' : ''}`}
+            >
+              <button 
+                className="faq-artisan-trigger"
                 onClick={() => setOpenIdx(isOpen ? null : idx)}
+                aria-expanded={isOpen}
               >
-                <div className="faq-question-row">
-                  <h4>{faq.q}</h4>
-                  <div className={`faq-chevron ${isOpen ? 'rotate' : ''}`}>
-                    <ChevronDown size={20} />
-                  </div>
+                <span className="faq-mono-idx">[{String(idx + 1).padStart(2, '0')}]</span>
+                <span className="faq-question-text">{faq.q}</span>
+                <span className="faq-toggle-icon">{isOpen ? '[-]' : '[+]'}</span>
+              </button>
+
+              {isOpen && (
+                <div className="faq-artisan-body">
+                  <p>{faq.a}</p>
                 </div>
-                {isOpen && (
-                  <div className="faq-answer-row animated-fade">
-                    <p>{faq.a}</p>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
   );
