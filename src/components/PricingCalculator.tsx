@@ -123,32 +123,42 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   const [isCustomMode, setIsCustomMode] = useState<boolean>(false);
   const [useTax, setUseTax] = useState<boolean>(false); // 0% Kleinunternehmer vs 20% Regelbesteuerung
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [showMobileSummary, setShowMobileSummary] = useState(false);
 
   // Toggle selection
   const toggleModule = (code: string) => {
     setIsCustomMode(false);
     setSelectedConfig(prev => {
+      // Base packages (B-01, B-02, B-03) are radio-like and mandatory
+      // One base package (Solo, Startup, or Corporate) is ALWAYS selected
+      if (code === 'B-01' || code === 'B-02' || code === 'B-03') {
+        return {
+          ...prev,
+          'B-01': { selected: code === 'B-01', quantity: 1 },
+          'B-02': { selected: code === 'B-02', quantity: 1 },
+          'B-03': { selected: code === 'B-03', quantity: 1 }
+        };
+      }
+
       const current = prev[code];
       const isSelected = current ? current.selected : false;
 
-      // Mutually exclusive base packages: B-01, B-02, B-03
-      let next = { ...prev };
-      if (!isSelected && (code === 'B-01' || code === 'B-02' || code === 'B-03')) {
-        next['B-01'] = { selected: false, quantity: 1 };
-        next['B-02'] = { selected: false, quantity: 1 };
-        next['B-03'] = { selected: false, quantity: 1 };
-      }
-
-      next[code] = {
-        selected: !isSelected,
-        quantity: current?.quantity && current.quantity > 0 ? current.quantity : 1
+      return {
+        ...prev,
+        [code]: {
+          selected: !isSelected,
+          quantity: current?.quantity && current.quantity > 0 ? current.quantity : 1
+        }
       };
-      return next;
     });
   };
 
   // Remove module
   const removeModule = (code: string) => {
+    // Cannot delete the base package (a website always requires a base package)
+    if (code === 'B-01' || code === 'B-02' || code === 'B-03') {
+      return;
+    }
     setIsCustomMode(false);
     setSelectedConfig(prev => ({
       ...prev,
@@ -210,15 +220,11 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   // Modules belonging to current step category
   const currentStepModules = useMemo(() => {
     if (currentStep.category === 'summary') return [];
-    const mods = MODULES_DATA.filter(m => m.category === currentStep.category);
-    // Zusatzseite is also directly selectable in Step 4 (Content & SEO)
-    if (currentStep.category === 'content') {
-      const b04 = MODULES_DATA.find(m => m.code === 'B-04');
-      if (b04 && !mods.some(m => m.code === 'B-04')) {
-        return [...mods, b04];
-      }
+    if (currentStep.category === 'basis') {
+      // Step 1: Exactly the 3 main Base Packages (Standard / Business / Premium)
+      return MODULES_DATA.filter(m => m.code === 'B-01' || m.code === 'B-02' || m.code === 'B-03');
     }
-    return mods;
+    return MODULES_DATA.filter(m => m.category === currentStep.category);
   }, [currentStep.category]);
 
   // Number of selected modules in current step
@@ -515,8 +521,8 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
           {/* LEFT COLUMN: The Interactive Selection Stage */}
           <div className="wizard-selection-panel glass-panel">
             
-            {/* Step Progress Navigation Strip */}
-            <div className="wizard-stepper-bar">
+            {/* Desktop Stepper Bar (Grid) */}
+            <div className="wizard-stepper-bar desktop-stepper">
               {WIZARD_STEPS.map((step, idx) => {
                 const isActive = currentStepIndex === idx;
                 const isPast = currentStepIndex > idx;
@@ -539,6 +545,31 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                   </button>
                 );
               })}
+            </div>
+
+            {/* Mobile Stepper - 6 connected nodes fitting 100% on phone screens */}
+            <div className="wizard-stepper-mobile">
+              <div className="mobile-stepper-grid">
+                {WIZARD_STEPS.map((step, idx) => {
+                  const isActive = currentStepIndex === idx;
+                  const isPast = currentStepIndex > idx;
+
+                  return (
+                    <button
+                      key={step.id}
+                      type="button"
+                      className={`mobile-step-pill ${isActive ? 'active' : ''} ${isPast ? 'completed' : ''}`}
+                      onClick={() => handleGoToStep(idx)}
+                      aria-label={`Schritt ${step.id}: ${step.categoryName}`}
+                    >
+                      <span className="mobile-pill-circle">
+                        {isPast ? <Check size={11} /> : step.id}
+                      </span>
+                      <span className="mobile-pill-name">{step.shortLabel.replace(/^[0-9]+\.\s*/, '')}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Active Step Intro Header */}
@@ -671,7 +702,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                           ) : (
                             <>
                               <Plus size={14} />
-                              <span>Auswählen</span>
+                              <span>{mod.category === 'basis' ? 'Paket wählen' : 'Auswählen'}</span>
                             </>
                           )}
                         </button>
@@ -679,6 +710,52 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                     </div>
                   );
                 })}
+              </div>
+            )}
+
+            {/* Step 1: Dedicated Zusatzseiten Addon Box directly under the 3 Base Packages */}
+            {currentStepIndex === 0 && (
+              <div className="step1-zusatz-box glass-panel">
+                <div className="zusatz-box-header">
+                  <div className="zusatz-box-title-row">
+                    <span className="zusatz-icon">📄</span>
+                    <div className="zusatz-text-block">
+                      <strong className="zusatz-title">Zusätzliche Unterseiten zubuchen?</strong>
+                      <p className="zusatz-desc">
+                        Erweitere dein gewähltes Basispaket um beliebig viele Unterseiten (+100 € Fixpreis pro Seite) im passenden Design.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="zusatz-box-stepper">
+                    <div className="stepper-btn-group">
+                      <button 
+                        type="button" 
+                        onClick={() => handleUpdateZusatzseiten(-1)}
+                        disabled={zusatzQty === 0}
+                        aria-label="Zusatzseite abziehen"
+                        title="Eine Zusatzseite weniger"
+                      >
+                        -
+                      </button>
+                      <span className="stepper-number">{zusatzQty}</span>
+                      <button 
+                        type="button" 
+                        onClick={() => handleUpdateZusatzseiten(1)}
+                        aria-label="Zusatzseite hinzufügen"
+                        title="Eine Zusatzseite mehr"
+                      >
+                        +
+                      </button>
+                    </div>
+                    {zusatzQty > 0 ? (
+                      <span className="zusatz-sum-badge">
+                        +{zusatzQty} {zusatzQty === 1 ? 'Seite' : 'Seiten'} (+{(zusatzQty * 100).toLocaleString('de-AT')} €)
+                      </span>
+                    ) : (
+                      <span className="zusatz-empty-hint">Keine Zusatzseiten</span>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -803,7 +880,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
           </div>
 
           {/* RIGHT COLUMN: Live Configuration & Price Sidebar ("Was bisher konfiguriert wurde") */}
-          <div className="wizard-summary-column">
+          <div className={`wizard-summary-column ${currentStepIndex < 5 ? 'mobile-hidden' : ''}`}>
             <div className="summary-sidebar-card glass-panel">
               
               {/* Sidebar Header */}
@@ -880,7 +957,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                                       +
                                     </button>
                                   </div>
-                                ) : (
+                                ) : (item.code !== 'B-01' && item.code !== 'B-02' && item.code !== 'B-03') ? (
                                   <button 
                                     type="button"
                                     className="btn-remove-item"
@@ -890,7 +967,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                                   >
                                     <Trash2 size={12} />
                                   </button>
-                                )}
+                                ) : null}
                               </div>
                             </div>
                           ))}
@@ -1023,12 +1100,18 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 <ArrowLeft size={16} />
               </button>
             )}
-            <div className="mobile-dock-price">
-              <span className="mobile-dock-label">Gesamt:</span>
-              <strong className="mobile-dock-sum">{calculation.oneTimeGross.toLocaleString('de-AT')} €</strong>
-              {calculation.mrrNet > 0 && (
-                <span className="mobile-dock-mrr">+{calculation.mrrNet}€/m</span>
-              )}
+            <div 
+              className="mobile-dock-price" 
+              onClick={() => setShowMobileSummary(true)} 
+              role="button" 
+              tabIndex={0}
+              title="Konfiguration ansehen"
+            >
+              <div className="mobile-dock-price-left">
+                <span className="mobile-dock-label">Gesamt:</span>
+                <strong className="mobile-dock-sum">{calculation.oneTimeGross.toLocaleString('de-AT')} €</strong>
+              </div>
+              <span className="mobile-dock-details-hint">Details ↑</span>
             </div>
           </div>
 
@@ -1043,6 +1126,78 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
             </button>
           </div>
         </div>
+
+        {/* Mobile Summary Drawer Sheet (Opens when user taps price on mobile) */}
+        {showMobileSummary && (
+          <div className="mobile-sheet-backdrop" onClick={() => setShowMobileSummary(false)}>
+            <div className="mobile-sheet-content glass-panel" onClick={(e) => e.stopPropagation()}>
+              <div className="mobile-sheet-header">
+                <div className="sheet-title-wrap">
+                  <Layers size={18} className="text-cyan" />
+                  <h4>Ihre Konfiguration ({calculation.itemCount} Positionen)</h4>
+                </div>
+                <button 
+                  type="button" 
+                  className="btn-close-sheet"
+                  onClick={() => setShowMobileSummary(false)}
+                  aria-label="Schließen"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="mobile-sheet-body">
+                <div className="sheet-items-list">
+                  {selectedItemsStructured.map(item => (
+                    <div key={item.code} className="sheet-item-row">
+                      <div className="sheet-item-info">
+                        <span className="sheet-item-name">{item.name}{item.qtyLabel}</span>
+                      </div>
+                      <div className="sheet-item-price-wrap">
+                        <span className="sheet-item-price">{item.priceFormatted}</span>
+                        {item.code !== 'B-01' && item.code !== 'B-02' && item.code !== 'B-03' && (
+                          <button 
+                            type="button"
+                            className="btn-remove-item"
+                            onClick={() => removeModule(item.code)}
+                            title="Entfernen"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="sheet-total-box">
+                  <div className="sheet-total-row">
+                    <span>Verbindlicher Festpreis:</span>
+                    <strong className="sheet-total-price gradient-text">
+                      {calculation.oneTimeGross.toLocaleString('de-AT')} €
+                    </strong>
+                  </div>
+                  {calculation.mrrNet > 0 && (
+                    <div className="sheet-mrr-row">
+                      <span>Laufende Wartung:</span>
+                      <strong>+{calculation.mrrNet.toLocaleString('de-AT')} €/mtl.</strong>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="mobile-sheet-footer">
+                <button 
+                  type="button" 
+                  className="btn-sheet-close-action"
+                  onClick={() => setShowMobileSummary(false)}
+                >
+                  <span>Fertig & weiter konfigurieren</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
     </section>
