@@ -7451,17 +7451,55 @@
 .eyebrow-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .eyebrow-pulse-dot {
-  width: 7px;
-  height: 7px;
+  display: inline-block;
+  width: 6.5px;
+  height: 6.5px;
+  min-width: 6.5px;
+  min-height: 6.5px;
   border-radius: 50%;
+  aspect-ratio: 1 / 1;
   background-color: var(--pure-mint);
-  box-shadow: 0 0 8px var(--pure-mint);
-  animation: pulse-dot 2s infinite ease-in-out;
+  flex-shrink: 0;
+  vertical-align: middle;
+  box-shadow: 0 0 6px var(--pure-mint), 0 0 0 2px rgba(88, 252, 165, 0.25);
+  animation: pulse-dot 2.4s infinite ease-in-out;
+}
+
+[data-theme="light"] .eyebrow-pulse-dot {
+  background-color: #059669;
+  box-shadow: 0 0 0 2.5px rgba(5, 150, 105, 0.22);
+}
+
+.eyebrow-text {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.eyebrow-text-short {
+  display: none;
+}
+
+@media (max-width: 580px) {
+  .eyebrow {
+    font-size: 0.68rem;
+    padding: 4px 11px;
+    gap: 6px;
+  }
+  
+  .eyebrow-text-long {
+    display: none;
+  }
+  
+  .eyebrow-text-short {
+    display: inline;
+  }
 }
 
 .hero-subline-dim {

@@ -60,10 +60,13 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="hero section-shell">
         {/* Eyebrow Status Chip */}
         <div className="eyebrow-container">
-          <p className="eyebrow">
+          <div className="eyebrow" role="status">
             <span className="eyebrow-pulse-dot" aria-hidden="true"></span>
-            PureSite · Handgeschriebene High-Performance-Websites aus Österreich
-          </p>
+            <span className="eyebrow-text">
+              <span className="eyebrow-text-long">Handgeschriebene High-Performance-Websites aus Österreich</span>
+              <span className="eyebrow-text-short">High-Performance Websites · Österreich</span>
+            </span>
+          </div>
         </div>
 
         {/* Hero Title */}
