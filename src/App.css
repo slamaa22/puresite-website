@@ -560,8 +560,16 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px clamp(16px, 3vw, 32px);
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
+  text-align: center;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .status-item dt {
@@ -571,6 +579,7 @@
   letter-spacing: var(--label-track);
   text-transform: uppercase;
   margin-bottom: 4px;
+  text-align: center;
 }
 
 .status-item dd {
@@ -578,6 +587,10 @@
   font-size: 0.95rem;
   color: var(--ink);
   font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .status-link-btn {
@@ -588,7 +601,8 @@
   font: inherit;
   display: inline-flex;
   align-items: center;
-  text-align: left;
+  justify-content: center;
+  text-align: center;
   cursor: pointer;
   transition: color 0.16s;
 }
