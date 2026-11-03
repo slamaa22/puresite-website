@@ -1,17 +1,17 @@
 import React from 'react';
-import { GraduationCap, Code2, HeartHandshake, Check, Terminal, ExternalLink } from 'lucide-react';
+import { Code2, HeartHandshake, ShieldCheck, Zap } from 'lucide-react';
 
 export const AboutUs: React.FC = () => {
   return (
     <section id="ueber-uns" className="band section-shell" aria-labelledby="about-title">
       <div className="section-head">
         <h2 id="about-title">Über uns & Handwerk</h2>
-        <span className="section-head-meta">Gegründet in der Steiermark · HTL Kaindorf Alumni</span>
+        <span className="section-head-meta">Gegründet in der Steiermark · Software Engineering</span>
       </div>
 
       <div className="about-intro-deck">
         <p className="services-lead">
-          Mein Kollege und ich haben unsere IT-Ausbildung an der <strong>HTL Kaindorf</strong> absolviert. Dort haben wir Softwareentwicklung, moderne Webtechnologien und saubere Systemarchitektur von Grund auf gelernt. Mit PureSite bieten wir moderne, handgeschriebene Websites mit voller Preistransparenz und direktem Kontakt auf Augenhöhe.
+          Wir sind Maximilian Schlacher und Loreno Zanaboni, Softwareentwickler aus der Steiermark mit fundierter technischer IT-Ausbildung. Wir haben PureSite gegründet, um Betrieben in Österreich handgeschriebene High-Performance-Websites mit echter Preistransparenz und kompromissloser Ladezeit zu liefern – ohne WordPress-Ballast und ohne anonyme Großagentur-Bürokratie.
         </p>
       </div>
 
@@ -34,7 +34,7 @@ export const AboutUs: React.FC = () => {
             </picture>
             <div className="founder-polaroid-label">
               <span>Maximilian Schlacher</span>
-              <span className="founder-school-tag">HTL Kaindorf</span>
+              <span className="founder-school-tag">Web & UI/UX</span>
             </div>
           </div>
 
@@ -43,16 +43,16 @@ export const AboutUs: React.FC = () => {
               <h3>Maximilian Schlacher</h3>
               <span className="founder-badge">Co-Founder</span>
             </div>
-            <p className="founder-spec-role">Web-Entwicklung & UI/UX</p>
+            <p className="founder-spec-role">Web-Entwicklung & UI/UX Engineering</p>
             <p className="founder-bio-text">
-              Spezialisiert auf rasend schnelle Frontends, interaktive Rechner und intuitive Benutzerführung, die Besucher zu echten Anfragen konvertiert.
+              Spezialisiert auf rasend schnelle Frontends, interaktive Rechner und intuitive Benutzerführung, die Besucher zu echten Kundenanfragen konvertiert.
             </p>
 
             <div className="founder-skills-row">
               <span className="skill-chip">React 19</span>
               <span className="skill-chip">TypeScript</span>
               <span className="skill-chip">Vite</span>
-              <span className="skill-chip">UI/UX</span>
+              <span className="skill-chip">UI/UX Design</span>
             </div>
           </div>
         </article>
@@ -74,7 +74,7 @@ export const AboutUs: React.FC = () => {
             </picture>
             <div className="founder-polaroid-label">
               <span>Loreno Zanaboni</span>
-              <span className="founder-school-tag">HTL Kaindorf</span>
+              <span className="founder-school-tag">Architektur & Backend</span>
             </div>
           </div>
 
@@ -98,14 +98,41 @@ export const AboutUs: React.FC = () => {
         </article>
       </div>
 
-      {/* Developer Contribution & Engineering Craftsmanship Block (Johannes Grof Style) */}
+      {/* Engineering Values Grid */}
+      <div className="about-values-grid">
+        <div className="about-value-card">
+          <Code2 size={20} className="text-signal" />
+          <h4>Handgeschriebener Quellcode</h4>
+          <p>Jede Zeile Code wird maßgeschneidert entwickelt. Keine 45 Plugins, die nach dem nächsten Update abstürzen.</p>
+        </div>
+
+        <div className="about-value-card">
+          <Zap size={20} className="text-signal" />
+          <h4>Kompromisslose Performance</h4>
+          <p>Ladezeiten unter 0.4 Sekunden. Bessere Google-Rankings und keine genervten Absprünge mobiler Besucher.</p>
+        </div>
+
+        <div className="about-value-card">
+          <HeartHandshake size={20} className="text-signal" />
+          <h4>Direkter Draht zu den Entwicklern</h4>
+          <p>Keine Junior-Account-Manager oder Ticket-Warteschlangen. Schnelle Abstimmung direkt mit Maximilian und Loreno.</p>
+        </div>
+
+        <div className="about-value-card">
+          <ShieldCheck size={20} className="text-signal" />
+          <h4>100% Festpreisgarantie</h4>
+          <p>Verbindliche Modulpreise vor Projektstart. 50/50 Zahlung: Du zahlst die zweite Hälfte erst bei erfolgreichem Livegang.</p>
+        </div>
+      </div>
+
+      {/* Developer Contribution & Engineering Craftsmanship Block */}
       <div className="contrib-block">
         <div className="contrib-header">
           <h3>Echter Quellcode statt WordPress-Baukästen</h3>
           <span className="contrib-meta">Handwritten in Styria, Austria</span>
         </div>
         <p className="contrib-lead">
-          Jede Zeile Code auf PureSite wird von uns handgeschrieben und optimiert. Keine 45 Plugins, keine aufgeblähten Fremd-Bibliotheken, keine Sicherheitsrisiken.
+          Jede Zeile Code auf PureSite wird von uns handgeschrieben und optimiert. Keine aufgeblähten Fremd-Bibliotheken, keine Sicherheitsrisiken.
         </p>
 
         <div className="code-metrics-grid">

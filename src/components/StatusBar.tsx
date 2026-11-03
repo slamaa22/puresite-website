@@ -45,19 +45,19 @@ export const StatusBar: React.FC<StatusBarProps> = ({
         </div>
 
         <div className="status-item">
-          <dt>Stack</dt>
+          <dt>Engine & Stack</dt>
           <dd>
             <button className="status-link-btn" onClick={onScrollToWhy}>
-              <span>React 19 · TypeScript · Vite</span>
+              <span>React 19 · TypeScript · NVMe Graz</span>
             </button>
           </dd>
         </div>
 
         <div className="status-item">
-          <dt>Ausbildung</dt>
+          <dt>Engineering</dt>
           <dd>
             <button className="status-link-btn" onClick={onScrollToAbout}>
-              <span>HTL Kaindorf Absolventen</span>
+              <span>Maximilian & Loreno · Steiermark</span>
             </button>
           </dd>
         </div>
@@ -65,8 +65,8 @@ export const StatusBar: React.FC<StatusBarProps> = ({
         <div className="status-item status-clock-col">
           <dt>Lokalzeit</dt>
           <dd>
-            <time className="tabular-time">{timeStr || '17:55:00'}</time>
-            <span className="hero-status-meta">Steiermark, AT</span>
+            <time className="tabular-time">{timeStr || '18:18:00'}</time>
+            <span className="hero-status-meta">Graz, AT</span>
           </dd>
         </div>
       </dl>

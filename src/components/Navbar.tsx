@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, ArrowRight, Menu, X, Sun, Moon } from 'lucide-react';
+import { ArrowRight, Menu, X, Sun, Moon, Cpu } from 'lucide-react';
 
 interface NavbarProps {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
   onOpenContact: () => void;
-  onOpenTerminal: () => void;
   onOpenLegal: (tab: 'impressum' | 'datenschutz') => void;
 }
 
@@ -13,7 +12,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   theme,
   onToggleTheme,
   onOpenContact,
-  onOpenTerminal,
   onOpenLegal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,30 +51,38 @@ export const Navbar: React.FC<NavbarProps> = ({
           onClick={(e) => { e.preventDefault(); scrollTo('hero'); }}
           aria-label="PureSite Home"
         >
-          <span className="brand-prompt" aria-hidden="true">$</span>
+          <div className="brand-icon-shield" aria-hidden="true">
+            <Cpu size={16} />
+          </div>
           <span className="brand-title">PureSite</span>
-          <span className="brand-tag">AT</span>
+          <span className="brand-telemetry-badge">
+            <span className="telemetry-live-dot" aria-hidden="true"></span>
+            Graz NVMe
+          </span>
         </a>
 
-        {/* Desktop Navigation Links with 1px border cells */}
+        {/* Desktop Navigation Links */}
         <nav className="site-nav" aria-label="Hauptnavigation">
           <button className="nav-item-btn" onClick={() => scrollTo('preise')}>
             <span className="nav-num">01</span> Kalkulator
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('demos')}>
-            <span className="nav-num">02</span> Live-Demos
+            <span className="nav-num">02</span> 18 Live-Demos
+          </button>
+          <button className="nav-item-btn" onClick={() => scrollTo('speed-lab')}>
+            <span className="nav-num">03</span> Speed-Lab
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('warum-wir')}>
-            <span className="nav-num">03</span> Vergleich
+            <span className="nav-num">04</span> Vergleich
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('ueber-uns')}>
-            <span className="nav-num">04</span> Über uns
+            <span className="nav-num">05</span> Über uns
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('prozess')}>
-            <span className="nav-num">05</span> Ablauf
+            <span className="nav-num">06</span> Ablauf
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('faq')}>
-            <span className="nav-num">06</span> FAQ
+            <span className="nav-num">07</span> FAQ
           </button>
         </nav>
 
@@ -84,37 +90,32 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Header Utils */}
         <div className="header-utils">
-          {/* Terminal Shortcut Button */}
-          <button 
-            type="button" 
-            className="header-terminal-btn" 
-            onClick={onOpenTerminal}
-            title="Terminal öffnen (Taste ~)"
-            aria-label="Terminal öffnen"
-          >
-            <Terminal size={14} />
-            <span className="key-hint">~</span>
-          </button>
-
-          {/* Clock Header Item */}
-          <div className="header-clock" title="Lokalzeit Steiermark">
-            <span className="clock-pulse-dot"></span>
-            <span className="tabular-time">{timeShort}</span>
+          {/* Austrian Local Clock Header Item */}
+          <div className="header-clock" title="Lokalzeit Steiermark (Österreich)">
+            <span className="clock-pulse-dot" aria-hidden="true"></span>
+            <span className="tabular-time">{timeShort || '18:15'}</span>
             <span className="clock-region">Graz</span>
           </div>
 
-          {/* Theme Toggle Button with swatch */}
+          {/* Theme Toggle Button */}
           <button 
             className="theme-toggle" 
             type="button" 
             onClick={onToggleTheme}
-            aria-label={theme === 'dark' ? 'Zu hellem Papier wechseln' : 'Zu dunklem Modus wechseln'}
-            title="Design wechseln"
+            aria-label={theme === 'dark' ? 'Zu hellem Design wechseln' : 'Zu dunklem Design wechseln'}
+            title={theme === 'dark' ? 'Helles Design aktivieren' : 'Dunkles Design aktivieren'}
           >
-            <span className="theme-toggle-swatch" aria-hidden="true"></span>
-            <span className="theme-toggle-label">
-              {theme === 'dark' ? 'Light' : 'Dark'}
-            </span>
+            {theme === 'dark' ? (
+              <>
+                <Sun size={14} className="theme-icon" />
+                <span className="theme-toggle-label">Light</span>
+              </>
+            ) : (
+              <>
+                <Moon size={14} className="theme-icon" />
+                <span className="theme-toggle-label">Dark</span>
+              </>
+            )}
           </button>
 
           {/* Direct CTA */}
@@ -127,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button 
             className="mobile-hamburger-btn" 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menü öffnen"
+            aria-label={mobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -138,32 +139,36 @@ export const Navbar: React.FC<NavbarProps> = ({
       {mobileMenuOpen && (
         <div className="site-mobile-drawer">
           <button className="mobile-drawer-link" onClick={() => scrollTo('preise')}>
-            <span className="nav-num">01</span> Modul-Kalkulator
+            <span className="nav-num">01</span> Modul-Kalkulator (Festpreis)
           </button>
           <button className="mobile-drawer-link" onClick={() => scrollTo('demos')}>
-            <span className="nav-num">02</span> 18 Live-Demos
+            <span className="nav-num">02</span> 18 Live-Demos testen
+          </button>
+          <button className="mobile-drawer-link" onClick={() => scrollTo('speed-lab')}>
+            <span className="nav-num">03</span> Speed-Lab & Benchmarks
           </button>
           <button className="mobile-drawer-link" onClick={() => scrollTo('warum-wir')}>
-            <span className="nav-num">03</span> Vergleich (Kein WordPress)
+            <span className="nav-num">04</span> Vergleich (Kein WordPress)
           </button>
           <button className="mobile-drawer-link" onClick={() => scrollTo('ueber-uns')}>
-            <span className="nav-num">04</span> Über uns (HTL Kaindorf)
+            <span className="nav-num">05</span> Über uns (Ingenieurswesen)
           </button>
           <button className="mobile-drawer-link" onClick={() => scrollTo('prozess')}>
-            <span className="nav-num">05</span> Projekt-Ablauf
+            <span className="nav-num">06</span> Projekt-Ablauf
           </button>
           <button className="mobile-drawer-link" onClick={() => scrollTo('faq')}>
-            <span className="nav-num">06</span> Häufige Fragen
+            <span className="nav-num">07</span> Häufige Fragen
           </button>
           
           <div className="mobile-drawer-actions">
             <button className="button primary w-100" onClick={() => { setMobileMenuOpen(false); scrollTo('preise'); }}>
               Website jetzt konfigurieren →
             </button>
-            <button className="button secondary w-100 mt-2" onClick={() => { setMobileMenuOpen(false); onOpenTerminal(); }}>
-              <Terminal size={14} /> Terminal öffnen (~)</button>
+            <button className="button secondary w-100 mt-2" onClick={() => { setMobileMenuOpen(false); onOpenContact(); }}>
+              Direkte Anfrage senden
+            </button>
             <button className="mobile-legal-btn" onClick={() => { setMobileMenuOpen(false); onOpenLegal('impressum'); }}>
-              Impressum & Datenschutz
+              Impressum & Datenschutz (DSGVO)
             </button>
           </div>
         </div>

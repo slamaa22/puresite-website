@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MODULES_DATA } from '../data/modulesData';
 import type { PricingModule } from '../types/pricing';
-import { Play, ArrowRight, Sparkles, Filter } from 'lucide-react';
+import { Play, ArrowRight, Filter } from 'lucide-react';
 
 interface WorkIndexProps {
   onOpenDemo: (module: PricingModule) => void;
@@ -41,6 +41,9 @@ export const WorkIndex: React.FC<WorkIndexProps> = ({
 
         {/* Category Filters */}
         <div className="catalog-filter-bar">
+          <span className="filter-bar-label">
+            <Filter size={13} className="text-signal" /> Filter:
+          </span>
           {categories.map(cat => (
             <button
               key={cat.id}

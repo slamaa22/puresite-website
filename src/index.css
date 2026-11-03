@@ -1,130 +1,139 @@
 /* =========================================================================
-   PURESITE DESIGN SYSTEM - JOHANNES GROF ARTISANAL AESTHETIC
+   PURESITE - TACTILE PRECISION & TECH-ATELIER DESIGN SYSTEM
+   Inspired by Linear & Teenage Engineering Precision
    ========================================================================= */
 
 :root {
   color-scheme: dark;
   
-  /* Core Paper & Ink Palette (Dark Paper Default) */
-  --paper: #12110f;
-  --paper-2: #191713;
-  --paper-3: #221f1a;
-  --ink: #f1eee5;
-  --ink-2: #c6c0b2;
-  --mute: #948d7e;
-  --faint: #6d695c;
+  /* Core Obsidian & Carbon Canvas */
+  --bg-canvas: #07080b;
+  --bg-panel: #0d0f15;
+  --bg-card: #131620;
+  --bg-card-hover: #181d2a;
+  --bg-glass: rgba(13, 15, 21, 0.85);
+  --bg-modal: #0d0f15;
   
-  /* Precision Hairline Rules */
-  --rule: #3b352c;
-  --rule-2: #544d40;
+  /* Titanium Hairline Borders */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.16);
+  --border-accent: rgba(88, 252, 165, 0.45);
   
-  /* Vibrant Signal Accents */
-  --signal: #ff6a4d;        /* Johannes Grof signal coral */
-  --signal-green: #58fca5;  /* PureSite signature neon mint/green */
-  --signal-ink: #ff8b73;
-  --signal-line: rgba(255, 106, 77, 0.4);
+  /* Luminous Electric Accents */
+  --pure-mint: #58fca5;       /* PureSite Signature Neon Mint */
+  --pure-mint-glow: rgba(88, 252, 165, 0.28);
+  --pure-cyan: #00f2fe;       /* Hyper Cyan */
+  --pure-violet: #a855f7;
+  --signal-amber: #ffbe3b;
   
-  /* Technical Grid Lines */
-  --grid-line: rgba(241, 238, 229, 0.04);
-  --grid-size: 28px;
+  /* Typography Colors */
+  --text-pure: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #07080b;
+  
+  /* Legacy compatibility aliases */
+  --paper: var(--bg-canvas);
+  --paper-2: var(--bg-panel);
+  --paper-3: var(--bg-card);
+  --ink: var(--text-pure);
+  --ink-2: var(--text-secondary);
+  --mute: var(--text-muted);
+  --rule: var(--border-subtle);
+  --rule-2: var(--border-medium);
+  --signal: var(--pure-mint);
+  --signal-green: var(--pure-mint);
+  --accent-cyan: var(--pure-mint);
+  --accent-blue: var(--pure-cyan);
+  --bg-primary: var(--bg-canvas);
+  --bg-secondary: var(--bg-panel);
+  --bg-tertiary: var(--bg-card);
+  --text-primary: var(--text-pure);
+  
+  /* Geometric Micro-Grid Pattern */
+  --grid-line: rgba(255, 255, 255, 0.025);
+  --grid-size: 32px;
   --grid-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   
-  /* Layout Bounding Shell */
-  --shell: min(1200px, calc(100% - 48px));
-  --inset: clamp(16px, 2.4vw, 32px);
+  /* Layout Sizing */
+  --shell: min(1240px, calc(100% - 48px));
+  --inset: clamp(16px, 2.5vw, 36px);
   
-  /* Typography */
-  --font-display: 'Outfit', 'Inter', -apple-system, sans-serif;
-  --font-heading: 'Outfit', 'Inter', -apple-system, sans-serif;
+  /* Modern Typography Stacks */
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
   
   --label-size: 0.72rem;
-  --label-track: 0.14em;
+  --label-track: 0.12em;
   
-  /* Compatibility aliases for component styling */
-  --bg-primary: var(--paper);
-  --bg-secondary: var(--paper-2);
-  --bg-tertiary: var(--paper-3);
-  --bg-card: var(--paper-2);
-  --bg-card-hover: var(--paper-3);
-  --bg-glass: rgba(18, 17, 15, 0.92);
-  --bg-modal: var(--paper-2);
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
   
-  --border-subtle: var(--rule);
-  --border-medium: var(--rule-2);
-  --border-accent: var(--signal);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.7);
+  --shadow-mint: 0 0 28px rgba(88, 252, 165, 0.22);
   
-  --text-primary: var(--ink);
-  --text-secondary: var(--ink-2);
-  --text-muted: var(--mute);
-  --text-inverse: var(--paper);
-  
-  --accent-cyan: var(--signal);
-  --accent-blue: #38bdf8;
-  --accent-purple: #c084fc;
-  --accent-emerald: var(--signal-green);
-  --accent-amber: #ffcc4d;
-  --accent-rose: #ff6a4d;
-  
-  --radius-sm: 3px;
-  --radius-md: 5px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 24px rgba(255, 106, 77, 0.25);
-  
-  --smooth: cubic-bezier(.2, .7, .2, 1);
-  --transition-fast: 0.16s var(--smooth);
-  --transition-normal: 0.24s var(--smooth);
+  --smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.15s var(--smooth);
+  --transition-normal: 0.25s var(--smooth);
 }
 
-/* Light Mode: Warm Eggshell Paper */
+/* Light Theme: Stark Gallery Alabaster & Crisp Ink */
 :root[data-theme="light"],
 [data-theme="light"] {
   color-scheme: light;
   
-  --paper: #f4f2ed;
-  --paper-2: #edeae3;
-  --paper-3: #e6e2d9;
-  --ink: #14130f;
-  --ink-2: #3d3a31;
-  --mute: #6e6a5f;
-  --faint: #8c877a;
+  --bg-canvas: #f8fafc;
+  --bg-panel: #ffffff;
+  --bg-card: #f1f5f9;
+  --bg-card-hover: #e2e8f0;
+  --bg-glass: rgba(255, 255, 255, 0.92);
+  --bg-modal: #ffffff;
   
-  --rule: #d5d1c6;
-  --rule-2: #c3bfb2;
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-medium: rgba(15, 23, 42, 0.16);
+  --border-accent: rgba(5, 150, 105, 0.4);
   
-  --signal: #c5361e;
-  --signal-green: #0b9e58;
-  --signal-ink: #a82c15;
-  --signal-line: rgba(197, 54, 30, 0.35);
+  --pure-mint: #059669;       /* Deep crisp emerald for high-contrast text & outlines */
+  --pure-mint-glow: rgba(5, 150, 105, 0.2);
+  --pure-cyan: #0284c7;
+  --signal-amber: #d97706;
   
-  --grid-line: rgba(20, 19, 15, 0.05);
+  --text-pure: #090d16;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
   
-  --bg-primary: var(--paper);
-  --bg-secondary: var(--paper-2);
-  --bg-tertiary: var(--paper-3);
-  --bg-card: var(--paper-2);
-  --bg-card-hover: var(--paper-3);
-  --bg-glass: rgba(244, 242, 237, 0.94);
-  --bg-modal: var(--paper-2);
+  --paper: var(--bg-canvas);
+  --paper-2: var(--bg-panel);
+  --paper-3: var(--bg-card);
+  --ink: var(--text-pure);
+  --ink-2: var(--text-secondary);
+  --mute: var(--text-muted);
+  --rule: var(--border-subtle);
+  --rule-2: var(--border-medium);
+  --signal: var(--pure-mint);
+  --signal-green: var(--pure-mint);
+  --accent-cyan: var(--pure-mint);
+  --accent-blue: var(--pure-cyan);
+  --bg-primary: var(--bg-canvas);
+  --bg-secondary: var(--bg-panel);
+  --bg-tertiary: var(--bg-card);
+  --text-primary: var(--text-pure);
   
-  --border-subtle: var(--rule);
-  --border-medium: var(--rule-2);
-  --border-accent: var(--signal);
+  --grid-line: rgba(15, 23, 42, 0.035);
   
-  --text-primary: var(--ink);
-  --text-secondary: var(--ink-2);
-  --text-muted: var(--mute);
-  --text-inverse: var(--paper);
-  
-  --accent-cyan: var(--signal);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --shadow-mint: 0 0 20px rgba(5, 150, 105, 0.2);
 }
 
 *, *::before, *::after {
@@ -134,7 +143,7 @@
 }
 
 html {
-  background: var(--paper);
+  background: var(--bg-canvas);
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
@@ -144,10 +153,10 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--paper);
+  background-color: var(--bg-canvas);
   background-image: var(--grid-image);
   background-size: var(--grid-size) var(--grid-size);
-  color: var(--ink);
+  color: var(--text-pure);
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
@@ -160,51 +169,36 @@ body {
   transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
-/* Framed Page Bounding Rule Lines (Signature Johannes Grof) */
-body::after {
-  content: "";
-  z-index: 1;
-  width: var(--shell);
-  border-inline: 1px solid var(--rule);
-  pointer-events: none;
-  position: fixed;
-  inset: 0 auto 0 50%;
-  transform: translate(-50%);
-}
+/* Open, Expansive Modern Layout (No constraining body::after box) */
 
-@media (max-width: 768px) {
-  body::after {
-    display: none;
-  }
-}
-
-/* Selection */
+/* Modern Selection */
 ::selection {
-  background: var(--signal);
-  color: #ffffff;
+  background: var(--pure-mint);
+  color: #000000;
 }
 
-/* Base Headings */
+/* Headings with Architecturally Confident Grotesk */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  color: var(--ink);
+  color: var(--text-pure);
   letter-spacing: -0.035em;
   font-weight: 700;
   line-height: 1.15;
 }
 
 h1 {
-  font-size: clamp(2.4rem, 6vw, 4.8rem);
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  font-size: clamp(2.4rem, 5.8vw, 4.6rem);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
 }
 
 h2 {
-  font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  letter-spacing: -0.035em;
 }
 
 p {
-  color: var(--ink-2);
+  color: var(--text-secondary);
 }
 
 a {
@@ -233,36 +227,36 @@ code, pre, .tabular-time, .mono-code-badge, .nav-num {
 }
 
 .band {
-  border-top: 1px solid var(--rule);
-  padding-block: clamp(52px, 7vw, 92px);
+  border-top: 1px solid var(--border-subtle);
+  padding-block: clamp(56px, 8vw, 96px);
   position: relative;
   z-index: 2;
 }
 
 .band--tint {
-  background-color: var(--paper-2);
+  background-color: var(--bg-panel);
   background-image: var(--grid-image);
   background-size: var(--grid-size) var(--grid-size);
 }
 
-/* Section Header Bar */
+/* Precision Section Header Bar */
 .section-head {
-  border-bottom: 1px solid var(--rule-2);
+  border-bottom: 1px solid var(--border-medium);
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
   margin: 0 0 36px;
-  padding-bottom: 12px;
+  padding-bottom: 14px;
   display: flex;
 }
 
 .section-head h2 {
-  font-family: var(--font-mono);
-  font-size: 0.96rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink);
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  color: var(--text-pure);
   margin: 0;
+  font-weight: 700;
 }
 
 .section-head-meta {
@@ -270,71 +264,82 @@ code, pre, .tabular-time, .mono-code-badge, .nav-num {
   font-size: var(--label-size);
   letter-spacing: var(--label-track);
   text-transform: uppercase;
-  color: var(--mute);
+  color: var(--text-muted);
 }
 
 /* Eyebrow Label */
 .eyebrow {
-  color: var(--mute);
+  color: var(--pure-mint);
   font-family: var(--font-mono);
   font-size: var(--label-size);
   letter-spacing: var(--label-track);
   text-transform: uppercase;
   margin: 0 0 16px;
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(88, 252, 165, 0.08);
+  border: 1px solid rgba(88, 252, 165, 0.25);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
 }
 
-/* Tactile Buttons */
+/* Modern Tactile Buttons */
 .button {
-  border: 1px solid var(--ink);
-  color: var(--ink);
-  background: transparent;
+  border: 1px solid var(--border-medium);
+  color: var(--text-pure);
+  background: var(--bg-panel);
   align-items: center;
   gap: 9px;
   padding: 12px 24px;
   font-size: 0.92rem;
-  font-weight: 500;
-  transition: transform 0.18s var(--smooth), background 0.16s, color 0.16s, border-color 0.16s;
+  font-weight: 600;
+  transition: transform 0.16s var(--smooth), background 0.16s, color 0.16s, border-color 0.16s, box-shadow 0.16s;
   display: inline-flex;
   cursor: pointer;
   border-radius: var(--radius-sm);
   text-decoration: none;
   user-select: none;
+  box-shadow: var(--shadow-sm);
 }
 
 .button.primary {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--pure-mint);
+  color: #000000;
+  border-color: var(--pure-mint);
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(88, 252, 165, 0.25);
 }
 
 .button.primary:hover {
-  background: var(--signal);
-  border-color: var(--signal);
-  color: #ffffff;
+  background: #46f799;
+  border-color: #46f799;
   transform: translateY(-2px);
+  box-shadow: 0 0 28px rgba(88, 252, 165, 0.45);
 }
 
 .button.secondary {
-  background: transparent;
-  color: var(--ink);
-  border-color: var(--rule-2);
+  background: var(--bg-panel);
+  color: var(--text-pure);
+  border-color: var(--border-medium);
 }
 
 .button.secondary:hover {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
+  border-color: var(--pure-mint);
+  color: var(--pure-mint);
   transform: translateY(-2px);
+  background: var(--bg-card);
 }
 
 .button.tertiary {
-  border-color: var(--rule);
-  color: var(--ink-2);
+  background: transparent;
+  border-color: var(--border-subtle);
+  color: var(--text-secondary);
 }
 
 .button.tertiary:hover {
-  border-color: var(--signal);
-  color: var(--signal);
+  border-color: var(--text-pure);
+  color: var(--text-pure);
   transform: translateY(-2px);
 }
 
@@ -344,22 +349,21 @@ code, pre, .tabular-time, .mono-code-badge, .nav-num {
 }
 
 .display-em {
-  color: var(--signal);
+  color: var(--pure-mint);
   font-style: normal;
-  white-space: nowrap;
 }
 
 .text-signal {
-  color: var(--signal);
+  color: var(--pure-mint);
 }
 
 .text-signal-green {
-  color: var(--signal-green);
+  color: var(--pure-mint);
 }
 
 /* Focus Rings */
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-  outline: 2px solid var(--signal);
+  outline: 2px solid var(--pure-mint);
   outline-offset: 3px;
 }
 
@@ -370,14 +374,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--paper);
+  background: var(--bg-canvas);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--rule-2);
+  background: var(--border-medium);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--signal);
+  background: var(--pure-mint);
 }

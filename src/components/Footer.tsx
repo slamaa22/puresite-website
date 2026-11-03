@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
-import { Terminal, Copy, Check, ArrowUp, Mail, MapPin, Heart } from 'lucide-react';
+import React from 'react';
+import { ArrowUp, Mail, MapPin, Heart, Sparkles, Cpu } from 'lucide-react';
 
 interface FooterProps {
   onOpenLegal: (tab: 'impressum' | 'datenschutz') => void;
   onOpenContact: () => void;
-  onOpenTerminal?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ 
   onOpenLegal, 
-  onOpenContact,
-  onOpenTerminal 
+  onOpenContact
 }) => {
-  const [copied, setCopied] = useState(false);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -23,12 +19,6 @@ export const Footer: React.FC<FooterProps> = ({
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleCopyCurl = () => {
-    navigator.clipboard.writeText('curl -sL puresite.at/angebot');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <footer className="site-footer">
       <div className="section-shell footer-shell">
@@ -36,35 +26,23 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Brand Info & Mission */}
           <div className="footer-about-col">
             <a href="#hero" className="footer-mark" onClick={(e) => { e.preventDefault(); scrollToTop(); }}>
-              <span className="brand-prompt">$</span>
-              <span>PureSite</span>
+              <div className="brand-icon-shield" aria-hidden="true">
+                <Cpu size={16} />
+              </div>
+              <span className="brand-title">PureSite</span>
             </a>
             <p className="footer-bio">
               Handgeschriebene, hochperformante Websites für Betriebe aus der Steiermark und ganz Österreich. Keine WordPress-Baukästen, keine versteckten Kosten.
             </p>
             <div className="footer-place">
-              46°59'N 15°26'E · HTL Kaindorf Alumni · Graz & Steiermark
+              46°59'N 15°26'E · Steiermark, Österreich · NVMe Hosting
             </div>
 
-            {/* Terminal Curl Box (Signature Johannes Grof) */}
-            <div className="footer-terminal-box">
-              <div className="curl-row">
-                <code><span>$</span> curl -sL puresite.at/angebot</code>
-                <button 
-                  className="curl-copy-btn" 
-                  onClick={handleCopyCurl} 
-                  title="Befehl kopieren"
-                  aria-label="Curl Befehl kopieren"
-                >
-                  {copied ? <Check size={13} className="text-signal-green" /> : <Copy size={13} />}
-                </button>
-              </div>
-              {onOpenTerminal && (
-                <button className="footer-term-open-btn" onClick={onOpenTerminal}>
-                  <Terminal size={12} />
-                  <span>Terminal öffnen (Taste ~)</span>
-                </button>
-              )}
+            <div className="footer-action-box">
+              <button className="button primary sm-button" onClick={onOpenContact}>
+                <Sparkles size={14} />
+                <span>Projekt direkt anfragen</span>
+              </button>
             </div>
           </div>
 
@@ -75,6 +53,7 @@ export const Footer: React.FC<FooterProps> = ({
               <li><button onClick={() => scrollToSection('hero')}>Startseite</button></li>
               <li><button onClick={() => scrollToSection('preise')}>Modul-Kalkulator</button></li>
               <li><button onClick={() => scrollToSection('demos')}>18 Live-Demos</button></li>
+              <li><button onClick={() => scrollToSection('speed-lab')}>Speed-Lab</button></li>
               <li><button onClick={() => scrollToSection('warum-wir')}>Warum PureSite?</button></li>
               <li><button onClick={() => scrollToSection('ueber-uns')}>Über uns</button></li>
               <li><button onClick={() => scrollToSection('prozess')}>Ablauf</button></li>
@@ -117,7 +96,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
 
-        {/* Bottom Bar with Heartbeat and Back to Top */}
+        {/* Bottom Bar */}
         <div className="footer-bottom-bar">
           <div className="footer-love-text">
             Handcrafted with <Heart size={13} className="footer-heart-icon" /> by Maximilian Schlacher & Loreno Zanaboni in der Steiermark, Österreich.

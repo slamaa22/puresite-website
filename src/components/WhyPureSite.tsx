@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, Shield, Layers, Check, X, ArrowRight } from 'lucide-react';
+import { Zap, Shield, Layers, Check, X } from 'lucide-react';
 
 export const WhyPureSite: React.FC = () => {
   return (
@@ -78,7 +78,7 @@ export const WhyPureSite: React.FC = () => {
                 <th style={{ width: '28%' }}>Kriterium</th>
                 <th className="th-puresite" style={{ width: '32%' }}>
                   <div className="th-badge-brand">
-                    <span>PureSite (HTL Handwerk)</span>
+                    <span>PureSite Engineering</span>
                     <span className="badge-recommend">Empfohlen</span>
                   </div>
                 </th>
@@ -98,9 +98,15 @@ export const WhyPureSite: React.FC = () => {
               <tr>
                 <td><strong>Preistransparenz</strong></td>
                 <td className="td-puresite">
-                  <strong className="text-success">✓ 100% Fixpreis pro Modul online</strong>
+                  <strong className="text-success inline-flex-center">
+                    <Check size={14} className="mr-1" /> 100% Fixpreis pro Modul online
+                  </strong>
                 </td>
-                <td><span className="text-danger">✗ Oft vage Stundensätze & Nachrechnung</span></td>
+                <td>
+                  <span className="text-danger inline-flex-center">
+                    <X size={14} className="mr-1" /> Oft vage Stundensätze & Nachrechnung
+                  </span>
+                </td>
                 <td>Abo-Falle mit ständigen Upgrades</td>
               </tr>
               <tr>
@@ -114,7 +120,9 @@ export const WhyPureSite: React.FC = () => {
               <tr>
                 <td><strong>Wartungsaufwand & Bugs</strong></td>
                 <td className="td-puresite">
-                  <span className="text-success">Nahezu 0 (Kein Plugin-Chaos)</span>
+                  <span className="text-success inline-flex-center">
+                    <Check size={14} className="mr-1" /> Nahezu 0 (Kein Plugin-Chaos)
+                  </span>
                 </td>
                 <td>Ständige Plugin-Updates & Absturzgefahr</td>
                 <td>Automatisch, aber null Kontrolle</td>
@@ -122,7 +130,9 @@ export const WhyPureSite: React.FC = () => {
               <tr>
                 <td><strong>Ansprechpartner</strong></td>
                 <td className="td-puresite">
-                  <strong className="text-success">Direkt die beiden Entwickler (WhatsApp/Tel)</strong>
+                  <strong className="text-success inline-flex-center">
+                    <Check size={14} className="mr-1" /> Direkt die beiden Entwickler (WhatsApp/Tel)
+                  </strong>
                 </td>
                 <td>Anonyme Junior-Account-Manager</td>
                 <td>Nur automatisierte Bots & Tickets</td>
@@ -130,7 +140,9 @@ export const WhyPureSite: React.FC = () => {
               <tr>
                 <td><strong>DSGVO & Daten in Österreich</strong></td>
                 <td className="td-puresite">
-                  <span className="text-success">100% DSGVO-Clean ohne Tracker Cookies</span>
+                  <span className="text-success inline-flex-center">
+                    <Check size={14} className="mr-1" /> 100% DSGVO-Clean ohne Tracker Cookies
+                  </span>
                 </td>
                 <td>Oft US-Drittanbieter-Tracking integriert</td>
                 <td>US-Cloud Server mit Tracking-Zwang</td>

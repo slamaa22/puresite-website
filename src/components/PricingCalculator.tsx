@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { MODULES_DATA } from '../data/modulesData';
 import type { PricingModule, SelectedConfig, ProjectCalculation } from '../types/pricing';
 import { 
-  Check, Plus, Sparkles, Play, 
+  Check, Plus, Play, 
   CheckCircle2, Shield, ArrowRight, ArrowLeft, Download, 
   Edit3, Trash2, Clock, Zap, Award, Layers
 } from 'lucide-react';

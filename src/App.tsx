@@ -10,7 +10,6 @@ import { AboutUs } from './components/AboutUs';
 import { ProcessSection } from './components/ProcessSection';
 import { FAQSection } from './components/FAQSection';
 import { Footer } from './components/Footer';
-import { TerminalDrawer } from './components/TerminalDrawer';
 import type { PricingModule, ProjectCalculation } from './types/pricing';
 import { MODULES_DATA } from './data/modulesData';
 
@@ -26,7 +25,6 @@ export function App() {
 
   const [activeDemoModule, setActiveDemoModule] = useState<PricingModule | null>(null);
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
-  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [calculation, setCalculation] = useState<ProjectCalculation | null>(null);
   const [selectedDetails, setSelectedDetails] = useState<string[]>([]);
   
@@ -38,22 +36,6 @@ export function App() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('puresite-theme', theme);
   }, [theme]);
-
-  // Global keyboard shortcut: Press '~' or '`' to toggle retro terminal
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
-        return;
-      }
-      if (e.key === '~' || e.key === '`' || (e.key === 't' && (e.metaKey || e.ctrlKey))) {
-        e.preventDefault();
-        setIsTerminalOpen(prev => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   const toggleTheme = () => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
@@ -101,12 +83,11 @@ export function App() {
 
   return (
     <div className="app-root">
-      {/* Navigation */}
+      {/* Precision Header */}
       <Navbar 
         theme={theme}
         onToggleTheme={toggleTheme}
         onOpenContact={() => setIsInquiryOpen(true)}
-        onOpenTerminal={() => setIsTerminalOpen(true)}
         onOpenLegal={handleOpenLegal}
       />
 
@@ -115,23 +96,22 @@ export function App() {
         <Hero 
           onScrollToPricing={scrollToPricing}
           onExploreDemos={handleExploreDemos}
-          onOpenTerminal={() => setIsTerminalOpen(true)}
         />
 
-        {/* Live Status Telemetry Bar */}
+        {/* Live System Telemetry Strip */}
         <StatusBar 
           onScrollToPricing={scrollToPricing}
           onScrollToWhy={scrollToWhy}
           onScrollToAbout={scrollToAbout}
         />
 
-        {/* 18 Live-Modules Catalogue Index (Johannes Grof Work Index Style) */}
+        {/* 18 Live-Modules Catalogue */}
         <WorkIndex 
           onOpenDemo={handleOpenDemo}
           onScrollToPricing={scrollToPricing}
         />
 
-        {/* Why PureSite / Comparison */}
+        {/* Why PureSite / Fact-Check */}
         <WhyPureSite />
 
         {/* Fullpage Interactive Modular Pricing Calculator */}
@@ -140,7 +120,7 @@ export function App() {
           onRequestQuote={handleRequestQuote}
         />
 
-        {/* About Us (HTL Kaindorf Founders) */}
+        {/* About Us (Lead Architects & Engineering Focus) */}
         <AboutUs />
 
         {/* Project Process Steps */}
@@ -150,18 +130,9 @@ export function App() {
         <FAQSection />
       </main>
 
-      {/* Footer */}
+      {/* Studio Footer */}
       <Footer 
         onOpenLegal={handleOpenLegal}
-        onOpenContact={() => setIsInquiryOpen(true)}
-        onOpenTerminal={() => setIsTerminalOpen(true)}
-      />
-
-      {/* Interactive Retro Terminal Drawer */}
-      <TerminalDrawer 
-        isOpen={isTerminalOpen}
-        onClose={() => setIsTerminalOpen(false)}
-        onScrollToPricing={scrollToPricing}
         onOpenContact={() => setIsInquiryOpen(true)}
       />
 
@@ -201,4 +172,3 @@ export function App() {
 }
 
 export default App;
-
