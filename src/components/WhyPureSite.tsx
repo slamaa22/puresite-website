@@ -78,8 +78,7 @@ export const WhyPureSite: React.FC = () => {
                 <th style={{ width: '28%' }}>Kriterium</th>
                 <th className="th-puresite" style={{ width: '32%' }}>
                   <div className="th-badge-brand">
-                    <span>PureSite Engineering</span>
-                    <span className="badge-recommend">Empfohlen</span>
+                    <span>PureSite</span>
                   </div>
                 </th>
                 <th style={{ width: '22%' }}>Klassische Agenturen</th>
