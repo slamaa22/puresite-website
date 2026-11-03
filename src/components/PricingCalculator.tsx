@@ -233,15 +233,15 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
           {/* Quick Presets */}
           <div className="presets-bar">
-            <span className="preset-label">Beliebte Start-Konfigurationen:</span>
+            <span className="preset-label">Beliebte Konfigurationen:</span>
             <button className="preset-pill" onClick={() => setPreset('starter')}>
-              🚀 Solo-Starter (One-Pager + Hosting)
+              <span>🚀 Solo-Starter</span> <small className="preset-sub">(One-Pager)</small>
             </button>
             <button className="preset-pill active" onClick={() => setPreset('business')}>
-              💼 B2B Business (Mehrseitig + Rechner + Termin)
+              <span>💼 B2B Business</span> <small className="preset-sub">(Mehrseitig + Rechner)</small>
             </button>
             <button className="preset-pill" onClick={() => setPreset('scale')}>
-              👑 Corporate High-End (Design-System + CMS + Funnel)
+              <span>👑 Corporate</span> <small className="preset-sub">(Design-System + CMS)</small>
             </button>
           </div>
         </div>
@@ -383,14 +383,16 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                     onClick={() => setUseTax(false)}
                     title="Kleinunternehmerregelung gem. § 6 Abs. 1 Z 27 UStG"
                   >
-                    0% (Kleinunternehmer)
+                    <span className="tax-btn-full">0% (Kleinunternehmer)</span>
+                    <span className="tax-btn-short">0% USt-frei</span>
                   </button>
                   <button 
                     type="button"
                     className={`tax-toggle-btn ${useTax ? 'active' : ''}`}
                     onClick={() => setUseTax(true)}
                   >
-                    20% Regelbesteuerung
+                    <span className="tax-btn-full">20% Regelbesteuerung</span>
+                    <span className="tax-btn-short">20% USt.</span>
                   </button>
                 </div>
               </div>

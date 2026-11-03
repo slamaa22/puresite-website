@@ -55,6 +55,9 @@ export const WhyPureSite: React.FC = () => {
           <div className="comparison-table-header">
             <h3>Der schonungslose Vergleich</h3>
             <p>Warum moderne Betriebe auf PureSite statt auf klassische Alt-Agenturen setzen:</p>
+            <div className="table-scroll-hint">
+              <span>↔ Tabelle horizontal wischen für alle Details</span>
+            </div>
           </div>
 
           <div className="table-responsive">
