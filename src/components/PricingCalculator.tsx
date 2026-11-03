@@ -559,7 +559,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                       type="button"
                       className={`mobile-step-pill ${isActive ? 'active' : ''} ${isPast ? 'completed' : ''}`}
                       onClick={() => handleGoToStep(idx)}
-                      aria-label={`Schritt ${step.id}: ${step.categoryName}`}
+                      title={`Schritt ${step.id}: ${step.categoryName}`}
                     >
                       <span className="mobile-pill-circle">
                         {isPast ? <Check size={11} /> : step.id}

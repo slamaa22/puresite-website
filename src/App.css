@@ -1499,9 +1499,9 @@
 
 .price-market-strike {
   font-size: 0.64rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-decoration: line-through;
-  opacity: 0.8;
+  opacity: 1;
   display: block;
   margin-top: 0.08rem;
 }
@@ -6537,6 +6537,7 @@
   text-transform: uppercase;
 }
 
+.process-artisan-card h3,
 .process-artisan-card h4 {
   font-size: 1.02rem;
   margin-bottom: 8px;
@@ -7615,7 +7616,8 @@
 .switch-sub-pill {
   font-family: var(--font-mono);
   font-size: 0.68rem;
-  opacity: 0.75;
+  color: var(--text-secondary);
+  opacity: 0.95;
 }
 
 .switch-status-dot {

@@ -27,13 +27,18 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="footer-about-col">
             <a href="#hero" className="footer-mark" onClick={(e) => { e.preventDefault(); scrollToTop(); }}>
               <div className="brand-logo-icon" aria-hidden="true">
-                <img 
-                  src="/assets/puresite-logo.png" 
-                  alt="PureSite Logo" 
-                  className="brand-logo-img" 
-                  width={28} 
-                  height={28} 
-                />
+                <picture>
+                  <source srcSet="/assets/puresite-logo-nav.webp" type="image/webp" />
+                  <img 
+                    src="/assets/puresite-logo.png" 
+                    alt="PureSite Logo" 
+                    className="brand-logo-img" 
+                    width={28} 
+                    height={28} 
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <span className="brand-title">PureSite</span>
             </a>
@@ -54,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Navigation Links */}
           <div className="footer-nav-col">
-            <h5 className="footer-col-title">Navigation</h5>
+            <h3 className="footer-col-title">Navigation</h3>
             <ul className="footer-links-list">
               <li><button onClick={() => scrollToSection('hero')}>Startseite</button></li>
               <li><button onClick={() => scrollToSection('preise')}>Modul-Kalkulator</button></li>
@@ -69,7 +74,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Module Categories */}
           <div className="footer-nav-col">
-            <h5 className="footer-col-title">Module</h5>
+            <h3 className="footer-col-title">Module</h3>
             <ul className="footer-links-list">
               <li><button onClick={() => scrollToSection('preise')}>Basis-Pakete (B-01 bis B-03)</button></li>
               <li><button onClick={() => scrollToSection('preise')}>Interaktive Rechner (F-01)</button></li>
@@ -82,7 +87,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Contact & Direct Line */}
           <div className="footer-nav-col">
-            <h5 className="footer-col-title">Kontakt</h5>
+            <h3 className="footer-col-title">Kontakt</h3>
             <div className="footer-contact-details">
               <div className="contact-line">
                 <Mail size={14} className="text-signal" />
@@ -107,7 +112,7 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="footer-love-text">
             Handcrafted with <Heart size={13} className="footer-heart-icon" /> by Maximilian Schlacher & Loreno Zanaboni in der Steiermark, Österreich.
           </div>
-          <button className="back-to-top-btn" onClick={scrollToTop} aria-label="Nach oben springen">
+          <button className="back-to-top-btn" onClick={scrollToTop} aria-label="Zurück nach oben">
             <span>Zurück nach oben</span>
             <ArrowUp size={14} />
           </button>

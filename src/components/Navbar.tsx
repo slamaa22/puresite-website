@@ -35,16 +35,24 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label="PureSite Home"
         >
           <div className="brand-logo-icon" aria-hidden="true">
-            <img 
-              src={theme === 'light' ? '/assets/puresite-logo-dark-stroke.png' : '/assets/puresite-logo.png'} 
-              alt="PureSite Logo" 
-              className="brand-logo-img" 
-              width={32} 
-              height={32}
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = '/assets/puresite-logo.png';
-              }}
-            />
+            <picture>
+              <source 
+                srcSet={theme === 'light' ? '/assets/puresite-logo-dark-stroke-nav.webp' : '/assets/puresite-logo-nav.webp'} 
+                type="image/webp" 
+              />
+              <img 
+                src={theme === 'light' ? '/assets/puresite-logo-dark-stroke.png' : '/assets/puresite-logo.png'} 
+                alt="PureSite Logo" 
+                className="brand-logo-img" 
+                width={32} 
+                height={32}
+                fetchPriority="high"
+                decoding="async"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = '/assets/puresite-logo.png';
+                }}
+              />
+            </picture>
           </div>
           <span className="brand-title">PureSite</span>
         </a>
@@ -81,7 +89,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="theme-toggle" 
             type="button" 
             onClick={onToggleTheme}
-            aria-label={theme === 'dark' ? 'Zu hellem Design wechseln' : 'Zu dunklem Design wechseln'}
+            aria-label={theme === 'dark' ? 'Light Design: Zu hellem Design wechseln' : 'Dark Design: Zu dunklem Design wechseln'}
             title={theme === 'dark' ? 'Helles Design aktivieren' : 'Dunkles Design aktivieren'}
           >
             {theme === 'dark' ? (

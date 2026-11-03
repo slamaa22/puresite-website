@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import type { ProjectCalculation } from '../types/pricing';
 import { MODULES_DATA } from '../data/modulesData';
-import { generatePureSitePdf } from '../utils/pdfGenerator';
 import { X, Send, CheckCircle2, Shield, FileText, Mail, Loader2, Download, MessageSquare } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 interface InquiryModalProps {
   isOpen: boolean;
@@ -125,11 +123,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     // The user remains comfortably in the web app and can download the PDF directly.
     setIsSubmitting(false);
     setSubmitted(true);
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
+    try {
+      const { default: confetti } = await import('canvas-confetti');
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    } catch {
+      // ignore confetti errors
+    }
   };
 
   const handleDownloadPdf = async () => {
@@ -161,6 +164,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
         billingType: 'Einmalig',
         amount: 0
       }));
+
+      const [{ generatePureSitePdf }] = await Promise.all([
+        import('../utils/pdfGenerator')
+      ]);
 
       await generatePureSitePdf({
         calculation,

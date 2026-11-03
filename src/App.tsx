@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+
+// Critical Above-the-Fold Components (bundled immediately for instant FCP/LCP)
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { StatusBar } from './components/StatusBar';
-import { WorkIndex } from './components/WorkIndex';
-import { WhyPureSite } from './components/WhyPureSite';
-import { PricingCalculator } from './components/PricingCalculator';
-import { AboutUs } from './components/AboutUs';
-import { ProcessSection } from './components/ProcessSection';
-import { FAQSection } from './components/FAQSection';
 import { Footer } from './components/Footer';
 import type { PricingModule, ProjectCalculation } from './types/pricing';
 import { MODULES_DATA } from './data/modulesData';
 
+// Below-the-Fold Sections (Code-split to slash initial mobile JS payload & TBT)
+const WorkIndex = React.lazy(() => import('./components/WorkIndex').then(m => ({ default: m.WorkIndex })));
+const WhyPureSite = React.lazy(() => import('./components/WhyPureSite').then(m => ({ default: m.WhyPureSite })));
+const PricingCalculator = React.lazy(() => import('./components/PricingCalculator').then(m => ({ default: m.PricingCalculator })));
+const AboutUs = React.lazy(() => import('./components/AboutUs').then(m => ({ default: m.AboutUs })));
+const ProcessSection = React.lazy(() => import('./components/ProcessSection').then(m => ({ default: m.ProcessSection })));
+const FAQSection = React.lazy(() => import('./components/FAQSection').then(m => ({ default: m.FAQSection })));
+
+// Interactive Dialogs (loaded on demand)
 const ModuleDemoModal = React.lazy(() => import('./components/demos/ModuleDemoModal').then(m => ({ default: m.ModuleDemoModal })));
 const InquiryModal = React.lazy(() => import('./components/InquiryModal').then(m => ({ default: m.InquiryModal })));
 const LegalModal = React.lazy(() => import('./components/LegalModal').then(m => ({ default: m.LegalModal })));
 
-export function App() {
+export default function App() {
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('puresite-theme');
     return (saved === 'light' || saved === 'dark') ? saved : 'dark';
@@ -36,6 +41,24 @@ export function App() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('puresite-theme', theme);
   }, [theme]);
+
+  // Idle background preloading for instant zero-lag scrolling
+  useEffect(() => {
+    const idlePreload = () => {
+      import('./components/WorkIndex');
+      import('./components/WhyPureSite');
+      import('./components/PricingCalculator');
+      import('./components/AboutUs');
+      import('./components/ProcessSection');
+      import('./components/FAQSection');
+    };
+
+    if ('requestIdleCallback' in window) {
+      (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(idlePreload);
+    } else {
+      setTimeout(idlePreload, 250);
+    }
+  }, []);
 
   const toggleTheme = () => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
@@ -93,6 +116,7 @@ export function App() {
 
       {/* Main Page Sections */}
       <main>
+        {/* Instant Above-the-fold Hero */}
         <Hero 
           onScrollToPricing={scrollToPricing}
           onExploreDemos={handleExploreDemos}
@@ -105,29 +129,32 @@ export function App() {
           onScrollToAbout={scrollToAbout}
         />
 
-        {/* 18 Live-Modules Catalogue */}
-        <WorkIndex 
-          onOpenDemo={handleOpenDemo}
-          onScrollToPricing={scrollToPricing}
-        />
+        {/* Below-the-fold sections loaded smoothly with React.Suspense */}
+        <React.Suspense fallback={<div className="section-shell" style={{ minHeight: '300px' }} />}>
+          {/* 18 Live-Modules Catalogue */}
+          <WorkIndex 
+            onOpenDemo={handleOpenDemo}
+            onScrollToPricing={scrollToPricing}
+          />
 
-        {/* Why PureSite / Fact-Check */}
-        <WhyPureSite />
+          {/* Why PureSite / Fact-Check */}
+          <WhyPureSite />
 
-        {/* Fullpage Interactive Modular Pricing Calculator */}
-        <PricingCalculator 
-          onOpenDemo={handleOpenDemo}
-          onRequestQuote={handleRequestQuote}
-        />
+          {/* Fullpage Interactive Modular Pricing Calculator */}
+          <PricingCalculator 
+            onOpenDemo={handleOpenDemo}
+            onRequestQuote={handleRequestQuote}
+          />
 
-        {/* About Us (Lead Architects & Engineering Focus) */}
-        <AboutUs />
+          {/* About Us (Lead Architects & Engineering Focus) */}
+          <AboutUs />
 
-        {/* Project Process Steps */}
-        <ProcessSection />
+          {/* Project Process Steps */}
+          <ProcessSection />
 
-        {/* FAQ Accordion */}
-        <FAQSection />
+          {/* FAQ Accordion */}
+          <FAQSection />
+        </React.Suspense>
       </main>
 
       {/* Studio Footer */}
@@ -164,13 +191,11 @@ export function App() {
         {isLegalOpen && (
           <LegalModal 
             isOpen={isLegalOpen}
-            initialTab={legalTab}
             onClose={() => setIsLegalOpen(false)}
+            initialTab={legalTab}
           />
         )}
       </React.Suspense>
     </div>
   );
 }
-
-export default App;

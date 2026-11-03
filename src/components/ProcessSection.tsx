@@ -58,7 +58,7 @@ export const ProcessSection: React.FC = () => {
                 </div>
                 <span className="process-step-pill">Schritt {idx + 1} von 5</span>
               </div>
-              <h4>{st.title}</h4>
+              <h3>{st.title}</h3>
               <p>{st.desc}</p>
             </article>
           );
