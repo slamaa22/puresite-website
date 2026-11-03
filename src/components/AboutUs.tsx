@@ -33,8 +33,11 @@ export const AboutUs: React.FC = () => {
               />
             </picture>
             <div className="founder-polaroid-label">
-              <span>Maximilian Schlacher</span>
-              <span className="founder-school-tag">Web & UI/UX</span>
+              <span className="founder-school-tag">PureSite Engineering</span>
+              <span className="founder-status-live">
+                <span className="telemetry-live-dot" aria-hidden="true"></span>
+                Lead Frontend · Graz
+              </span>
             </div>
           </div>
 
@@ -73,8 +76,11 @@ export const AboutUs: React.FC = () => {
               />
             </picture>
             <div className="founder-polaroid-label">
-              <span>Loreno Zanaboni</span>
-              <span className="founder-school-tag">Architektur & Backend</span>
+              <span className="founder-school-tag">PureSite Engineering</span>
+              <span className="founder-status-live">
+                <span className="telemetry-live-dot" aria-hidden="true"></span>
+                Lead Backend · Steiermark
+              </span>
             </div>
           </div>
 

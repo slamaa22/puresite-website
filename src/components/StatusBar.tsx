@@ -11,7 +11,14 @@ export const StatusBar: React.FC<StatusBarProps> = ({
   onScrollToWhy,
   onScrollToAbout
 }) => {
-  const [timeStr, setTimeStr] = useState('');
+  const [timeStr, setTimeStr] = useState(() => {
+    return new Date().toLocaleTimeString('de-AT', {
+      timeZone: 'Europe/Vienna',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  });
 
   useEffect(() => {
     const updateTime = () => {
@@ -65,7 +72,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({
         <div className="status-item status-clock-col">
           <dt>Lokalzeit</dt>
           <dd>
-            <time className="tabular-time">{timeStr || '18:18:00'}</time>
+            <time className="tabular-time">{timeStr}</time>
             <span className="hero-status-meta">Graz, AT</span>
           </dd>
         </div>

@@ -15,7 +15,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenLegal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [timeShort, setTimeShort] = useState('');
+  const [timeShort, setTimeShort] = useState(() => {
+    return new Date().toLocaleTimeString('de-AT', {
+      timeZone: 'Europe/Vienna',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  });
 
   useEffect(() => {
     const updateTime = () => {
@@ -67,22 +73,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="nav-num">01</span> Kalkulator
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('demos')}>
-            <span className="nav-num">02</span> 18 Live-Demos
-          </button>
-          <button className="nav-item-btn" onClick={() => scrollTo('speed-lab')}>
-            <span className="nav-num">03</span> Speed-Lab
+            <span className="nav-num">02</span> Live-Demos
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('warum-wir')}>
-            <span className="nav-num">04</span> Vergleich
+            <span className="nav-num">03</span> Vergleich
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('ueber-uns')}>
-            <span className="nav-num">05</span> Über uns
+            <span className="nav-num">04</span> Über uns
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('prozess')}>
-            <span className="nav-num">06</span> Ablauf
+            <span className="nav-num">05</span> Ablauf
           </button>
           <button className="nav-item-btn" onClick={() => scrollTo('faq')}>
-            <span className="nav-num">07</span> FAQ
+            <span className="nav-num">06</span> FAQ
           </button>
         </nav>
 
