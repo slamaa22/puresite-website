@@ -93,7 +93,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     // 1. Post to ShipMyForm endpoint
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
       await fetch('https://shipmyform.com/to/maximilian.schlacher@outlook.com', {
         method: 'POST',
         headers: {
@@ -108,13 +108,21 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
       console.warn('ShipMyForm submission notice:', err);
     }
 
-    // 2. Open user's email client with CC so both parties receive an instant copy
+    // 2. Safe local backup storage
     try {
-      window.location.href = mailtoUrl;
+      const existing = JSON.parse(localStorage.getItem('puresite_inquiries') || '[]');
+      existing.push({
+        id: `REQ-${Date.now()}`,
+        date: new Date().toISOString(),
+        payload
+      });
+      localStorage.setItem('puresite_inquiries', JSON.stringify(existing));
     } catch {
-      // Handled via button on success screen
+      // ignore localStorage quota errors
     }
 
+    // Notice: We deliberately do NOT auto-redirect to Outlook (window.location.href = mailtoUrl).
+    // The user remains comfortably in the web app and can download the PDF directly.
     setIsSubmitting(false);
     setSubmitted(true);
     confetti({
@@ -191,7 +199,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
             {calculation && calculation.itemCount > 0 && (
               <div className="inquiry-summary-preview">
                 <div className="preview-header">
-                  <FileText size={16} className="text-cyan" />
+                  <FileText size={16} style={{ color: 'var(--pure-mint)' }} />
                   <strong>Deine konfigurierte Auswahl ({calculation.itemCount} Bausteine):</strong>
                 </div>
                 <div className="preview-chips">
@@ -283,7 +291,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
             <div className="inquiry-guarantee-strip">
               <Shield size={16} className="text-emerald" />
-              <span>100% kostenlos & unverbindlich. Angebot wird sofort für dich vorbereitet.</span>
+              <span>100% kostenlos & unverbindlich. Festpreis-Angebot wird direkt erstellt.</span>
             </div>
 
             <div className="modal-actions-right">
@@ -293,7 +301,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
               <button type="submit" className="btn-primary-sm" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
-                    <Loader2 size={16} className="spin-icon" /> Wird vorbereitet...
+                    <Loader2 size={16} className="spin-icon" /> Wird übermittelt...
                   </>
                 ) : (
                   <>
@@ -305,31 +313,31 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
           </form>
         ) : (
           <div className="inquiry-success-stage">
-            <div className="success-icon-wrap">
-              <CheckCircle2 size={48} className="text-cyan" />
+            <div className="success-icon-wrap" style={{ background: 'rgba(88, 252, 165, 0.1)', border: '1px solid rgba(88, 252, 165, 0.3)', borderRadius: '50%', padding: '12px' }}>
+              <CheckCircle2 size={44} style={{ color: 'var(--pure-mint)' }} />
             </div>
-            <h3>Vielen Dank, {name || 'lieber Interessent'}!</h3>
-            <p>
-              Deine Projekt-Konfiguration für <strong>{company || 'dein Vorhaben'}</strong> ({calculation ? `${calculation.oneTimeGross.toLocaleString('de-AT')} €` : ''}) liegt bereit.
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-pure)', margin: 0 }}>Vielen Dank, {name || 'lieber Interessent'}!</h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', margin: 0, lineHeight: 1.5 }}>
+              Deine Anfrage für <strong>{company || 'dein Projekt'}</strong> ({calculation ? `${calculation.oneTimeGross.toLocaleString('de-AT')} €` : ''}) wurde registriert und an <strong>maximilian.schlacher@outlook.com</strong> übermittelt.
             </p>
 
-            <div className="success-highlights" style={{ width: '100%', maxWidth: '480px', margin: '0 auto' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Mail size={16} style={{ color: 'var(--pure-mint)', flexShrink: 0 }} />
-                <span><strong>E-Mail-Kopie:</strong> Sende dir selbst & Maximilian eine direkte Kopie.</span>
-              </div>
+            <div className="success-highlights" style={{ width: '100%', maxWidth: '480px', margin: '0.5rem auto' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Download size={16} style={{ color: 'var(--pure-mint)', flexShrink: 0 }} />
-                <span><strong>Sofort-Download:</strong> Lade dein verbindliches Festpreis-PDF sofort herunter.</span>
+                <span><strong>Sofort-Download:</strong> Lade dein detailliertes Festpreis-PDF direkt herunter.</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Shield size={16} style={{ color: 'var(--pure-mint)', flexShrink: 0 }} />
-                <span><strong>Persönlich:</strong> Wir prüfen deine Modulauswahl und melden uns binnen 24h.</span>
+                <span><strong>Festpreisgarantie:</strong> Die kalkulierten Bausteine sind 30 Tage lang verbindlich fixiert.</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Mail size={16} style={{ color: 'var(--pure-mint)', flexShrink: 0 }} />
+                <span><strong>Persönlich:</strong> Maximilian prüft deine Anforderungen und meldet sich innerhalb von 24h.</span>
               </div>
             </div>
 
             {/* Direct Action Buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', width: '100%', maxWidth: '440px', marginTop: '0.8rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', width: '100%', maxWidth: '440px', marginTop: '0.4rem' }}>
               <button 
                 type="button"
                 className="button primary"
@@ -338,16 +346,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                 style={{ width: '100%', justifyContent: 'center' }}
               >
                 <Download size={16} className={isGeneratingPdf ? 'spin-anim' : ''} />
-                <span>{isGeneratingPdf ? 'Erstelle PDF...' : 'Angebot jetzt als PDF herunterladen'}</span>
+                <span>{isGeneratingPdf ? 'Erstelle PDF im neuen Design...' : 'Angebot jetzt als PDF herunterladen'}</span>
               </button>
 
               <a 
                 href={mailtoUrl} 
                 className="button secondary"
-                style={{ textDecoration: 'none', width: '100%', justifyContent: 'center' }}
+                style={{ textDecoration: 'none', width: '100%', justifyContent: 'center', fontSize: '0.85rem' }}
               >
-                <Mail size={16} />
-                <span>In E-Mail-App öffnen (Kopie an mich & Maximilian)</span>
+                <Mail size={15} />
+                <span>Optional: In eigener E-Mail-App öffnen</span>
               </a>
 
               <a 
@@ -358,16 +366,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                 style={{ textDecoration: 'none', width: '100%', justifyContent: 'center', fontSize: '0.85rem' }}
               >
                 <MessageSquare size={15} />
-                <span>Per WhatsApp anfragen</span>
+                <span>Per WhatsApp kontaktieren</span>
               </a>
             </div>
 
             <button 
               type="button" 
               onClick={onClose}
-              style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.82rem', marginTop: '0.5rem', textDecoration: 'underline' }}
+              style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.82rem', marginTop: '0.35rem', textDecoration: 'underline' }}
             >
-              Fenster schließen & zurück zur Website
+              Schließen & zurück zur Website
             </button>
           </div>
         )}
