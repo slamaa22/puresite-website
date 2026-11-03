@@ -47,10 +47,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             />
           </div>
           <span className="brand-title">PureSite</span>
-          <span className="brand-telemetry-badge">
-            <span className="telemetry-live-dot" aria-hidden="true"></span>
-            Graz NVMe
-          </span>
         </a>
 
         {/* Desktop Navigation Links */}

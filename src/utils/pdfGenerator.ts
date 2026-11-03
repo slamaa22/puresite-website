@@ -42,29 +42,31 @@ async function getLogoDataUrl(theme: 'light' | 'dark' = 'light'): Promise<string
   }
 }
 
-// Standard document pagination: Page 1 is filled first (normal invoice flow).
-// Up to 7 items fit on a single complete page with totals.
-// For multi-page offers, Page 1 takes up to 8 items, leaving the remaining items (3-5 items) for Page 2 alongside totals & signatures.
+// Standard document pagination:
+// Up to 12 items fit comfortably on a single complete page with totals & signatures.
+// For larger projects (>12 items), Page 1 fills naturally (taking 10-12 items),
+// leaving the remaining items for Page 2 alongside totals & signatures without premature breaks.
 function chunkItemsForPages(items: PdfOfferItem[]): PdfOfferItem[][] {
-  if (items.length <= 7) {
+  if (items.length <= 12) {
     return [items];
   }
 
   const pages: PdfOfferItem[][] = [];
   
-  // Page 1 fills first (takes up to 8 items, leaving at least 3 items for the final page)
-  const page1Count = Math.min(8, Math.max(5, items.length - 3));
+  // Multi-page distribution:
+  // Ensure the final page has between 3 and 6 items to accompany the totals and signature blocks nicely.
+  const finalPageItemCount = Math.min(6, Math.max(3, items.length % 9 || 4));
+  const page1Count = Math.min(12, items.length - finalPageItemCount);
   pages.push(items.slice(0, page1Count));
   let remaining = items.slice(page1Count);
 
   while (remaining.length > 0) {
-    // Final page accommodates up to 5 items comfortably with totals, payment plan & signatures
-    if (remaining.length <= 5) {
+    if (remaining.length <= 6) {
       pages.push(remaining);
       break;
     } else {
-      pages.push(remaining.slice(0, 8));
-      remaining = remaining.slice(8);
+      pages.push(remaining.slice(0, 10));
+      remaining = remaining.slice(10);
     }
   }
 
@@ -111,7 +113,7 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
     container.style.height = '1131px';
     container.style.boxSizing = 'border-box';
     container.style.margin = '0';
-    container.style.padding = '26px 30px';
+    container.style.padding = '22px 26px';
     container.style.backgroundColor = '#ffffff';
     container.style.color = '#0f172a';
     container.style.fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
@@ -119,77 +121,77 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
     container.style.overflow = 'hidden';
 
     container.innerHTML = `
-      <div style="height: 100%; box-sizing: border-box; display: flex; flex-direction: column; border: 1px solid #e2e8f0; border-radius: 12px; padding: 22px 26px; background: #ffffff; position: relative;">
+      <div style="height: 100%; box-sizing: border-box; display: flex; flex-direction: column; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px 22px; background: #ffffff; position: relative;">
         
         <!-- Header Precision Hairline Strip -->
-        <div style="height: 3px; width: 100%; background: linear-gradient(90deg, #10b981 0%, #059669 40%, #0f172a 100%); border-radius: 3px; margin-bottom: 16px;"></div>
+        <div style="height: 3px; width: 100%; background: linear-gradient(90deg, #10b981 0%, #059669 40%, #0f172a 100%); border-radius: 3px; margin-bottom: 12px;"></div>
 
         <!-- Document Header: Brand & Document Meta -->
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: ${isFirstPage ? '14px' : '12px'};">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 6px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: ${isFirstPage ? '11px' : '9px'};">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 5px;">
               <img src="${logoBase64}" alt="PureSite" style="width: 100%; height: 100%; object-fit: contain;" />
             </div>
             <div>
               <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 22px; font-weight: 800; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; color: #0f172a;">
+                <span style="font-size: 21px; font-weight: 800; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; color: #0f172a;">
                   PureSite<span style="color: #059669;">.</span>
                 </span>
-                <span style="font-size: 8.5px; font-family: 'JetBrains Mono', monospace; font-weight: 600; letter-spacing: 0.04em; background: #ecfdf5; color: #047857; padding: 3px 8px; border-radius: 4px; border: 1px solid #a7f3d0; text-transform: uppercase;">
+                <span style="font-size: 8px; font-family: 'JetBrains Mono', monospace; font-weight: 600; letter-spacing: 0.04em; background: #ecfdf5; color: #047857; padding: 2px 7px; border-radius: 4px; border: 1px solid #a7f3d0; text-transform: uppercase;">
                   ${isFirstPage ? 'FESTPREIS-ANGEBOT' : `ANGEBOT ${quoteId} (SEITE ${pageNum})`}
                 </span>
               </div>
-              <div style="font-size: 9px; color: #64748b; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 1px; font-weight: 500;">
+              <div style="font-size: 8.5px; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 1px; font-weight: 500;">
                 Webdesign & High-Performance Softwareentwicklung
               </div>
-              <div style="font-size: 9px; color: #059669; font-family: 'JetBrains Mono', monospace; margin-top: 2px;">
+              <div style="font-size: 8.5px; color: #059669; font-family: 'JetBrains Mono', monospace; margin-top: 1px;">
                 puresite.at • maximilian.schlacher@outlook.com
               </div>
             </div>
           </div>
 
-          <div style="text-align: right; font-size: 9.5px; color: #64748b; line-height: 1.45; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 14px;">
-            <div style="font-size: 12.5px; font-weight: 700; color: #0f172a; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em;">${quoteId}</div>
-            <div style="margin-top: 2px;">Datum: <strong style="color: #1e293b;">${todayStr}</strong></div>
+          <div style="text-align: right; font-size: 9px; color: #64748b; line-height: 1.4; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 12px;">
+            <div style="font-size: 11.5px; font-weight: 700; color: #0f172a; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em;">${quoteId}</div>
+            <div style="margin-top: 1px;">Datum: <strong style="color: #1e293b;">${todayStr}</strong></div>
             <div>Gültig bis: <strong style="color: #047857;">${validUntilStr}</strong></div>
-            <div style="color: #94a3b8; font-size: 8.5px; margin-top: 1px;">Seite ${pageNum} von ${totalPages}</div>
+            <div style="color: #94a3b8; font-size: 8px;">Seite ${pageNum} von ${totalPages}</div>
           </div>
         </div>
 
         ${isFirstPage ? `
           <!-- Client & Subject Banner (Page 1 Only) -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 11px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 9px 12px; margin-bottom: 9px; display: flex; justify-content: space-between; align-items: center;">
             <div>
-              <div style="font-size: 8px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em;">Projekt & Auftraggeber</div>
-              <div style="font-size: 14px; font-weight: 700; color: #0f172a; margin-top: 2px; font-family: 'Outfit', sans-serif;">
+              <div style="font-size: 7.5px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em;">Projekt & Auftraggeber</div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-top: 1px; font-family: 'Outfit', sans-serif;">
                 ${clientCompany || clientName || 'Individuelles Unternehmens-Webprojekt'}
               </div>
-              ${clientName && clientCompany ? `<div style="font-size: 9.5px; color: #475569; margin-top: 1px;">z. H. ${clientName}</div>` : ''}
+              ${clientName && clientCompany ? `<div style="font-size: 8.5px; color: #475569; margin-top: 1px;">z. H. ${clientName}</div>` : ''}
             </div>
             <div style="text-align: right;">
-              <span style="font-size: 9px; font-weight: 600; color: #047857; background: #ecfdf5; padding: 4px 10px; border-radius: 20px; border: 1px solid #a7f3d0; font-family: 'JetBrains Mono', monospace;">
+              <span style="font-size: 8.5px; font-weight: 600; color: #047857; background: #ecfdf5; padding: 3px 8px; border-radius: 20px; border: 1px solid #a7f3d0; font-family: 'JetBrains Mono', monospace;">
                 ${calculation.itemCount} Bausteine konfiguriert
               </span>
             </div>
           </div>
         ` : `
           <!-- Continuation Header Bar on Later Pages -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 7px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 9px;">
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; margin-bottom: 9px; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px;">
             <span style="color: #475569;">Fortsetzung der Positionen für: <strong style="color: #0f172a;">${clientCompany || clientName || 'Webprojekt'}</strong></span>
             <span style="color: #047857; font-family: 'JetBrains Mono', monospace;">Positionen ${startIndex + 1} bis ${runningItemIndex} von ${items.length}</span>
           </div>
         `}
 
         <!-- Modules Table -->
-        <div style="margin-bottom: 10px;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 9.5px; text-align: left;">
+        <div style="margin-bottom: 8px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 9px; text-align: left;">
             <thead>
-              <tr style="background: #f1f5f9; border-bottom: 2px solid #0f172a; color: #334155; font-size: 8.5px; text-transform: uppercase; letter-spacing: 0.06em;">
-                <th style="padding: 7px 6px; width: 34px; text-align: center;">Pos.</th>
-                <th style="padding: 7px 10px;">Leistungsbaustein & Spezifikation</th>
-                <th style="padding: 7px 10px; width: 105px; text-align: center;">Kategorie</th>
-                <th style="padding: 7px 10px; width: 85px; text-align: center;">Abrechnung</th>
-                <th style="padding: 7px 10px; text-align: right; width: 95px;">Festpreis</th>
+              <tr style="background: #f1f5f9; border-bottom: 2px solid #0f172a; color: #334155; font-size: 8px; text-transform: uppercase; letter-spacing: 0.05em;">
+                <th style="padding: 5px 6px; width: 32px; text-align: center;">Pos.</th>
+                <th style="padding: 5px 8px;">Leistungsbaustein & Spezifikation</th>
+                <th style="padding: 5px 8px; width: 100px; text-align: center;">Kategorie</th>
+                <th style="padding: 5px 8px; width: 85px; text-align: center;">Abrechnung</th>
+                <th style="padding: 5px 8px; text-align: right; width: 90px;">Festpreis</th>
               </tr>
             </thead>
             <tbody>
@@ -198,38 +200,38 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
                 const rowBg = isEven ? 'background: #f8fafc;' : 'background: #ffffff;';
                 return `
                   <tr style="border-bottom: 1px solid #e2e8f0; ${rowBg}">
-                    <td style="padding: 7px 6px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 9px; text-align: center;">
+                    <td style="padding: 5px 6px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 8.5px; text-align: center;">
                       ${String(startIndex + idx + 1).padStart(2, '0')}
                     </td>
-                    <td style="padding: 7px 10px;">
-                      <div style="font-weight: 600; color: #0f172a; font-size: 10.5px; display: flex; align-items: center; gap: 6px;">
+                    <td style="padding: 5px 8px;">
+                      <div style="font-weight: 600; color: #0f172a; font-size: 10px; display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap;">
                         <span>${item.name}</span>
                         ${item.code ? `
-                          <span style="font-family: 'JetBrains Mono', monospace; font-size: 7.5px; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 3px; padding: 1px 4px;">
+                          <span style="font-family: 'JetBrains Mono', monospace; font-size: 7px; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 3px; padding: 1px 4px; white-space: nowrap; display: inline-block;">
                             ${item.code}
                           </span>
                         ` : ''}
                         ${item.qtyLabel ? `
-                          <span style="font-size: 8px; font-weight: 600; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 3px; padding: 1px 4px;">
+                          <span style="font-size: 7.5px; font-weight: 600; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 3px; padding: 1px 4px; white-space: nowrap; display: inline-block;">
                             ${item.qtyLabel.trim()}
                           </span>
                         ` : ''}
                       </div>
-                      <div style="font-size: 8.5px; color: #475569; margin-top: 2px; line-height: 1.35;">
+                      <div style="font-size: 8px; color: #475569; margin-top: 1px; line-height: 1.3;">
                         ${item.description}
                       </div>
                     </td>
-                    <td style="padding: 7px 10px; text-align: center;">
-                      <span style="font-size: 8px; color: #475569; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 4px; padding: 2px 6px; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;">
+                    <td style="padding: 5px 8px; text-align: center;">
+                      <span style="font-size: 7.5px; color: #475569; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 3px; padding: 1px 5px; text-transform: uppercase; letter-spacing: 0.02em; white-space: nowrap;">
                         ${item.categoryLabel}
                       </span>
                     </td>
-                    <td style="padding: 7px 10px; text-align: center;">
-                      <span style="font-size: 8.5px; color: ${item.billingType === 'Monatlich' ? '#047857' : '#334155'}; font-weight: 600; white-space: nowrap;">
+                    <td style="padding: 5px 8px; text-align: center;">
+                      <span style="font-size: 8px; color: ${item.billingType === 'Monatlich' ? '#047857' : '#334155'}; font-weight: 600; white-space: nowrap;">
                         ${item.billingType}
                       </span>
                     </td>
-                    <td style="padding: 7px 10px; text-align: right; font-weight: 700; color: #0f172a; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; white-space: nowrap;">
+                    <td style="padding: 5px 8px; text-align: right; font-weight: 700; color: #0f172a; font-family: 'JetBrains Mono', monospace; font-size: 10px; white-space: nowrap;">
                       ${item.priceFormatted}
                     </td>
                   </tr>
@@ -241,30 +243,30 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
 
         ${!isLastPage ? `
           <!-- Continuation hint for next page -->
-          <div style="margin-top: 14px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 10px 16px; text-align: center; color: #047857; font-size: 9px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <div style="margin-top: 10px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 8px 14px; text-align: center; color: #047857; font-size: 8.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
             <span>Fortsetzung der Positionen sowie Gesamtkalkulation & Zahlungsplan auf Seite ${pageNum + 1} von ${totalPages} ➔</span>
           </div>
         ` : ''}
 
         ${isLastPage ? `
           <!-- Totals & Milestones Grid (Final Page Only) -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px; margin-bottom: 10px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; margin-bottom: 8px;">
             <!-- Left Box: 50/50 Milestones -->
-            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 11px 13px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
-                <div style="font-size: 10px; font-weight: 700; color: #15803d; margin-bottom: 3px; display: flex; align-items: center; gap: 6px;">
+                <div style="font-size: 9.5px; font-weight: 700; color: #15803d; margin-bottom: 2px; display: flex; align-items: center; gap: 5px;">
                   <span>🛡️</span> 50 / 50 Meilenstein-Zahlungsplan
                 </div>
-                <div style="font-size: 8.5px; color: #166534; line-height: 1.35; margin-bottom: 8px;">
+                <div style="font-size: 8px; color: #166534; line-height: 1.3; margin-bottom: 6px;">
                   Transparente Abrechnung ohne Vorab-Risiko für den Auftraggeber:
                 </div>
               </div>
-              <div style="display: flex; flex-direction: column; gap: 5px;">
-                <div style="display: flex; justify-content: space-between; font-size: 9.5px; padding-bottom: 4px; border-bottom: 1px dashed #bbf7d0;">
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div style="display: flex; justify-content: space-between; font-size: 9px; padding-bottom: 3px; border-bottom: 1px dashed #bbf7d0;">
                   <span style="color: #4b5563;">1. Anzahlung bei Start (50%):</span>
                   <strong style="color: #0f172a; font-family: 'JetBrains Mono', monospace;">${calculation.downPayment50.toLocaleString('de-AT')} €</strong>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 9.5px;">
+                <div style="display: flex; justify-content: space-between; font-size: 9px;">
                   <span style="color: #4b5563;">2. Endzahlung bei Livegang & Abnahme (50%):</span>
                   <strong style="color: #0f172a; font-family: 'JetBrains Mono', monospace;">${calculation.finalPayment50.toLocaleString('de-AT')} €</strong>
                 </div>
@@ -272,39 +274,39 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
             </div>
 
             <!-- Right Box: Price Calculation -->
-            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 11px 13px; display: flex; flex-direction: column; justify-content: center;">
-              <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: #475569; margin-bottom: 2px;">
+            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; justify-content: center;">
+              <div style="display: flex; justify-content: space-between; font-size: 9px; color: #475569; margin-bottom: 2px;">
                 <span>Projektpreis (Netto):</span>
                 <strong style="color: #0f172a; font-family: 'JetBrains Mono', monospace;">${calculation.oneTimeNet.toLocaleString('de-AT')} €</strong>
               </div>
 
               ${useTax ? `
-                <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: #475569; margin-bottom: 3px;">
+                <div style="display: flex; justify-content: space-between; font-size: 9px; color: #475569; margin-bottom: 2px;">
                   <span>+ 20% Umsatzsteuer:</span>
                   <strong style="color: #0f172a; font-family: 'JetBrains Mono', monospace;">${(calculation.oneTimeGross - calculation.oneTimeNet).toLocaleString('de-AT')} €</strong>
                 </div>
               ` : `
-                <div style="font-size: 8px; color: #64748b; font-style: italic; margin-bottom: 3px;">
+                <div style="font-size: 7.5px; color: #64748b; font-style: italic; margin-bottom: 2px;">
                   USt.-frei gem. § 6 Abs. 1 Z 27 UStG (Kleinunternehmer)
                 </div>
               `}
 
-              <div style="height: 1.5px; background: #0f172a; margin: 4px 0;"></div>
+              <div style="height: 1.5px; background: #0f172a; margin: 3px 0;"></div>
 
-              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
-                <span style="font-size: 11px; font-weight: 700; color: #0f172a;">Gesamtbetrag (Fixpreis):</span>
-                <span style="font-size: 16.5px; font-weight: 800; color: #0f172a; font-family: 'JetBrains Mono', monospace;">${calculation.oneTimeGross.toLocaleString('de-AT')} €</span>
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1px;">
+                <span style="font-size: 10.5px; font-weight: 700; color: #0f172a;">Gesamtbetrag (Fixpreis):</span>
+                <span style="font-size: 15.5px; font-weight: 800; color: #0f172a; font-family: 'JetBrains Mono', monospace;">${calculation.oneTimeGross.toLocaleString('de-AT')} €</span>
               </div>
 
               ${calculation.mrrNet > 0 ? `
-                <div style="display: flex; justify-content: space-between; font-size: 9px; color: #047857; margin-top: 3px; font-family: 'JetBrains Mono', monospace;">
+                <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #047857; margin-top: 2px; font-family: 'JetBrains Mono', monospace;">
                   <span>Laufendes Hosting & Wartung:</span>
                   <strong>${calculation.mrrNet.toLocaleString('de-AT')} € / Monat</strong>
                 </div>
               ` : ''}
 
               ${calculation.savingsTotal > 0 ? `
-                <div style="font-size: 8px; color: #16a34a; margin-top: 2px; text-align: right; font-weight: 600;">
+                <div style="font-size: 7.5px; color: #16a34a; margin-top: 1px; text-align: right; font-weight: 600;">
                   💰 Ersparnis ggü. üblichen Agenturpreisen: ca. ${calculation.savingsTotal.toLocaleString('de-AT')} €
                 </div>
               ` : ''}
@@ -312,23 +314,23 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
           </div>
 
           <!-- Quality Guarantee & Disclaimer Banner -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 7px 11px; margin-bottom: 8px;">
-            <div style="font-size: 8px; color: #475569; line-height: 1.4;">
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 10px; margin-bottom: 6px;">
+            <div style="font-size: 7.5px; color: #475569; line-height: 1.35;">
               📋 <strong>Verbindliche Festpreisgarantie:</strong> Dieses Dokument ist eine offizielle Projekt- und Festpreiskalkulation. Alle genannten Beträge sind garantierte Fixpreise für den definierten Leistungsumfang ohne versteckte Zusatzkosten. Volle Nutzungs- und Quellcode-Rechte gehen nach Begleichung der Endzahlung an den Auftraggeber über. Gültig für 30 Tage ab Ausstellungsdatum.
             </div>
           </div>
 
           <!-- Acceptance & Signature Block -->
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 8px; border-top: 1px dashed #cbd5e1; margin-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 6px; border-top: 1px dashed #cbd5e1; margin-bottom: 4px;">
             <div>
-              <div style="font-size: 8px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Auftragserteilung & Freigabe:</div>
-              <div style="margin-top: 26px; border-top: 1px solid #94a3b8; width: 220px; font-size: 7.5px; color: #64748b; padding-top: 3px;">
+              <div style="font-size: 7.5px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Auftragserteilung & Freigabe:</div>
+              <div style="margin-top: 22px; border-top: 1px solid #94a3b8; width: 210px; font-size: 7px; color: #64748b; padding-top: 2px;">
                 Datum, Firmenstempel & Unterschrift Auftraggeber
               </div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 8px; color: #047857; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">PureSite Webdesign & Softwareentwicklung</div>
-              <div style="margin-top: 26px; border-top: 1px solid #047857; width: 230px; font-size: 7.5px; color: #475569; padding-top: 3px;">
+              <div style="font-size: 7.5px; color: #047857; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">PureSite Webdesign & Softwareentwicklung</div>
+              <div style="margin-top: 22px; border-top: 1px solid #047857; width: 220px; font-size: 7px; color: #475569; padding-top: 2px;">
                 Maximilian Schlacher & Loreno Zanaboni • Steiermark
               </div>
             </div>
@@ -336,7 +338,7 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
         ` : ''}
 
         <!-- Page Bottom Bar (Always pinned to bottom edge via margin-top: auto) -->
-        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 7px; font-size: 8px; color: #64748b;">
+        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 6px; font-size: 7.5px; color: #64748b;">
           <span>PureSite Webdesign & Softwareentwicklung • puresite.at</span>
           <span style="color: #1e293b; font-weight: 600;">Seite ${pageNum} von ${totalPages}</span>
           <span>Steiermark, Österreich • 100% Festpreis</span>
