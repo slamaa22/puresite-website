@@ -1,0 +1,456 @@
+import type { PricingModule } from '../types/pricing';
+
+export const MODULES_DATA: PricingModule[] = [
+  // Basis-Pakete
+  {
+    code: 'B-01',
+    category: 'basis',
+    categoryLabel: 'Basis-Pakete',
+    name: 'Digitaler Start (One-Pager)',
+    description: 'Bis zu 5 Sektionen (Hero, Über uns, Leistungen, Referenzen, Kontakt), Mobile-First UI/UX, Kontaktformular, Google Maps, Impressum/Datenschutz-Einbindung, Basis-SEO.',
+    scopeHighlights: [
+      'Bis zu 5 maßgeschneiderte Sektionen',
+      'Mobile-First Responsive Design',
+      'DSGVO-konformes Kontaktformular & Maps',
+      'Rechtssichere Impressum/Datenschutz-Einbindung',
+      'Basis-SEO Meta Tags & Sitemap'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 950,
+    maxPrice: 1250,
+    fixedPrice: 1000,
+    estimatedHours: 14,
+    effectiveHourlyRate: 71.4,
+    badge: 'Kompakt & Schnell',
+    demoId: 'demo-b01',
+    demoTitle: 'One-Pager Architektur & Scroll-Preview',
+    demoShortDesc: 'Teste den nahtlosen Flow eines modernen 5-Sektionen One-Pagers mit Sticky Navigation.',
+    iconName: 'Layout'
+  },
+  {
+    code: 'B-02',
+    category: 'basis',
+    categoryLabel: '1. Basis-Pakete',
+    name: 'Business Website (Mehrseitig)',
+    description: 'Startseite + bis zu 4 Unterseiten, maßgeschneidertes UI/UX Design, saubere Animationen, Basis-SEO, SSL & DSGVO Cookie-Banner, Hosting/Deployment-Setup.',
+    scopeHighlights: [
+      'Startseite + bis zu 4 vollwertige Unterseiten',
+      'Custom UI/UX & modernes Layout',
+      'Flüssige Page-Transitions & Micro-Interactions',
+      'DSGVO Cookie-Banner & SSL-Konfiguration',
+      'Produktions-Deployment & Live-Setup'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 1600,
+    maxPrice: 2200,
+    fixedPrice: 1500,
+    estimatedHours: 24,
+    effectiveHourlyRate: 62.5,
+    badge: 'Bestseller',
+    isPopular: true,
+    demoId: 'demo-b02',
+    demoTitle: 'Business Multi-Page Router Demo',
+    demoShortDesc: 'Erlebe flüssige Seitenwechsel ohne Reload und eine saubere Unterseiten-Struktur.',
+    iconName: 'Layers'
+  },
+  {
+    code: 'B-03',
+    category: 'basis',
+    categoryLabel: '1. Basis-Pakete',
+    name: 'Premium / Corporate Web',
+    description: 'Startseite + bis zu 10 Unterseiten, eigenes Design-System (UI-Kit), Micro-Interactions, erweiterte Performance- & Ladezeiten-Optimierung (Core Web Vitals).',
+    scopeHighlights: [
+      'Startseite + bis zu 10 Unterseiten',
+      'Exklusives UI-Kit & Atomic Design Tokens',
+      'Maximale Performance (Lighthouse 98-100)',
+      'Erweiterte Animationen & interaktive Elemente',
+      'Core Web Vitals Feinschliff & Barrierefreiheit'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 2800,
+    maxPrice: 3500,
+    fixedPrice: 2000,
+    estimatedHours: 40,
+    effectiveHourlyRate: 50.0,
+    badge: 'High-End Corporate',
+    demoId: 'demo-b03',
+    demoTitle: 'Corporate Design System & UI-Kit Demo',
+    demoShortDesc: 'Inspiziere interaktive UI-Komponenten, Farbraster, Buttons & Typografie-Tokens.',
+    iconName: 'Crown'
+  },
+  {
+    code: 'B-04',
+    category: 'basis',
+    categoryLabel: '1. Basis-Pakete',
+    name: 'Zusatzseite (Standard Content-Page)',
+    description: 'Jede weitere Inhaltsseite über das gewählte Basispaket hinaus im bestehenden Design-Raster.',
+    scopeHighlights: [
+      'Passgenaue Integration im bestehenden UI-Raster',
+      'Individuelle Text- & Medienstruktur',
+      'SEO-Optimierung für die Zielsuchbegriffe',
+      'Voll responsiv für Mobile & Tablet'
+    ],
+    billingType: 'Pro Seite',
+    minPrice: 150,
+    maxPrice: 200,
+    fixedPrice: 100,
+    estimatedHours: 2,
+    effectiveHourlyRate: 50.0,
+    demoId: 'demo-b04',
+    demoTitle: 'Seiten-Kombinator & Stack-Vorschau',
+    demoShortDesc: 'Simuliere, wie flexibel sich deine Website um beliebig viele Unterseiten erweitern lässt.',
+    iconName: 'FilePlus'
+  },
+
+  // 2. Frontend & Design
+  {
+    code: 'F-01',
+    category: 'frontend',
+    categoryLabel: '2. Frontend & Design',
+    name: 'Interaktiver Preisrechner / Konfigurator',
+    description: 'Individuelles Frontend-Tool (z.B. Angebots-/Quadratmeter-Rechner, Multi-Step-Fragenkatalog mit dynamischer Auswertung).',
+    scopeHighlights: [
+      'Echtzeit-Berechnung ohne Seiten-Reload',
+      'Lead-Generierung mit automatischer Angebots-Kopie',
+      'Kundenspezifische Formeln & Preislogik',
+      'Mobiloptimierte Regler, Toggles & Stepper'
+    ],
+    billingType: 'Pro Modul',
+    minPrice: 350,
+    maxPrice: 600,
+    fixedPrice: 300,
+    estimatedHours: 6,
+    effectiveHourlyRate: 50.0,
+    badge: 'Conversion-Booster',
+    isPopular: true,
+    demoId: 'demo-f01',
+    demoTitle: 'Live-Preisrechner Sandbox',
+    demoShortDesc: 'Bediene einen funktionierenden Live-Rechner mit dynamischen Schiebereglern und Sofort-Kalkulation.',
+    iconName: 'Calculator'
+  },
+  {
+    code: 'F-02',
+    category: 'frontend',
+    categoryLabel: '2. Frontend & Design',
+    name: 'High-End Animationen & Scrollytelling',
+    description: 'Aufwendige Scroll-Animationen, flüssige Page-Transitions, interaktive Grafiken/SVGs für maximalen Wow-Effekt.',
+    scopeHighlights: [
+      'Scroll-gesteuerte 3D-Karten-Effekte & Parallax',
+      'Hardware-beschleunigte GPU-Animationen (60 FPS)',
+      'Flüssige Reveal-Effekte beim Scrollen',
+      'Interaktive SVG-Vektoren & Cursor-Glows'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 300,
+    maxPrice: 500,
+    fixedPrice: 300,
+    estimatedHours: 5,
+    effectiveHourlyRate: 60.0,
+    badge: 'Wow-Effekt',
+    demoId: 'demo-f02',
+    demoTitle: '3D-Tilt & Particle Scroll Playground',
+    demoShortDesc: 'Bewege den Cursor und scrolle, um interaktive 3D-Karten, Partikel und Glow-Shader zu testen.',
+    iconName: 'Sparkles'
+  },
+  {
+    code: 'F-03',
+    category: 'frontend',
+    categoryLabel: '2. Frontend & Design',
+    name: 'Mehrsprachigkeit (i18n Routing)',
+    description: 'Technische Umsetzung für zusätzliche Sprache inkl. Sprachumschalter & sauberer URL-Struktur (/de, /en) – exkl. Übersetzung.',
+    scopeHighlights: [
+      'Saubere URL-Präfixe (/de, /en, /it)',
+      'Automatische Browser-Spracherkennung',
+      'SEO Hreflang-Tags für Google International',
+      'Nahtloser Sprachschalter in Navbar & Footer'
+    ],
+    billingType: 'Pro Sprache',
+    minPrice: 250,
+    maxPrice: 350,
+    fixedPrice: 250,
+    estimatedHours: 3.5,
+    effectiveHourlyRate: 71.4,
+    demoId: 'demo-f03',
+    demoTitle: 'i18n Sprachwechsler & Route Simulator',
+    demoShortDesc: 'Schalte per Klick zwischen Deutsch, Englisch und Steirisch um und sieh die Live-Lokalisierung.',
+    iconName: 'Globe'
+  },
+  {
+    code: 'F-04',
+    category: 'frontend',
+    categoryLabel: '2. Frontend & Design',
+    name: 'Dark Mode / Light Mode Switcher',
+    description: 'Ausarbeitung einer kompletten zweiten Farbpalette und nahtloser Theme-Umschalter inkl. System-Präferenz-Erkennung.',
+    scopeHighlights: [
+      'Zwei voll harmonisierte Farbschemata',
+      'Automatische Erkennung des OS-Darkmodes',
+      'Flimmerfreier Umschalter mit LocalStorage-Speicher',
+      'Perfekte Kontraste nach WCAG AAA Standard'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 200,
+    maxPrice: 300,
+    fixedPrice: 150,
+    estimatedHours: 3,
+    effectiveHourlyRate: 50.0,
+    demoId: 'demo-f04',
+    demoTitle: 'Live Farbschema & Kontrast-Tester',
+    demoShortDesc: 'Wechsle Farbmodi und teste Echtzeit-Farbpaletten inklusive Kontrastwert-Prüfung.',
+    iconName: 'Moon'
+  },
+  {
+    code: 'F-05',
+    category: 'frontend',
+    categoryLabel: '2. Frontend & Design',
+    name: 'Mini-Branding & Logo-Refresh',
+    description: 'Vektorisierung/Modernisierung eines bestehenden Logos, Definition von Web-Farbpalette und Typografie-Guide.',
+    scopeHighlights: [
+      'Verlustfreie SVG-Vektorisierung deines Firmenlogos',
+      'Harmonische Farbpalette mit Akzent-, Text- & Hintergrundwerten',
+      'Typografie-Guide für Web & Print',
+      'Favicon-Kit für alle modernen Browser & Smartphones'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 350,
+    maxPrice: 600,
+    fixedPrice: 250,
+    estimatedHours: 5.5,
+    effectiveHourlyRate: 45.5,
+    demoId: 'demo-f05',
+    demoTitle: 'Vorher/Nachher Logo & Brand Slider',
+    demoShortDesc: 'Schiebe den interaktiven Vorher-Nachher-Regler und teste Brand-Farben in Echtzeit.',
+    iconName: 'Palette'
+  },
+
+  // 3. Technik & Backend
+  {
+    code: 'T-01',
+    category: 'tech',
+    categoryLabel: '3. Technik & Backend',
+    name: "Integriertes PureSite Admin-Dashboard ('Inhalte selbst verwalten')",
+    description: 'Eigenes, maßgeschneidertes Admin-Dashboard direkt in der Website integriert (ohne Drittanbieter-Tools oder monatliche CMS-Abos). Texte, Bilder, Angebote und Referenzen mit wenigen Klicks selbst ändern.',
+    scopeHighlights: [
+      '100% unabhängig: Keine Drittanbieter-Abos oder monatliche Tool-Gebühren',
+      'Direkt im Website-Design integriertes, intuitives Admin-Cockpit',
+      'Texte, Bilder, Öffnungszeiten & Referenzen blitzschnell ändern',
+      'Inklusive persönlicher Video-Einführung & Dokumentation'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 450,
+    maxPrice: 750,
+    fixedPrice: 500,
+    estimatedHours: 7.5,
+    effectiveHourlyRate: 66.7,
+    badge: '100% Inhouse (Kein Abo)',
+    isPopular: true,
+    demoId: 'demo-t01',
+    demoTitle: 'PureSite Admin-Dashboard Live-Sandbox',
+    demoShortDesc: 'Tippe einen Text in die intuitive Admin-Maske und sieh sofort, wie die Website live und ohne Neuladen reagiert.',
+    iconName: 'LayoutDashboard'
+  },
+  {
+    code: 'T-02',
+    category: 'tech',
+    categoryLabel: '3. Technik & Backend',
+    name: 'Dynamisches Blog- / News- / Portfolio-System',
+    description: 'Übersichtsseite mit Kategorie-Filter & Suchfunktion sowie dynamisch generierten Detailseiten (ideal für Referenzen, Projekte, News).',
+    scopeHighlights: [
+      'Echtzeit-Volltextsuche & Filter nach Kategorien',
+      'Automatisch generierte SEO-freundliche Detailseiten',
+      'Schnelles Tagging & Beitragsverwaltung',
+      'Perfekt für Kundenprojekte, Case Studies & News'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 400,
+    maxPrice: 600,
+    fixedPrice: 400,
+    estimatedHours: 6,
+    effectiveHourlyRate: 66.7,
+    demoId: 'demo-t02',
+    demoTitle: 'Dynamisches Portfolio & Filter Demo',
+    demoShortDesc: 'Filtere Case Studies nach Tags und durchsuche Inhalte mit Sofort-Ergebnisanzeige.',
+    iconName: 'Newspaper'
+  },
+  {
+    code: 'T-03',
+    category: 'tech',
+    categoryLabel: '3. Technik & Backend',
+    name: 'Online-Terminbuchung (Integration)',
+    description: 'Nahtlose Einbindung & Styling von Buchungssystemen (z.B. Cal.com, Calendly) inkl. automatischer Terminbestätigung.',
+    scopeHighlights: [
+      'Verbindung mit Google Calendar / Outlook / Apple',
+      'Automatische Bestätigungs-Mail & Kalendereintrag',
+      'Kein E-Mail-Pingpong mehr für Terminabsprachen',
+      'Stilsicher im PureSite Design eingebettet'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 250,
+    maxPrice: 450,
+    fixedPrice: 250,
+    estimatedHours: 4,
+    effectiveHourlyRate: 62.5,
+    demoId: 'demo-t03',
+    demoTitle: 'Interaktiver Kalender-Terminplaner',
+    demoShortDesc: 'Wähle Datum und Slot aus und erlebe die simulierte Sofort-Buchungsbestätigung.',
+    iconName: 'CalendarCheck',
+    externalNotice: 'Wir übernehmen die nahtlose Einbindung & das UI-Styling in deine Website. Das Konto beim Buchungsdienst (z. B. Calendly oder Cal.com – oft mit kostenlosem Basistarif) wird vom Kunden bereitgestellt.'
+  },
+  {
+    code: 'T-04',
+    category: 'tech',
+    categoryLabel: '3. Technik & Backend',
+    name: 'Bewerber-Funnel / Karriere-Modul',
+    description: 'Job-Übersicht + interaktives 60-Sekunden-Bewerbungsformular (Mobile-Funnel mit CV-Upload ohne Anschreiben-Hürde).',
+    scopeHighlights: [
+      'Bis zu 4x höhere Bewerber-Quote als Standard-PDF-Mails',
+      '3-Schritt-Funnel für Smartphone-User optimiert',
+      'Direkter Lebenslauf-Upload (Drag & Drop)',
+      'Automatischer Benachrichtigungs-Ping an HR'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 350,
+    maxPrice: 550,
+    fixedPrice: 400,
+    estimatedHours: 5.5,
+    effectiveHourlyRate: 72.7,
+    badge: 'Mitarbeitergewinnung',
+    demoId: 'demo-t04',
+    demoTitle: '60-Sekunden Recruiting Funnel',
+    demoShortDesc: 'Klicke dich durch den interaktiven Bewerbungs-Funnel wie ein Kandidat am Handy.',
+    iconName: 'Users'
+  },
+
+  // 4. Content & SEO
+  {
+    code: 'C-01',
+    category: 'content',
+    categoryLabel: '4. Content & SEO',
+    name: 'Texterstellung & Copywriting',
+    description: 'Verkaufsstarke, SEO-optimierte Texterstellung auf Basis eines kurzen Kunden-Interviews (inkl. Lektorat).',
+    scopeHighlights: [
+      'Professionelle Verkaufspsychologie statt Textbausteine',
+      'Recherche relevanter Suchbegriffe (Keyword-Fokus)',
+      'Inklusive professionellem Lektorat & Korrektorat',
+      'Passgenau auf deine Wunschzielgruppe abgestimmt'
+    ],
+    billingType: 'Pro Seite',
+    minPrice: 80,
+    maxPrice: 120,
+    fixedPrice: 50,
+    estimatedHours: 1.2,
+    effectiveHourlyRate: 41.7,
+    demoId: 'demo-c01',
+    demoTitle: 'Copywriting Tonalitäts-Generator',
+    demoShortDesc: 'Wähle eine Tonalität (B2B, Direkt, Handwerk) und sieh den Vorher/Nachher-Effekt der Texte.',
+    iconName: 'PenTool'
+  },
+  {
+    code: 'C-02',
+    category: 'content',
+    categoryLabel: '4. Content & SEO',
+    name: 'Google Business Profil Setup & Optimierung',
+    description: 'Vollständige Einrichtung oder Überarbeitung des lokalen Google Maps Eintrags für regionales Ranking.',
+    scopeHighlights: [
+      'Optimierung von Titel, Kategorien, Leistungen & Öffnungszeiten',
+      'Geo-Tagging von Fotos für lokales Ranking in der Steiermark / Österreich',
+      'Bewertungs-Link Generator für Kundenfeedbacks',
+      'Erhöhung der lokalen Sichtbarkeit in Google Maps'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 50,
+    maxPrice: 120,
+    fixedPrice: 50,
+    estimatedHours: 1,
+    effectiveHourlyRate: 50.0,
+    demoId: 'demo-c02',
+    demoTitle: 'Google Maps SERP 3-Pack Simulator',
+    demoShortDesc: 'Sieh live, wie dein Unternehmen in den Google Suchergebnissen und Maps heraussticht.',
+    iconName: 'MapPin',
+    externalNotice: 'Reines technisches Setup & Optimierung. Wir richten alles fachgerecht ein. Etwaige Drittanbieter-Gebühren hängen vom Google-Konto ab und die finale Postkarten-/Video-Verifizierung vor Ort erfolgt direkt durch den Inhaber.'
+  },
+  {
+    code: 'C-03',
+    category: 'content',
+    categoryLabel: '4. Content & SEO',
+    name: 'Analytics & DSGVO-Tracking Setup',
+    description: 'Einrichtung von datenschutzkonformem Web-Tracking (Plausible / Umami oder Google Analytics 4 via Consent-Mode v2).',
+    scopeHighlights: [
+      '100% DSGVO-konformes cookieloses Tracking',
+      'Kein nerviges Cookie-Banner zwingend erforderlich',
+      'Echtzeit-Besucherzahlen, Quellen & Klickpfade',
+      'Messung von Formular-Absendungen & Anrufen'
+    ],
+    billingType: 'Pauschal (Einmalig)',
+    minPrice: 50,
+    maxPrice: 120,
+    fixedPrice: 50,
+    estimatedHours: 1,
+    effectiveHourlyRate: 50.0,
+    badge: '100% DSGVO Clean',
+    demoId: 'demo-c03',
+    demoTitle: 'Privacy-First Analytics Dashboard',
+    demoShortDesc: 'Betrachte ein interaktives Besucher-Dashboard mit Live-Metriken ohne Tracking-Cookies.',
+    iconName: 'BarChart3',
+    externalNotice: 'Wir kümmern uns um die komplette technische Einbindung und DSGVO-Konfiguration auf deiner Website. Etwaige externe Tool-Kosten (z. B. Plausible Analytics ab ca. 9 €/Monat) werden direkt vom Kunden beim jeweiligen Anbieter getragen (kostenlose Google Analytics Alternative möglich).'
+  },
+
+  // 5. Wartung & Hosting (Monatlich)
+  {
+    code: 'M-01',
+    category: 'hosting',
+    categoryLabel: '5. Wartung & Hosting (Monatlich)',
+    name: "Hosting & Sicherheit 'Basis' (MRR)",
+    description: 'Schnelles Hosting, SSL, tägliche Backups, Dependency- & Security-Updates, Uptime-Monitoring (Laufzeit mind. 12 Monate).',
+    scopeHighlights: [
+      'High-Speed NVMe Webserver in Österreich / Deutschland',
+      'Automatisches SSL-Zertifikat & HTTP/3 Unterstützung',
+      'Tägliche verschlüsselte Offsite-Backups (30 Tage Vorhaltezeit)',
+      '24/7 Uptime-Monitoring mit 99.98% Verfügbarkeitsgarantie'
+    ],
+    billingType: 'Monatlich',
+    minPrice: 29,
+    maxPrice: 39,
+    fixedPrice: 35,
+    estimatedHours: 0.4,
+    effectiveHourlyRate: 87.5,
+    demoId: 'demo-m01',
+    demoTitle: 'Server Health & Backup Monitor',
+    demoShortDesc: 'Prüfe Uptime-Herzschlag, SSL-Status und starte eine simulierte 1-Klick-Backup-Wiederherstellung.',
+    iconName: 'ShieldCheck',
+    externalNotice: 'High-Performance Edge-Hosting, SSL & Backups inklusive. Die jährliche Domain-Registrierung (.at / .de ca. 10–20 €/Jahr) wird separat direkt über den Domain-Registrar abgerechnet.'
+  },
+  {
+    code: 'M-02',
+    category: 'hosting',
+    categoryLabel: '5. Wartung & Hosting (Monatlich)',
+    name: "Sorglos-Paket 'Pro' inkl. 1h Support (MRR)",
+    description: "Alles aus 'Basis' + bis zu 1 Stunde Content-/Design-Änderungen pro Monat inklusive ('Zuruf-Service per Mail/WhatsApp') & Prio-Support.",
+    scopeHighlights: [
+      'Beinhaltet alle Leistungen aus Hosting & Sicherheit Basis',
+      '1 Stunde Arbeitszeit pro Monat für Text-, Bild- oder Designanpassungen',
+      "Einfacher 'Zuruf-Service' direkt per WhatsApp oder E-Mail",
+      'Priorisierter Notfall-Support binnen maximal 4 Stunden'
+    ],
+    billingType: 'Monatlich',
+    minPrice: 69,
+    maxPrice: 99,
+    fixedPrice: 50,
+    estimatedHours: 1.0,
+    effectiveHourlyRate: 50.0,
+    badge: 'Rundum Sorglos',
+    isPopular: true,
+    demoId: 'demo-m02',
+    demoTitle: 'WhatsApp/Mail Zuruf-Ticket Simulator',
+    demoShortDesc: 'Schicke einen kurzen Änderungswunsch ab und sieh den Express-Ablauf in Aktion.',
+    iconName: 'Headphones'
+  }
+];
+
+export const CATEGORIES_CONFIG = [
+  { id: 'all', label: 'Alle Module' },
+  { id: 'basis', label: 'Basis-Pakete' },
+  { id: 'frontend', label: 'Frontend & Design' },
+  { id: 'tech', label: 'Technik & Backend' },
+  { id: 'content', label: 'Content & SEO' },
+  { id: 'hosting', label: 'Wartung & Hosting' }
+] as const;

@@ -1,0 +1,245 @@
+/* PureSite Design System - High-End Aesthetic */
+:root {
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Color Tokens - Dark Default */
+  --bg-primary: #07090e;
+  --bg-secondary: #0d121d;
+  --bg-tertiary: #131a29;
+  --bg-card: rgba(16, 24, 39, 0.75);
+  --bg-card-hover: rgba(24, 36, 58, 0.85);
+  --bg-glass: rgba(13, 18, 29, 0.65);
+  --bg-modal: #0d131f;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.14);
+  --border-accent: rgba(0, 242, 254, 0.35);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #07090e;
+
+  /* Vibrant Accents */
+  --accent-cyan: #00f2fe;
+  --accent-blue: #38bdf8;
+  --accent-purple: #8b5cf6;
+  --accent-violet: #a855f7;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+
+  --gradient-brand: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #8b5cf6 100%);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(0, 242, 254, 0.15) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 80%);
+  --gradient-card: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 40px rgba(0, 242, 254, 0.25);
+  --shadow-purple-glow: 0 0 40px rgba(139, 92, 246, 0.25);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light Theme Variables - Warm Light Grey / Soft Beige with PureSite Logo Green #58fca5 */
+[data-theme="light"] {
+  --bg-primary: #f5f4ef;
+  --bg-secondary: #eae8e1;
+  --bg-tertiary: #dedcd4;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --bg-glass: rgba(245, 244, 239, 0.92);
+  --bg-modal: #faf9f5;
+
+  --border-subtle: rgba(45, 42, 38, 0.09);
+  --border-medium: rgba(45, 42, 38, 0.16);
+  --border-accent: rgba(88, 252, 165, 0.65);
+
+  --text-primary: #181b20;
+  --text-secondary: #4a4e59;
+  --text-muted: #747986;
+  --text-inverse: #ffffff;
+
+  /* Logo Green #58fca5 as the primary brand accent in Whitemode */
+  --accent-cyan: #0b9e58; /* Deep rich emerald green for readable text & icons */
+  --accent-green-logo: #58fca5; /* Bright neon logo green for buttons, pills, borders */
+  --accent-blue: #10b981;
+  --accent-purple: #10b981;
+  --accent-emerald: #58fca5;
+
+  --gradient-brand: linear-gradient(135deg, #0ba35c 0%, #58fca5 55%, #10b981 100%);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(88, 252, 165, 0.24) 0%, rgba(16, 185, 129, 0.08) 50%, transparent 80%);
+  --shadow-sm: 0 2px 8px rgba(45, 42, 38, 0.06);
+  --shadow-md: 0 10px 25px rgba(45, 42, 38, 0.09);
+  --shadow-lg: 0 20px 40px rgba(45, 42, 38, 0.13);
+  --shadow-glow: 0 0 35px rgba(88, 252, 165, 0.45);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+code, pre {
+  font-family: var(--font-mono);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* Utility Animations */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes borderRotate {
+  0% { --angle: 0deg; }
+  100% { --angle: 360deg; }
+}
+
+/* Glass Surface Classes */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.gradient-text {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #097d46 0%, #0da862 50%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-cyan {
+  color: var(--accent-cyan);
+}
+
+[data-theme="light"] .text-cyan {
+  color: #0b9e58;
+}
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  color: var(--accent-cyan);
+}
+
+[data-theme="light"] .badge-pill {
+  background: rgba(88, 252, 165, 0.18);
+  border: 1px solid rgba(88, 252, 165, 0.45);
+  color: #087f49;
+}
+
+/* Base Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
