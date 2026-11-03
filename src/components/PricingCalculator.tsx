@@ -4,7 +4,7 @@ import type { PricingModule, SelectedConfig, ProjectCalculation } from '../types
 import { 
   Check, Plus, Minus, Sparkles, Play, 
   CheckCircle2, Shield, ArrowRight, ArrowLeft, Download, 
-  FileText, ShieldCheck, ChevronRight, Edit3, Sparkle
+  Edit3
 } from 'lucide-react';
 
 interface PricingCalculatorProps {
@@ -32,7 +32,7 @@ const WIZARD_STEPS: WizardStepConfig[] = [
     categoryName: 'Basis-Paket',
     nextStepName: 'Frontend-Features',
     title: 'Schritt 1 von 5: Wähle dein Website-Fundament',
-    subtitle: 'Das Grundgerüst deiner neuen Website. Wähle die passende Seitenanzahl und Architektur für deinen Betrieb.'
+    subtitle: 'Das Grundgerüst deiner Website. Wähle die Seitenanzahl und Architektur für deinen Betrieb.'
   },
   {
     id: 2,
@@ -41,7 +41,7 @@ const WIZARD_STEPS: WizardStepConfig[] = [
     categoryName: 'Frontend-Features',
     nextStepName: 'Backend & Tools',
     title: 'Schritt 2 von 5: Interaktive Frontend-Features',
-    subtitle: 'Begeistere deine Besucher mit interaktiven Rechnern, flüssigen Animationen oder einem Theme-Switcher.'
+    subtitle: 'Begeistere deine Besucher mit Rechnern, flüssigen Animationen oder einem Theme-Switcher.'
   },
   {
     id: 3,
@@ -50,7 +50,7 @@ const WIZARD_STEPS: WizardStepConfig[] = [
     categoryName: 'Backend-Features',
     nextStepName: 'Content & SEO',
     title: 'Schritt 3 von 5: Backend, CMS & Automatisierung',
-    subtitle: 'Automatisiere deine Abläufe mit Online-Terminbuchung, Headless CMS oder modernen Bewerber-Funnels.'
+    subtitle: 'Automatisiere Abläufe mit Online-Terminbuchung, Headless CMS oder Bewerber-Funnels.'
   },
   {
     id: 4,
@@ -59,7 +59,7 @@ const WIZARD_STEPS: WizardStepConfig[] = [
     categoryName: 'Content & SEO',
     nextStepName: 'Hosting & Wartung',
     title: 'Schritt 4 von 5: Texterstellung & Suchmaschinen',
-    subtitle: 'Professionelle Verkaufstexte und gezielte Google-Optimierung für spürbar mehr Kundenanfragen.'
+    subtitle: 'Professionelle Verkaufstexte und gezielte Google-Optimierung für mehr Kundenanfragen.'
   },
   {
     id: 5,
@@ -68,7 +68,7 @@ const WIZARD_STEPS: WizardStepConfig[] = [
     categoryName: 'Wartungspaket',
     nextStepName: 'Gesamtkalkulation',
     title: 'Schritt 5 von 5: High-Speed Hosting & Zuruf-Service',
-    subtitle: 'DSGVO-konformes NVMe-Hosting in Österreich, SSL-Zertifikate und persönlicher Support per WhatsApp & Mail.'
+    subtitle: 'DSGVO-konformes NVMe-Hosting in Österreich, SSL-Zertifikate und persönlicher Support.'
   },
   {
     id: 6,
@@ -77,7 +77,7 @@ const WIZARD_STEPS: WizardStepConfig[] = [
     categoryName: 'Gesamtkalkulation',
     nextStepName: '',
     title: 'Deine maßgeschneiderte Festpreis-Kalkulation',
-    subtitle: '100% transparent. Lade dein verbindliches Festpreis-PDF herunter oder sichere dir direkt ein unverbindliches Erstgespräch.'
+    subtitle: '100% transparent. Lade dein PDF-Angebot herunter oder sichere dir ein unverbindliches Erstgespräch.'
   }
 ];
 
@@ -124,14 +124,6 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   const [useTax, setUseTax] = useState<boolean>(false); // 0% Kleinunternehmer vs 20% Regelbesteuerung
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
-  // Smooth scroll to top of calculator container
-  const scrollToCalculator = () => {
-    const el = document.getElementById('preise');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   // Toggle selection
   const toggleModule = (code: string) => {
     setIsCustomMode(false);
@@ -139,7 +131,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
       const current = prev[code];
       const isSelected = current ? current.selected : false;
 
-      // If choosing a basis packet, mutually exclusive logic for primary basis packet (B-01, B-02, B-03)
+      // Mutually exclusive base packages: B-01, B-02, B-03
       let next = { ...prev };
       if (!isSelected && (code === 'B-01' || code === 'B-02' || code === 'B-03')) {
         next['B-01'] = { selected: false, quantity: 1 };
@@ -181,7 +173,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
     setSelectedConfig(createConfigFromPreset(PRESET_CONFIGS[type]));
   };
 
-  // Determine which preset is currently active (or custom)
+  // Determine which preset is currently active
   const activePreset = useMemo<PresetKey>(() => {
     if (isCustomMode) return 'custom';
 
@@ -303,7 +295,6 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
     const step = WIZARD_STEPS[currentStepIndex];
 
     if (currentStepIndex === 0) {
-      // Base package step (Step 1)
       if (countInCurrentStep === 0) {
         return 'Bitte wähle ein Basispaket';
       }
@@ -327,26 +318,29 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   // Navigation handlers
   const handleNextStep = () => {
     if (currentStepIndex === 0 && countInCurrentStep === 0) {
-      return; // Must select base package
+      return;
     }
     if (currentStepIndex === 5) {
       onRequestQuote(calculation, selectedDetails);
       return;
     }
     setCurrentStepIndex(prev => Math.min(WIZARD_STEPS.length - 1, prev + 1));
-    scrollToCalculator();
   };
 
   const handlePrevStep = () => {
     if (currentStepIndex > 0) {
       setCurrentStepIndex(prev => prev - 1);
-      scrollToCalculator();
     }
   };
 
   const handleGoToStep = (stepIdx: number) => {
     setCurrentStepIndex(stepIdx);
-    scrollToCalculator();
+  };
+
+  // Helper count per category for stepper tabs
+  const getCategoryCount = (cat: string) => {
+    if (cat === 'summary') return calculation.itemCount;
+    return MODULES_DATA.filter(m => m.category === cat && selectedConfig[m.code]?.selected).length;
   };
 
   // Download offer as branded PDF
@@ -396,447 +390,363 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   };
 
   return (
-    <section id="preise" className="pricing-section">
-      <div className="container">
-        {/* Section Header */}
-        <div className="section-head text-center">
-          <div className="badge-pill">
-            <Sparkles size={14} /> Geführter Fixpreis-Konfigurator
+    <section id="preise" className="pricing-section compact-wizard-section">
+      <div className="container compact-wizard-container">
+        {/* Ultra-compact top bar: Title + Presets on one line */}
+        <div className="wizard-top-deck">
+          <div className="wizard-top-left">
+            <span className="wizard-pill-mini">
+              <Sparkles size={12} /> Geführter Fixpreis-Konfigurator
+            </span>
+            <h2 className="wizard-main-title">
+              Wähle dein <span className="gradient-text">Website-Paket</span>
+            </h2>
           </div>
-          <h2 className="section-title">
-            Schritt für Schritt zu deiner <span className="gradient-text">Wunsch-Website</span>.
-          </h2>
-          <p className="section-subtitle">
-            Wähle dein Fundament und ergänze nur die Features, die für deinen Betrieb echten Mehrwert bringen. 100% verbindlicher Fixpreis – ohne versteckte Agentur-Aufschläge.
-          </p>
 
-          {/* Quick Presets */}
-          <div className="presets-bar">
-            <span className="preset-label">Oder wähle eine Start-Kombination:</span>
+          <div className="wizard-top-presets">
+            <span className="preset-label-mini">Schnellwahl:</span>
             <button 
-              type="button"
-              className={`preset-pill ${activePreset === 'starter' ? 'active' : ''}`} 
+              type="button" 
+              className={`preset-pill-mini ${activePreset === 'starter' ? 'active' : ''}`}
               onClick={() => setPreset('starter')}
             >
-              <span>🚀 Solo-Starter</span> <small className="preset-sub">(One-Pager)</small>
+              🚀 Solo-Starter
             </button>
             <button 
-              type="button"
-              className={`preset-pill ${activePreset === 'business' ? 'active' : ''}`} 
+              type="button" 
+              className={`preset-pill-mini ${activePreset === 'business' ? 'active' : ''}`}
               onClick={() => setPreset('business')}
             >
-              <span>💼 B2B Business</span> <small className="preset-sub">(Mehrseitig + Rechner)</small>
+              💼 B2B Business
             </button>
             <button 
-              type="button"
-              className={`preset-pill ${activePreset === 'scale' ? 'active' : ''}`} 
+              type="button" 
+              className={`preset-pill-mini ${activePreset === 'scale' ? 'active' : ''}`}
               onClick={() => setPreset('scale')}
             >
-              <span>👑 Corporate</span> <small className="preset-sub">(Design + CMS)</small>
+              👑 Corporate
             </button>
             <button 
-              type="button"
-              className={`preset-pill ${activePreset === 'custom' ? 'active' : ''}`} 
+              type="button" 
+              className={`preset-pill-mini ${activePreset === 'custom' ? 'active' : ''}`}
               onClick={() => setPreset('custom')}
             >
-              <span>⚡ Benutzerdefiniert</span> <small className="preset-sub">(Individuell)</small>
+              ⚡ Individuell
             </button>
           </div>
         </div>
 
-        {/* Step-by-Step Progress Stepper Navigation Bar */}
-        <div className="wizard-stepper-wrap glass-panel">
-          <div className="wizard-stepper-strip">
+        {/* Compact Progress Stepper Strip */}
+        <div className="wizard-stepper-compact glass-panel">
+          <div className="stepper-compact-strip">
             {WIZARD_STEPS.map((step, idx) => {
               const isActive = currentStepIndex === idx;
               const isPast = currentStepIndex > idx;
-              
-              // Count how many modules are chosen in this step
-              const stepCount = step.category === 'summary' 
-                ? calculation.itemCount 
-                : MODULES_DATA.filter(m => m.category === step.category && selectedConfig[m.code]?.selected).length;
+              const count = getCategoryCount(step.category);
 
               return (
                 <button
                   key={step.id}
                   type="button"
-                  className={`wizard-step-node ${isActive ? 'active' : ''} ${isPast ? 'past' : ''}`}
+                  className={`wizard-step-tab ${isActive ? 'active' : ''} ${isPast ? 'completed' : ''}`}
                   onClick={() => handleGoToStep(idx)}
                 >
-                  <div className="step-circle">
-                    {isPast ? <Check size={14} /> : step.id}
-                  </div>
-                  <div className="step-node-text">
-                    <span className="step-node-label">{step.shortLabel}</span>
-                    {step.category !== 'summary' && stepCount > 0 && (
-                      <span className="step-node-count">{stepCount} gewählt</span>
-                    )}
-                  </div>
+                  <span className="step-num-bubble">
+                    {isPast ? <Check size={11} /> : step.id}
+                  </span>
+                  <span className="step-tab-name">{step.shortLabel}</span>
+                  {step.category !== 'summary' && count > 0 && (
+                    <span className="step-tab-badge">{count}</span>
+                  )}
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Wizard Main Content Area */}
-        <div className="wizard-stage">
-          {/* Step Header */}
-          <div className="wizard-step-header">
-            <div className="wizard-step-title-wrap">
-              <span className="wizard-step-badge">
-                Schritt {currentStep.id} von 5 {currentStep.id === 6 && '· Fertig'}
-              </span>
-              <h3 className="wizard-step-title">{currentStep.title}</h3>
-              <p className="wizard-step-subtitle">{currentStep.subtitle}</p>
-            </div>
-
-            {/* Quick tax toggle on desktop if in summary */}
-            {currentStepIndex === 5 && (
-              <div className="wizard-summary-tax-toggle">
-                <div className="tax-toggle-group">
-                  <button 
-                    type="button"
-                    className={`tax-toggle-btn ${!useTax ? 'active' : ''}`}
-                    onClick={() => setUseTax(false)}
-                    title="Kleinunternehmerregelung gem. § 6 Abs. 1 Z 27 UStG"
-                  >
-                    <span className="tax-btn-full">0% (Kleinunternehmer)</span>
-                    <span className="tax-btn-short">0% USt-frei</span>
-                  </button>
-                  <button 
-                    type="button"
-                    className={`tax-toggle-btn ${useTax ? 'active' : ''}`}
-                    onClick={() => setUseTax(true)}
-                  >
-                    <span className="tax-btn-full">20% Regelbesteuerung</span>
-                    <span className="tax-btn-short">20% USt.</span>
-                  </button>
-                </div>
-              </div>
-            )}
+        {/* Step Intro Header (Single compact line) */}
+        <div className="wizard-step-intro-compact">
+          <div className="step-intro-left">
+            <h3 className="step-active-heading">{currentStep.title}</h3>
+            <p className="step-active-sub">{currentStep.subtitle}</p>
           </div>
-
-          {/* STEP 1-5: Modular Cards for Current Category */}
-          {currentStepIndex < 5 && (
-            <div className="modules-cards-grid wizard-modules-grid">
-              {currentStepModules.map(mod => {
-                const isSelected = !!selectedConfig[mod.code]?.selected;
-                const quantity = selectedConfig[mod.code]?.quantity || 1;
-                const isCountable = mod.code === 'B-04' || mod.code === 'C-01' || mod.code === 'F-03';
-
-                return (
-                  <div 
-                    key={mod.code} 
-                    className={`module-card glass-panel ${isSelected ? 'selected' : ''}`}
-                  >
-                    <div className="module-card-top">
-                      <div className="module-header-tags">
-                        <span className="module-category-tag">{mod.categoryLabel}</span>
-                        {mod.badge && <span className="module-badge-tag">{mod.badge}</span>}
-                        {mod.isPopular && <span className="module-badge-popular">⭐ Bestseller</span>}
-                      </div>
-                      
-                      <div className="module-price-block">
-                        <div className="module-price-main">
-                          {mod.fixedPrice} €
-                          <span className="module-price-unit">
-                            {mod.billingType === 'Pro Seite' ? ' / Seite' : 
-                             mod.billingType === 'Pro Sprache' ? ' / Sprache' :
-                             mod.billingType === 'Monatlich' ? ' / mtl.' : ' Fixpreis'}
-                          </span>
-                        </div>
-                        <div className="module-market-compare">
-                          Marktpreis: <span className="strikethrough">{mod.maxPrice} €</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <h3 className="module-title">{mod.name}</h3>
-                    <p className="module-description">{mod.description}</p>
-
-                    {/* Scope checkmarks */}
-                    <ul className="module-scope-list">
-                      {mod.scopeHighlights.slice(0, 3).map((item, idx) => (
-                        <li key={idx}>
-                          <Check size={14} className="check-icon" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* Quantity controls if countable */}
-                    {isCountable && isSelected && (
-                      <div className="quantity-counter-row">
-                        <span className="qty-label">
-                          {mod.code === 'B-04' ? 'Zusatzseiten Anzahl:' : 
-                           mod.code === 'C-01' ? 'Texterstellung Seiten:' : 'Zusätzliche Sprachen:'}
-                        </span>
-                        <div className="stepper-controls">
-                          <button 
-                            type="button" 
-                            className="stepper-btn" 
-                            onClick={() => updateQuantity(mod.code, -1)}
-                            aria-label="Anzahl verringern"
-                          >
-                            <Minus size={14} />
-                          </button>
-                          <span className="stepper-val">{quantity}</span>
-                          <button 
-                            type="button" 
-                            className="stepper-btn" 
-                            onClick={() => updateQuantity(mod.code, 1)}
-                            aria-label="Anzahl erhöhen"
-                          >
-                            <Plus size={14} />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Actions: Live Demo + Select Module */}
-                    <div className="module-card-footer">
-                      <button 
-                        type="button"
-                        className="btn-demo-trigger"
-                        onClick={() => onOpenDemo(mod)}
-                        title="Live Demo ausprobieren"
-                      >
-                        <Play size={14} className="play-icon" />
-                        <span>Live-Demo</span>
-                      </button>
-
-                      <button 
-                        type="button"
-                        className={`btn-select-module ${isSelected ? 'active' : ''}`}
-                        onClick={() => toggleModule(mod.code)}
-                      >
-                        {isSelected ? (
-                          <>
-                            <CheckCircle2 size={16} /> Gewählt
-                          </>
-                        ) : (
-                          <>
-                            <Plus size={16} /> Auswählen
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* STEP 6: Full Transparent Project Summary */}
           {currentStepIndex === 5 && (
-            <div className="wizard-summary-layout">
-              {/* Left Column: Grouped selected modules with direct Edit links */}
-              <div className="wizard-summary-breakdown glass-panel">
-                <div className="summary-breakdown-head">
-                  <h4>Gewählte Bausteine nach Kategorien</h4>
-                  <p>Du kannst jederzeit zu jedem Schritt zurückkehren und Änderungen vornehmen.</p>
-                </div>
-
-                <div className="summary-steps-review-list">
-                  {WIZARD_STEPS.slice(0, 5).map((step, idx) => {
-                    const stepItems = selectedItemsStructured.filter(item => item.category === step.category);
-
-                    return (
-                      <div key={step.id} className="summary-step-group">
-                        <div className="summary-step-group-header">
-                          <div className="summary-step-group-title">
-                            <span className="step-dot"></span>
-                            <strong>{step.shortLabel.replace(/^[0-9]+\.\s*/, '')}</strong>
-                          </div>
-                          <button 
-                            type="button" 
-                            className="btn-edit-step" 
-                            onClick={() => handleGoToStep(idx)}
-                          >
-                            <Edit3 size={13} />
-                            <span>Bearbeiten</span>
-                          </button>
-                        </div>
-
-                        {stepItems.length === 0 ? (
-                          <div className="summary-step-empty-note">
-                            Keine Zusatzmodule gewählt (Grundausstattung)
-                          </div>
-                        ) : (
-                          <div className="summary-step-items">
-                            {stepItems.map(item => (
-                              <div key={item.code} className="summary-step-item-row">
-                                <span className="item-name">
-                                  {item.name}{item.qtyLabel}
-                                </span>
-                                <span className={`item-price ${item.isMonthly ? 'text-purple' : 'text-cyan'}`}>
-                                  {item.priceFormatted}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Right Column: Pricing Totals, Payment milestones & CTAs */}
-              <div className="wizard-summary-sidebar">
-                <div className="summary-sticky-card glass-panel">
-                  <div className="summary-card-header">
-                    <div className="summary-title-wrap">
-                      <h4>Verbindliches Festpreisangebot</h4>
-                      <span className="summary-count-badge">{calculation.itemCount} Positionen</span>
-                    </div>
-                  </div>
-
-                  {/* Price Calculations */}
-                  <div className="summary-price-calculations">
-                    <div className="calc-row">
-                      <span>Einmalige Entwicklung (Netto):</span>
-                      <strong className="calc-val">{calculation.oneTimeNet.toLocaleString('de-AT')} €</strong>
-                    </div>
-
-                    <div className="calc-row">
-                      <span>Umsatzsteuer ({calculation.taxRate}%):</span>
-                      <span className="calc-val">
-                        {useTax ? `${Math.round(calculation.oneTimeNet * 0.2).toLocaleString('de-AT')} €` : '0 € (USt-befreit)'}
-                      </span>
-                    </div>
-
-                    <div className="calc-row highlight-total">
-                      <span>Gesamtpreis (Fixpreis):</span>
-                      <strong className="calc-total-val gradient-text">
-                        {calculation.oneTimeGross.toLocaleString('de-AT')} €
-                      </strong>
-                    </div>
-
-                    {calculation.mrrNet > 0 && (
-                      <div className="calc-row mrr-row">
-                        <span>Laufende Kosten (Hosting/Wartung):</span>
-                        <strong className="calc-mrr-val text-purple">
-                          {calculation.mrrNet.toLocaleString('de-AT')} € / mtl.
-                        </strong>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Payment Milestones (50 / 50) */}
-                  <div className="payment-milestone-box">
-                    <div className="milestone-title">
-                      <Shield size={14} />
-                      <span>Transparente 50/50 Zahlungsgarantie:</span>
-                    </div>
-                    <div className="milestone-steps">
-                      <div className="milestone-step">
-                        <span className="step-label">1. Start-Anzahlung (50%):</span>
-                        <strong className="step-amount">{calculation.downPayment50.toLocaleString('de-AT')} €</strong>
-                      </div>
-                      <div className="milestone-step">
-                        <span className="step-label">2. Nach Freigabe & Live (50%):</span>
-                        <strong className="step-amount">{calculation.finalPayment50.toLocaleString('de-AT')} €</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Estimated Hours & Savings badge */}
-                  <div className="summary-meta-badges">
-                    <div className="meta-badge">
-                      <span>Kalkulierter Entwicklungsaufwand:</span>
-                      <strong>ca. {calculation.totalHours} Stunden</strong>
-                    </div>
-                    {calculation.savingsTotal > 0 && (
-                      <div className="meta-badge savings-badge">
-                        <span>Ersparnis vs. Großagenturen:</span>
-                        <strong className="text-emerald">Ø {calculation.savingsTotal.toLocaleString('de-AT')} € gespart</strong>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* CTAs in Summary */}
-                  <div className="wizard-final-ctas">
-                    <button 
-                      type="button"
-                      className="btn-quote-submit"
-                      onClick={() => onRequestQuote(calculation, selectedDetails)}
-                    >
-                      <span>Jetzt unverbindlich anfragen</span>
-                      <ArrowRight size={18} />
-                    </button>
-
-                    <button 
-                      type="button"
-                      className="btn-download-pdf-offer"
-                      onClick={handleDownloadPdfOffer}
-                      disabled={isGeneratingPdf || calculation.itemCount === 0}
-                    >
-                      <Download size={16} className={isGeneratingPdf ? 'spin-icon' : ''} />
-                      <span>
-                        {isGeneratingPdf ? 'PDF wird erstellt...' : 'Angebot als PDF herunterladen'}
-                      </span>
-                    </button>
-                  </div>
-
-                  <p className="summary-guarantee-note">
-                    🔒 Verbindliches Angebot mit 30 Tagen Preisgarantie. Keine versteckten Kosten.
-                  </p>
-                </div>
+            <div className="summary-tax-toggle-compact">
+              <div className="tax-toggle-group">
+                <button 
+                  type="button"
+                  className={`tax-toggle-btn ${!useTax ? 'active' : ''}`}
+                  onClick={() => setUseTax(false)}
+                >
+                  <span className="tax-btn-full">0% (Kleinunternehmer)</span>
+                  <span className="tax-btn-short">0% USt-frei</span>
+                </button>
+                <button 
+                  type="button"
+                  className={`tax-toggle-btn ${useTax ? 'active' : ''}`}
+                  onClick={() => setUseTax(true)}
+                >
+                  <span className="tax-btn-full">20% Regelbesteuerung</span>
+                  <span className="tax-btn-short">20% USt.</span>
+                </button>
               </div>
             </div>
           )}
         </div>
 
-        {/* Sticky Bottom Navigation Bar (Steps 1 to 5) */}
+        {/* STEP 1-5: Compact Modular Cards Grid (Height ~145px) */}
         {currentStepIndex < 5 && (
-          <div className="wizard-bottom-bar glass-panel">
-            <div className="wizard-bar-container">
-              {/* Back Button */}
-              <div className="wizard-bar-left">
-                {currentStepIndex > 0 ? (
-                  <button 
-                    type="button" 
-                    className="btn-wizard-back" 
-                    onClick={handlePrevStep}
-                  >
-                    <ArrowLeft size={16} />
-                    <span>Zurück</span>
-                  </button>
-                ) : (
-                  <span className="wizard-bar-hint">Schritt 1: Basis-Website</span>
+          <div className="compact-cards-grid">
+            {currentStepModules.map(mod => {
+              const isSelected = !!selectedConfig[mod.code]?.selected;
+              const quantity = selectedConfig[mod.code]?.quantity || 1;
+              const isCountable = mod.code === 'B-04' || mod.code === 'C-01' || mod.code === 'F-03';
+
+              return (
+                <div 
+                  key={mod.code} 
+                  className={`compact-module-card glass-panel ${isSelected ? 'selected' : ''}`}
+                  onClick={() => toggleModule(mod.code)}
+                >
+                  {/* Card Top: Badges & Price */}
+                  <div className="card-top-meta">
+                    <div className="card-badge-wrap">
+                      {mod.isPopular && <span className="mini-badge-bestseller">⭐ Bestseller</span>}
+                      {mod.badge && !mod.isPopular && <span className="mini-badge-subtle">{mod.badge}</span>}
+                      {!mod.badge && !mod.isPopular && (
+                        <span className="mini-badge-cat">{mod.categoryLabel.replace(/^[0-9]+\.\s*/, '')}</span>
+                      )}
+                    </div>
+                    <div className="card-price-tag">
+                      <strong className="price-num">{mod.fixedPrice} €</strong>
+                      <span className="price-unit">
+                        {mod.billingType === 'Monatlich' ? ' /mtl.' : 
+                         mod.billingType === 'Pro Seite' ? ' /Seite' : 
+                         mod.billingType === 'Pro Sprache' ? ' /Sprache' : ''}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Card Title & Crisp 1-Line Benefit */}
+                  <h4 className="card-title-compact">{mod.name}</h4>
+                  <p className="card-desc-compact">
+                    {mod.scopeHighlights[0] || mod.description}
+                  </p>
+
+                  {/* Inline Stepper if countable */}
+                  {isCountable && isSelected && (
+                    <div className="card-stepper-compact" onClick={(e) => e.stopPropagation()}>
+                      <span className="stepper-label-compact">
+                        {mod.code === 'B-04' ? 'Seiten:' : mod.code === 'C-01' ? 'Texte:' : 'Sprachen:'}
+                      </span>
+                      <div className="stepper-controls-mini">
+                        <button 
+                          type="button" 
+                          onClick={() => updateQuantity(mod.code, -1)}
+                          aria-label="Verringern"
+                        >
+                          -
+                        </button>
+                        <span className="stepper-val-mini">{quantity}</span>
+                        <button 
+                          type="button" 
+                          onClick={() => updateQuantity(mod.code, 1)}
+                          aria-label="Erhöhen"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Card Bottom: Demo link & Selection state */}
+                  <div className="card-bottom-actions">
+                    <button 
+                      type="button" 
+                      className="btn-card-demo-mini"
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        onOpenDemo(mod); 
+                      }}
+                      title="Interaktive Live-Demo testen"
+                    >
+                      <Play size={11} className="play-icon" />
+                      <span>Live-Demo</span>
+                    </button>
+
+                    <div className={`selection-indicator ${isSelected ? 'selected' : ''}`}>
+                      {isSelected ? (
+                        <>
+                          <CheckCircle2 size={13} className="check-icon-active" />
+                          <span>Gewählt</span>
+                        </>
+                      ) : (
+                        <>
+                          <Plus size={13} />
+                          <span>Wählen</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* STEP 6: Compact Summary Stage (Fits in single viewport) */}
+        {currentStepIndex === 5 && (
+          <div className="compact-summary-view">
+            {/* Left: 5 category rows with edit buttons */}
+            <div className="compact-summary-left glass-panel">
+              <div className="summary-left-header">
+                <h4>Übersicht deiner Konfiguration</h4>
+                <p>Klicke auf Bearbeiten, um einzelne Schritte anzupassen.</p>
+              </div>
+
+              <div className="summary-compact-list">
+                {WIZARD_STEPS.slice(0, 5).map((step, idx) => {
+                  const stepItems = selectedItemsStructured.filter(item => item.category === step.category);
+
+                  return (
+                    <div key={step.id} className="summary-compact-row">
+                      <div className="row-left">
+                        <span className="row-dot"></span>
+                        <strong className="row-cat-name">{step.shortLabel.replace(/^[0-9]+\.\s*/, '')}:</strong>
+                        <span className="row-items-text">
+                          {stepItems.length === 0 ? (
+                            <span className="text-muted italic">Keine Zusatzmodule (Grundausstattung)</span>
+                          ) : (
+                            stepItems.map(i => `${i.name}${i.qtyLabel}`).join(', ')
+                          )}
+                        </span>
+                      </div>
+                      <div className="row-right">
+                        <span className="row-price-sum">
+                          {stepItems.length > 0 && (
+                            stepItems.map(i => i.priceFormatted).join(' + ')
+                          )}
+                        </span>
+                        <button 
+                          type="button" 
+                          className="btn-edit-compact" 
+                          onClick={() => handleGoToStep(idx)}
+                          title={`${step.shortLabel} bearbeiten`}
+                        >
+                          <Edit3 size={12} />
+                          <span>Bearbeiten</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right: Condensed Price Overview & CTAs */}
+            <div className="compact-summary-right glass-panel">
+              <div className="summary-card-header-compact">
+                <h4>Verbindlicher Festpreis</h4>
+                <span className="summary-count-badge">{calculation.itemCount} Positionen</span>
+              </div>
+
+              <div className="summary-calc-compact">
+                <div className="calc-row-compact">
+                  <span>Einmalig (Netto):</span>
+                  <strong>{calculation.oneTimeNet.toLocaleString('de-AT')} €</strong>
+                </div>
+
+                <div className="calc-row-compact">
+                  <span>Umsatzsteuer ({calculation.taxRate}%):</span>
+                  <span>{useTax ? `${Math.round(calculation.oneTimeNet * 0.2).toLocaleString('de-AT')} €` : '0 € (USt-frei)'}</span>
+                </div>
+
+                <div className="calc-row-compact highlight-gross">
+                  <span>Gesamtsumme:</span>
+                  <strong className="gross-total-amount gradient-text">
+                    {calculation.oneTimeGross.toLocaleString('de-AT')} €
+                  </strong>
+                </div>
+
+                {calculation.mrrNet > 0 && (
+                  <div className="calc-row-compact mrr-highlight">
+                    <span>Hosting & Wartung:</span>
+                    <strong className="text-purple">{calculation.mrrNet.toLocaleString('de-AT')} €/mtl.</strong>
+                  </div>
                 )}
               </div>
 
-              {/* Center Live Price Badge */}
-              <div className="wizard-bar-center">
-                <div className="wizard-live-price-pill">
-                  <span className="live-price-label">Zwischensumme:</span>
-                  <strong className="live-price-val text-cyan">
-                    {calculation.oneTimeGross.toLocaleString('de-AT')} €
-                  </strong>
-                  {calculation.mrrNet > 0 && (
-                    <span className="live-mrr-val text-purple">
-                      + {calculation.mrrNet} €/mtl.
-                    </span>
-                  )}
-                  <span className="live-count-chip">
-                    {calculation.itemCount} Positionen
-                  </span>
-                </div>
+              <div className="payment-5050-compact">
+                <Shield size={13} className="text-cyan" />
+                <span>50% Anzahlung ({calculation.downPayment50.toLocaleString('de-AT')} €) · 50% erst nach Freigabe & Livegang</span>
               </div>
 
-              {/* Dynamic Next Button */}
-              <div className="wizard-bar-right">
+              <div className="summary-actions-compact">
                 <button 
                   type="button"
-                  className={`btn-wizard-next ${countInCurrentStep === 0 && currentStepIndex > 0 ? 'skip-mode' : ''}`}
-                  onClick={handleNextStep}
+                  className="btn-quote-submit-compact"
+                  onClick={() => onRequestQuote(calculation, selectedDetails)}
                 >
-                  <span>{nextButtonText}</span>
+                  <span>Projekt jetzt unverbindlich anfragen</span>
                   <ArrowRight size={16} />
                 </button>
+
+                <button 
+                  type="button"
+                  className="btn-pdf-compact"
+                  onClick={handleDownloadPdfOffer}
+                  disabled={isGeneratingPdf || calculation.itemCount === 0}
+                >
+                  <Download size={14} className={isGeneratingPdf ? 'spin-icon' : ''} />
+                  <span>{isGeneratingPdf ? 'Erstelle PDF...' : 'Angebot als PDF laden'}</span>
+                </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Compact Integrated Bottom Action Dock (Steps 1 to 5) */}
+        {currentStepIndex < 5 && (
+          <div className="wizard-action-dock glass-panel">
+            <div className="action-dock-left">
+              {currentStepIndex > 0 ? (
+                <button 
+                  type="button" 
+                  className="btn-dock-back" 
+                  onClick={handlePrevStep}
+                >
+                  <ArrowLeft size={14} />
+                  <span>Zurück</span>
+                </button>
+              ) : (
+                <span className="dock-hint-text">Schritt 1: Website-Fundament</span>
+              )}
+            </div>
+
+            <div className="action-dock-center">
+              <div className="dock-price-chip">
+                <span className="chip-label">Aktuell:</span>
+                <strong className="chip-amount text-cyan">
+                  {calculation.oneTimeGross.toLocaleString('de-AT')} €
+                </strong>
+                {calculation.mrrNet > 0 && (
+                  <span className="chip-mrr text-purple">
+                    + {calculation.mrrNet} €/mtl.
+                  </span>
+                )}
+                <span className="chip-count">({calculation.itemCount} Positionen)</span>
+              </div>
+            </div>
+
+            <div className="action-dock-right">
+              <button 
+                type="button"
+                className={`btn-dock-next ${countInCurrentStep === 0 && currentStepIndex > 0 ? 'btn-dock-skip' : ''}`}
+                onClick={handleNextStep}
+              >
+                <span>{nextButtonText}</span>
+                <ArrowRight size={15} />
+              </button>
             </div>
           </div>
         )}
