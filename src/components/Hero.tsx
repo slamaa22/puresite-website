@@ -64,11 +64,18 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToPricing, onExploreDemos })
         {/* Hero Visual Mockup */}
         <div className="hero-visual-wrapper">
           <div className="visual-perspective-card glass-panel">
-            <img 
-              src="/assets/hero-showcase.jpg" 
-              alt="PureSite High-End Webdesign Showcase" 
-              className="hero-mockup-img"
-            />
+            <picture>
+              <source srcSet="/assets/hero-showcase.webp" type="image/webp" />
+              <img 
+                src="/assets/hero-showcase.jpg" 
+                alt="PureSite High-End Webdesign Showcase" 
+                className="hero-mockup-img"
+                width={1376}
+                height={768}
+                fetchPriority="high"
+                decoding="async"
+              />
+            </picture>
             <div className="visual-glare-overlay"></div>
 
             {/* Floating Info Pills */}

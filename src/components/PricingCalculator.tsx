@@ -5,8 +5,6 @@ import {
   Check, Plus, Minus, Sparkles, Play, 
   CheckCircle2, Shield, ArrowRight, Download
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
-import { generatePureSitePdf } from '../utils/pdfGenerator';
 
 interface PricingCalculatorProps {
   onOpenDemo: (module: PricingModule) => void;
@@ -194,6 +192,11 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
             amount: m.fixedPrice * qty
           };
         });
+
+      const [{ generatePureSitePdf }, { default: confetti }] = await Promise.all([
+        import('../utils/pdfGenerator'),
+        import('canvas-confetti')
+      ]);
 
       await generatePureSitePdf({
         calculation,

@@ -25,11 +25,18 @@ export const AboutUs: React.FC = () => {
           {/* Founder 1: Maximilian Schlacher */}
           <div className="founder-card glass-panel">
             <div className="founder-image-wrapper">
-              <img 
-                src="/assets/maximilian-schlacher.jpg" 
-                alt="Maximilian Schlacher - Co-Founder & Web Development" 
-                className="founder-photo"
-              />
+              <picture>
+                <source srcSet="/assets/maximilian-schlacher.webp" type="image/webp" />
+                <img 
+                  src="/assets/maximilian-schlacher.jpg" 
+                  alt="Maximilian Schlacher - Co-Founder & Web Development" 
+                  className="founder-photo"
+                  width={1000}
+                  height={1500}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
               <div className="founder-tag">
                 <GraduationCap size={15} className="text-cyan" />
                 <span>IT-Ausbildung HTL Kaindorf</span>
@@ -50,11 +57,18 @@ export const AboutUs: React.FC = () => {
           {/* Founder 2: Loreno Zanaboni */}
           <div className="founder-card glass-panel">
             <div className="founder-image-wrapper">
-              <img 
-                src="/assets/loreno-zanaboni.jpg" 
-                alt="Loreno Zanaboni - Co-Founder & Softwarearchitektur" 
-                className="founder-photo"
-              />
+              <picture>
+                <source srcSet="/assets/loreno-zanaboni.webp" type="image/webp" />
+                <img 
+                  src="/assets/loreno-zanaboni.jpg" 
+                  alt="Loreno Zanaboni - Co-Founder & Softwarearchitektur" 
+                  className="founder-photo"
+                  width={1000}
+                  height={1500}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
               <div className="founder-tag">
                 <GraduationCap size={15} className="text-cyan" />
                 <span>IT-Ausbildung HTL Kaindorf</span>

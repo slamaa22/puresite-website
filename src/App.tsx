@@ -8,11 +8,12 @@ import { AboutUs } from './components/AboutUs';
 import { ProcessSection } from './components/ProcessSection';
 import { FAQSection } from './components/FAQSection';
 import { Footer } from './components/Footer';
-import { ModuleDemoModal } from './components/demos/ModuleDemoModal';
-import { InquiryModal } from './components/InquiryModal';
-import { LegalModal } from './components/LegalModal';
 import type { PricingModule, ProjectCalculation } from './types/pricing';
 import { MODULES_DATA } from './data/modulesData';
+
+const ModuleDemoModal = React.lazy(() => import('./components/demos/ModuleDemoModal').then(m => ({ default: m.ModuleDemoModal })));
+const InquiryModal = React.lazy(() => import('./components/InquiryModal').then(m => ({ default: m.InquiryModal })));
+const LegalModal = React.lazy(() => import('./components/LegalModal').then(m => ({ default: m.LegalModal })));
 
 export function App() {
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -101,31 +102,37 @@ export function App() {
         onOpenContact={() => setIsInquiryOpen(true)}
       />
 
-      {/* Interactive Feature Demo Modal */}
-      <ModuleDemoModal 
-        module={activeDemoModule}
-        onClose={() => setActiveDemoModule(null)}
-        isSelected={false}
-        onSelectModule={(code) => {
-          setActiveDemoModule(null);
-          scrollToPricing();
-        }}
-      />
+      {/* Lazy Modals loaded on-demand */}
+      <React.Suspense fallback={null}>
+        {activeDemoModule && (
+          <ModuleDemoModal 
+            module={activeDemoModule}
+            onClose={() => setActiveDemoModule(null)}
+            isSelected={false}
+            onSelectModule={() => {
+              setActiveDemoModule(null);
+              scrollToPricing();
+            }}
+          />
+        )}
 
-      {/* Inquiry / Quote Funnel Modal */}
-      <InquiryModal 
-        isOpen={isInquiryOpen}
-        onClose={() => setIsInquiryOpen(false)}
-        calculation={calculation}
-        selectedDetails={selectedDetails}
-      />
+        {isInquiryOpen && (
+          <InquiryModal 
+            isOpen={isInquiryOpen}
+            onClose={() => setIsInquiryOpen(false)}
+            calculation={calculation}
+            selectedDetails={selectedDetails}
+          />
+        )}
 
-      {/* Impressum & Datenschutz Modal */}
-      <LegalModal 
-        isOpen={isLegalOpen}
-        initialTab={legalTab}
-        onClose={() => setIsLegalOpen(false)}
-      />
+        {isLegalOpen && (
+          <LegalModal 
+            isOpen={isLegalOpen}
+            initialTab={legalTab}
+            onClose={() => setIsLegalOpen(false)}
+          />
+        )}
+      </React.Suspense>
     </div>
   );
 }
