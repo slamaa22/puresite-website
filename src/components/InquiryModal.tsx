@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import type { ProjectCalculation } from '../types/pricing';
-import { X, Send, CheckCircle2, Shield, FileText, Mail, Loader2 } from 'lucide-react';
+import { MODULES_DATA } from '../data/modulesData';
+import { generatePureSitePdf } from '../utils/pdfGenerator';
+import { X, Send, CheckCircle2, Shield, FileText, Mail, Loader2, Download, MessageSquare } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface InquiryModalProps {
@@ -24,66 +26,147 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const [notes, setNotes] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   if (!isOpen) return null;
+
+  const mailtoBody = encodeURIComponent(
+    `Hallo Maximilian (PureSite Team),\n\n` +
+    `ich interessiere mich für folgendes Website-Projekt:\n\n` +
+    `----------------------------------------\n` +
+    `KONTAKTDATEN:\n` +
+    `• Name: ${name}\n` +
+    `• Firma: ${company || 'Privat / Keine Angabe'}\n` +
+    `• E-Mail: ${email}\n` +
+    `• Telefon: ${phone || 'Keine Angabe'}\n` +
+    `• Gewünschter Start: ${timeline}\n\n` +
+    `----------------------------------------\n` +
+    `AUSGEWÄHLTE MODULE (${selectedDetails.length}):\n` +
+    selectedDetails.map(d => `• ${d}`).join('\n') + `\n\n` +
+    `----------------------------------------\n` +
+    `FESTPREIS-KALKULATION:\n` +
+    `• Projektpreis Netto: ${calculation ? calculation.oneTimeNet.toLocaleString('de-AT') : '0'} €\n` +
+    `• Gesamtbetrag Fixpreis: ${calculation ? calculation.oneTimeGross.toLocaleString('de-AT') : '0'} €\n` +
+    `• Meilenstein 1 (50% bei Start): ${calculation ? calculation.downPayment50.toLocaleString('de-AT') : '0'} €\n` +
+    `• Meilenstein 2 (50% bei Livegang): ${calculation ? calculation.finalPayment50.toLocaleString('de-AT') : '0'} €\n` +
+    (calculation && calculation.mrrNet > 0 ? `• Laufendes Hosting & Wartung: ${calculation.mrrNet} € / Monat\n` : '') +
+    `\n----------------------------------------\n` +
+    `ZUSÄTZLICHE WÜNSCHE:\n` +
+    `${notes || 'Keine zusätzlichen Wünsche'}\n\n` +
+    `Beste Grüße,\n${name}`
+  );
+
+  // CC to the user's email address ensures they get their own copy immediately!
+  const mailtoUrl = `mailto:maximilian.schlacher@outlook.com?cc=${encodeURIComponent(email)}&subject=${encodeURIComponent(`PureSite Angebot: ${company ? `${company} (${name})` : name}`)}&body=${mailtoBody}`;
+
+  const whatsappText = encodeURIComponent(
+    `Hallo PureSite Team! Ich interessiere mich für eine Website:\n` +
+    `Name: ${name}\n` +
+    (company ? `Firma: ${company}\n` : '') +
+    `E-Mail: ${email}\n` +
+    `Projektpreis: ${calculation?.oneTimeGross.toLocaleString('de-AT')} €\n` +
+    `Module: ${selectedDetails.slice(0, 3).join(', ')}...`
+  );
+  const whatsappUrl = `https://wa.me/?text=${whatsappText}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const payload = {
-      _subject: `Neues PureSite Angebot angefragt: ${company ? `${company} (${name})` : name}`,
-      _captcha: 'false',
-      _template: 'table',
-      Name: name,
-      Firma: company || 'Keine Angabe',
-      Email: email,
-      Telefon: phone || 'Keine Angabe',
-      Projektstart: timeline,
-      Zusaetzliche_Wuensche: notes || 'Keine',
-      Ausgewaehlte_Module: selectedDetails.join(' | '),
-      Einmalig_Netto: calculation ? `${calculation.oneTimeNet.toLocaleString('de-AT')} €` : '',
-      Projekt_Gesamtbetrag: calculation ? `${calculation.oneTimeGross.toLocaleString('de-AT')} €` : '',
-      Anzahlung_Start_50: calculation ? `${calculation.downPayment50.toLocaleString('de-AT')} €` : '',
-      Endzahlung_Livegang_50: calculation ? `${calculation.finalPayment50.toLocaleString('de-AT')} €` : '',
-      Monatliche_Wartung: calculation && calculation.mrrNet > 0 ? `${calculation.mrrNet} €/Monat` : 'Keine'
+      _subject: `Neues PureSite Angebot: ${company ? `${company} (${name})` : name}`,
+      _replyto: email,
+      name: name,
+      firma: company || 'Keine Angabe',
+      email: email,
+      telefon: phone || 'Keine Angabe',
+      projektstart: timeline,
+      nachricht: notes || 'Keine zusätzlichen Wünsche',
+      module: selectedDetails.join(' | '),
+      preis_netto: calculation ? `${calculation.oneTimeNet.toLocaleString('de-AT')} €` : '',
+      gesamtpreis: calculation ? `${calculation.oneTimeGross.toLocaleString('de-AT')} €` : '',
+      anzahlung_50: calculation ? `${calculation.downPayment50.toLocaleString('de-AT')} €` : '',
+      endzahlung_50: calculation ? `${calculation.finalPayment50.toLocaleString('de-AT')} €` : '',
+      monatliche_wartung: calculation && calculation.mrrNet > 0 ? `${calculation.mrrNet} €/Monat` : 'Keine'
     };
 
+    // 1. Post to ShipMyForm endpoint
     try {
-      await fetch('https://formsubmit.co/ajax/maximilian.schlacher@outlook.com', {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      await fetch('https://shipmyform.com/to/maximilian.schlacher@outlook.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
     } catch (err) {
-      console.warn('FormSubmit AJAX notice:', err);
-    } finally {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      console.warn('ShipMyForm submission notice:', err);
     }
+
+    // 2. Open user's email client with CC so both parties receive an instant copy
+    try {
+      window.location.href = mailtoUrl;
+    } catch {
+      // Handled via button on success screen
+    }
+
+    setIsSubmitting(false);
+    setSubmitted(true);
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
   };
 
-  const mailtoBody = encodeURIComponent(
-    `Hallo PureSite Team (Maximilian),\n\nich interessiere mich für folgendes Website-Projekt:\n\n` +
-    `Name: ${name}\n` +
-    `Firma: ${company || '-'}\n` +
-    `E-Mail: ${email}\n` +
-    `Telefon: ${phone || '-'}\n` +
-    `Gewünschter Start: ${timeline}\n\n` +
-    `Ausgewählte Module:\n${selectedDetails.map(d => `• ${d}`).join('\n')}\n\n` +
-    `Projektpreis: ${calculation?.oneTimeGross.toLocaleString('de-AT')} €\n` +
-    `Zusätzliche Wünsche: ${notes || '-'}\n\n` +
-    `Beste Grüße,\n${name}`
-  );
-  const mailtoUrl = `mailto:maximilian.schlacher@outlook.com?subject=${encodeURIComponent(`PureSite Angebot: ${company || name}`)}&body=${mailtoBody}`;
+  const handleDownloadPdf = async () => {
+    if (!calculation || isGeneratingPdf) return;
+    setIsGeneratingPdf(true);
+    try {
+      const itemsForPdf = MODULES_DATA
+        .filter(m => selectedDetails.some(d => d.includes(m.name) || d.includes(m.code)))
+        .map(m => {
+          return {
+            code: m.code,
+            name: m.name,
+            categoryLabel: m.categoryLabel,
+            description: m.description,
+            qtyLabel: '',
+            priceFormatted: m.billingType === 'Monatlich' ? `${m.fixedPrice} €/mtl.` : `${m.fixedPrice} €`,
+            billingType: m.billingType,
+            amount: m.fixedPrice
+          };
+        });
+
+      const finalItems = itemsForPdf.length > 0 ? itemsForPdf : selectedDetails.map((d, i) => ({
+        code: `M-0${i + 1}`,
+        name: d,
+        categoryLabel: 'Gewähltes Modul',
+        description: 'Im Festpreis-Paket enthalten',
+        qtyLabel: '',
+        priceFormatted: 'Inklusive',
+        billingType: 'Einmalig',
+        amount: 0
+      }));
+
+      await generatePureSitePdf({
+        calculation,
+        items: finalItems,
+        useTax: true,
+        clientName: name || undefined,
+        clientCompany: company || undefined
+      });
+    } catch (err) {
+      console.warn('PDF download error:', err);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
 
   return (
     <div className="demo-modal-overlay" onClick={onClose}>
@@ -150,7 +233,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
             <div className="form-grid-two">
               <div className="form-group">
-                <label>E-Mail-Adresse *</label>
+                <label>E-Mail-Adresse (für dein Angebot) *</label>
                 <input 
                   type="email" 
                   required 
@@ -162,7 +245,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
               </div>
 
               <div className="form-group">
-                <label>Telefonnummer (für WhatsApp/Rückruf)</label>
+                <label>Telefonnummer (für Rückfragen)</label>
                 <input 
                   type="tel" 
                   placeholder="+43 664 ..." 
@@ -200,7 +283,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
             <div className="inquiry-guarantee-strip">
               <Shield size={16} className="text-emerald" />
-              <span>100% kostenlos & unverbindlich. Wir melden uns binnen 24 Stunden persönlich.</span>
+              <span>100% kostenlos & unverbindlich. Angebot wird sofort für dich vorbereitet.</span>
             </div>
 
             <div className="modal-actions-right">
@@ -210,11 +293,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
               <button type="submit" className="btn-primary-sm" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
-                    <Loader2 size={16} className="spin-icon" /> Wird gesendet...
+                    <Loader2 size={16} className="spin-icon" /> Wird vorbereitet...
                   </>
                 ) : (
                   <>
-                    <Send size={16} /> Anfrage jetzt absenden
+                    <Send size={16} /> Angebot anfordern
                   </>
                 )}
               </button>
@@ -227,26 +310,65 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
             </div>
             <h3>Vielen Dank, {name || 'lieber Interessent'}!</h3>
             <p>
-              Deine Projekt-Konfiguration für <strong>{company || 'dein Vorhaben'}</strong> wurde direkt an unser PureSite Team übermittelt.
+              Deine Projekt-Konfiguration für <strong>{company || 'dein Vorhaben'}</strong> ({calculation ? `${calculation.oneTimeGross.toLocaleString('de-AT')} €` : ''}) liegt bereit.
             </p>
-            <div className="success-highlights">
-              <div>✉️ <strong>E-Mail gesendet an:</strong> maximilian.schlacher@outlook.com</div>
-              <div>⚡ Wir prüfen deine Modulauswahl auf Machbarkeit & Synergien.</div>
-              <div>📞 Wir melden uns binnen maximal 24 Stunden mit einem detaillierten Fahrplan.</div>
+
+            <div className="success-highlights" style={{ width: '100%', maxWidth: '480px', margin: '0 auto' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Mail size={16} style={{ color: 'var(--pure-mint)', flexShrink: 0 }} />
+                <span><strong>E-Mail-Kopie:</strong> Sende dir selbst & Maximilian eine direkte Kopie.</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Download size={16} style={{ color: 'var(--pure-mint)', flexShrink: 0 }} />
+                <span><strong>Sofort-Download:</strong> Lade dein verbindliches Festpreis-PDF sofort herunter.</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Shield size={16} style={{ color: 'var(--pure-mint)', flexShrink: 0 }} />
+                <span><strong>Persönlich:</strong> Wir prüfen deine Modulauswahl und melden uns binnen 24h.</span>
+              </div>
             </div>
-            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+
+            {/* Direct Action Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', width: '100%', maxWidth: '440px', marginTop: '0.8rem' }}>
+              <button 
+                type="button"
+                className="button primary"
+                onClick={handleDownloadPdf}
+                disabled={isGeneratingPdf}
+                style={{ width: '100%', justifyContent: 'center' }}
+              >
+                <Download size={16} className={isGeneratingPdf ? 'spin-anim' : ''} />
+                <span>{isGeneratingPdf ? 'Erstelle PDF...' : 'Angebot jetzt als PDF herunterladen'}</span>
+              </button>
+
               <a 
                 href={mailtoUrl} 
-                className="btn-secondary-sm"
-                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}
+                className="button secondary"
+                style={{ textDecoration: 'none', width: '100%', justifyContent: 'center' }}
               >
-                <Mail size={15} />
-                <span>Kopie in eigener Mail-App öffnen</span>
+                <Mail size={16} />
+                <span>In E-Mail-App öffnen (Kopie an mich & Maximilian)</span>
               </a>
-              <button className="btn-primary-sm" onClick={onClose}>
-                Zurück zur Website
-              </button>
+
+              <a 
+                href={whatsappUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="button secondary"
+                style={{ textDecoration: 'none', width: '100%', justifyContent: 'center', fontSize: '0.85rem' }}
+              >
+                <MessageSquare size={15} />
+                <span>Per WhatsApp anfragen</span>
+              </a>
             </div>
+
+            <button 
+              type="button" 
+              onClick={onClose}
+              style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.82rem', marginTop: '0.5rem', textDecoration: 'underline' }}
+            >
+              Fenster schließen & zurück zur Website
+            </button>
           </div>
         )}
       </div>
