@@ -1059,6 +1059,79 @@
   box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
 }
 
+/* Persistent Zusatzseiten Quick-Strip in Selection Panel */
+.wizard-zusatz-quickstrip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.85rem;
+  background: rgba(0, 242, 254, 0.04);
+  border: 1px dashed rgba(0, 242, 254, 0.28);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.85rem;
+  transition: all var(--transition-fast);
+}
+
+.wizard-zusatz-quickstrip:hover {
+  background: rgba(0, 242, 254, 0.07);
+  border-color: rgba(0, 242, 254, 0.45);
+}
+
+.quickstrip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.quickstrip-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.quickstrip-icon {
+  font-size: 0.85rem;
+}
+
+.quickstrip-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.quickstrip-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  padding: 0.05rem 0.35rem;
+  border-radius: var(--radius-full);
+}
+
+.quickstrip-sub {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+
+.quickstrip-action {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.quickstrip-sum-tag {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--accent-cyan);
+}
+
 /* Step 6 Final Review Panel */
 .wizard-final-review-panel {
   margin-bottom: 1rem;
@@ -1409,6 +1482,48 @@
 
 .btn-remove-item:hover {
   color: #ef4444;
+}
+
+/* Sidebar Zusatzseiten Controls */
+.sidebar-add-zusatz-row {
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.btn-add-zusatz-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.06);
+  border: 1px solid rgba(0, 242, 254, 0.22);
+  border-radius: var(--radius-sm);
+  padding: 0.18rem 0.45rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-add-zusatz-mini:hover {
+  background: rgba(0, 242, 254, 0.16);
+  border-color: var(--accent-cyan);
+}
+
+.mini-sidebar-stepper {
+  gap: 0.2rem;
+}
+
+.mini-sidebar-stepper button {
+  width: 17px;
+  height: 17px;
+  font-size: 0.7rem;
+}
+
+.mini-sidebar-stepper .stepper-number {
+  font-size: 0.74rem;
+  min-width: 13px;
 }
 
 /* Tax Block */
@@ -4877,5 +4992,43 @@
   border-color: #58fca5;
   color: #087f49;
 }
+
+[data-theme="light"] .wizard-zusatz-quickstrip {
+  background: rgba(88, 252, 165, 0.08);
+  border-color: rgba(88, 252, 165, 0.4);
+}
+
+[data-theme="light"] .quickstrip-badge {
+  color: #087f49;
+  background: rgba(88, 252, 165, 0.2);
+  border-color: rgba(88, 252, 165, 0.4);
+}
+
+[data-theme="light"] .quickstrip-sum-tag {
+  color: #087f49;
+}
+
+[data-theme="light"] .btn-add-zusatz-mini {
+  color: #087f49;
+  background: rgba(88, 252, 165, 0.12);
+  border-color: rgba(88, 252, 165, 0.35);
+}
+
+[data-theme="light"] .btn-add-zusatz-mini:hover {
+  background: rgba(88, 252, 165, 0.24);
+  border-color: #58fca5;
+}
+
+@media (max-width: 540px) {
+  .wizard-zusatz-quickstrip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+  .quickstrip-action {
+    align-self: flex-end;
+  }
+}
+
 
 

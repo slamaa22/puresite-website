@@ -210,16 +210,24 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   // Modules belonging to current step category
   const currentStepModules = useMemo(() => {
     if (currentStep.category === 'summary') return [];
-    return MODULES_DATA.filter(m => m.category === currentStep.category);
+    const mods = MODULES_DATA.filter(m => m.category === currentStep.category);
+    // Zusatzseite is also directly selectable in Step 4 (Content & SEO)
+    if (currentStep.category === 'content') {
+      const b04 = MODULES_DATA.find(m => m.code === 'B-04');
+      if (b04 && !mods.some(m => m.code === 'B-04')) {
+        return [...mods, b04];
+      }
+    }
+    return mods;
   }, [currentStep.category]);
 
   // Number of selected modules in current step
   const countInCurrentStep = useMemo(() => {
     if (currentStep.category === 'summary') return 0;
-    return MODULES_DATA.filter(
-      m => m.category === currentStep.category && selectedConfig[m.code]?.selected
+    return currentStepModules.filter(
+      m => selectedConfig[m.code]?.selected
     ).length;
-  }, [currentStep.category, selectedConfig]);
+  }, [currentStep.category, currentStepModules, selectedConfig]);
 
   // Calculations
   const calculation = useMemo<ProjectCalculation>(() => {
@@ -375,6 +383,31 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   const getCategoryCount = (cat: string) => {
     if (cat === 'summary') return calculation.itemCount;
     return MODULES_DATA.filter(m => m.category === cat && selectedConfig[m.code]?.selected).length;
+  };
+
+  // Active Zusatzseiten quantity & quick-update handler
+  const zusatzConfig = selectedConfig['B-04'];
+  const zusatzQty = (zusatzConfig && zusatzConfig.selected) ? (zusatzConfig.quantity || 1) : 0;
+
+  const handleUpdateZusatzseiten = (delta: number) => {
+    setIsCustomMode(false);
+    setSelectedConfig(prev => {
+      const current = prev['B-04'];
+      const currentQty = (current && current.selected) ? (current.quantity || 1) : 0;
+      const newQty = currentQty + delta;
+
+      if (newQty <= 0) {
+        return {
+          ...prev,
+          'B-04': { selected: false, quantity: 1 }
+        };
+      } else {
+        return {
+          ...prev,
+          'B-04': { selected: true, quantity: newQty }
+        };
+      }
+    });
   };
 
   // Download offer as branded PDF
@@ -649,6 +682,52 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
               </div>
             )}
 
+            {/* Persistent Zusatzseiten Quick-Bar across Steps 2 to 5 */}
+            {currentStepIndex > 0 && currentStepIndex < 5 && (
+              <div className="wizard-zusatz-quickstrip">
+                <div className="quickstrip-info">
+                  <div className="quickstrip-title-row">
+                    <span className="quickstrip-icon">📄</span>
+                    <strong className="quickstrip-title">Zusatzseiten</strong>
+                    <span className="quickstrip-badge">+100 € / Seite</span>
+                  </div>
+                  <span className="quickstrip-sub">
+                    {zusatzQty > 0 
+                      ? `${zusatzQty} Zusatzseite${zusatzQty > 1 ? 'n' : ''} im Design-Raster gewählt (+${(zusatzQty * 100).toLocaleString('de-AT')} €)`
+                      : 'Beliebig viele zusätzliche Inhaltsseiten flexibel zubuchen'}
+                  </span>
+                </div>
+
+                <div className="quickstrip-action">
+                  <div className="stepper-btn-group">
+                    <button 
+                      type="button" 
+                      onClick={() => handleUpdateZusatzseiten(-1)}
+                      disabled={zusatzQty === 0}
+                      aria-label="Zusatzseite abziehen"
+                      title="Eine Zusatzseite weniger"
+                    >
+                      -
+                    </button>
+                    <span className="stepper-number">{zusatzQty}</span>
+                    <button 
+                      type="button" 
+                      onClick={() => handleUpdateZusatzseiten(1)}
+                      aria-label="Zusatzseite hinzufügen"
+                      title="Eine Zusatzseite mehr"
+                    >
+                      +
+                    </button>
+                  </div>
+                  {zusatzQty > 0 && (
+                    <span className="quickstrip-sum-tag">
+                      +{(zusatzQty * 100).toLocaleString('de-AT')} €
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Step 6: Final Review Stage */}
             {currentStepIndex === 5 && (
               <div className="wizard-final-review-panel">
@@ -781,18 +860,55 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                               </div>
                               <div className="item-price-wrap">
                                 <span className="item-price">{item.priceFormatted}</span>
-                                <button 
-                                  type="button"
-                                  className="btn-remove-item"
-                                  onClick={() => removeModule(item.code)}
-                                  title="Position entfernen"
-                                  aria-label={`${item.name} entfernen`}
-                                >
-                                  <Trash2 size={12} />
-                                </button>
+                                {item.code === 'B-04' ? (
+                                  <div className="stepper-btn-group mini-sidebar-stepper">
+                                    <button 
+                                      type="button" 
+                                      onClick={() => handleUpdateZusatzseiten(-1)}
+                                      aria-label="Zusatzseite abziehen"
+                                      title="Eine Zusatzseite weniger"
+                                    >
+                                      -
+                                    </button>
+                                    <span className="stepper-number">{zusatzQty}</span>
+                                    <button 
+                                      type="button" 
+                                      onClick={() => handleUpdateZusatzseiten(1)}
+                                      aria-label="Zusatzseite hinzufügen"
+                                      title="Eine Zusatzseite mehr"
+                                    >
+                                      +
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <button 
+                                    type="button"
+                                    className="btn-remove-item"
+                                    onClick={() => removeModule(item.code)}
+                                    title="Position entfernen"
+                                    aria-label={`${item.name} entfernen`}
+                                  >
+                                    <Trash2 size={12} />
+                                  </button>
+                                )}
                               </div>
                             </div>
                           ))}
+                        </div>
+                      )}
+
+                      {/* Quick-Add button in Sidebar if no Zusatzseite is selected yet */}
+                      {step.category === 'basis' && zusatzQty === 0 && (
+                        <div className="sidebar-add-zusatz-row">
+                          <button 
+                            type="button" 
+                            className="btn-add-zusatz-mini"
+                            onClick={() => handleUpdateZusatzseiten(1)}
+                            title="Zusatzseite für 100 € hinzufügen"
+                          >
+                            <Plus size={11} />
+                            <span>+ Zusatzseite hinzufügen (+100 €)</span>
+                          </button>
                         </div>
                       )}
                     </div>
