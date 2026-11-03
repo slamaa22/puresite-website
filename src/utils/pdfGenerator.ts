@@ -37,20 +37,24 @@ async function getLogoDataUrl(): Promise<string> {
   }
 }
 
-// Balanced pagination: up to 6 items fit perfectly on a single comprehensive page.
-// For larger selections, splits evenly without leaving awkward 1-item orphan pages.
+// Standard document pagination: Page 1 is filled first (normal invoice flow).
+// Up to 7 items fit on a single complete page with totals.
+// For multi-page offers, Page 1 takes up to 8 items, leaving the remaining items (3-5 items) for Page 2 alongside totals & signatures.
 function chunkItemsForPages(items: PdfOfferItem[]): PdfOfferItem[][] {
-  if (items.length <= 6) {
+  if (items.length <= 7) {
     return [items];
   }
 
   const pages: PdfOfferItem[][] = [];
-  const page1Count = Math.min(6, Math.ceil(items.length / 2));
+  
+  // Page 1 fills first (takes up to 8 items, leaving at least 3 items for the final page)
+  const page1Count = Math.min(8, Math.max(5, items.length - 3));
   pages.push(items.slice(0, page1Count));
   let remaining = items.slice(page1Count);
 
   while (remaining.length > 0) {
-    if (remaining.length <= 6) {
+    // Final page accommodates up to 5 items comfortably with totals, payment plan & signatures
+    if (remaining.length <= 5) {
       pages.push(remaining);
       break;
     } else {
@@ -219,8 +223,8 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
 
         ${!isLastPage ? `
           <!-- Continuation hint for next page -->
-          <div style="text-align: center; padding: 14px 0; color: #00f2fe; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            <span>Fortsetzung der Positionen und Gesamtkalkulation auf Seite ${pageNum + 1} ➔</span>
+          <div style="margin-top: 14px; background: rgba(0, 242, 254, 0.03); border: 1px dashed rgba(0, 242, 254, 0.22); border-radius: 8px; padding: 10px 16px; text-align: center; color: #00f2fe; font-size: 9.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span>Fortsetzung der Positionen sowie Gesamtkalkulation & Zahlungsplan auf Seite ${pageNum + 1} von ${totalPages} ➔</span>
           </div>
         ` : ''}
 
