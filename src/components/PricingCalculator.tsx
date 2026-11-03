@@ -155,8 +155,8 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
   // Remove module
   const removeModule = (code: string) => {
-    // Cannot delete the base package (a website always requires a base package)
-    if (code === 'B-01' || code === 'B-02' || code === 'B-03') {
+    // Cannot delete the base package or Zusatzseiten from generic remove (managed in Step 1)
+    if (code === 'B-01' || code === 'B-02' || code === 'B-03' || code === 'B-04') {
       return;
     }
     setIsCustomMode(false);
@@ -759,51 +759,6 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
               </div>
             )}
 
-            {/* Persistent Zusatzseiten Quick-Bar across Steps 2 to 5 */}
-            {currentStepIndex > 0 && currentStepIndex < 5 && (
-              <div className="wizard-zusatz-quickstrip">
-                <div className="quickstrip-info">
-                  <div className="quickstrip-title-row">
-                    <span className="quickstrip-icon">📄</span>
-                    <strong className="quickstrip-title">Zusatzseiten</strong>
-                    <span className="quickstrip-badge">+100 € / Seite</span>
-                  </div>
-                  <span className="quickstrip-sub">
-                    {zusatzQty > 0 
-                      ? `${zusatzQty} Zusatzseite${zusatzQty > 1 ? 'n' : ''} im Design-Raster gewählt (+${(zusatzQty * 100).toLocaleString('de-AT')} €)`
-                      : 'Beliebig viele zusätzliche Inhaltsseiten flexibel zubuchen'}
-                  </span>
-                </div>
-
-                <div className="quickstrip-action">
-                  <div className="stepper-btn-group">
-                    <button 
-                      type="button" 
-                      onClick={() => handleUpdateZusatzseiten(-1)}
-                      disabled={zusatzQty === 0}
-                      aria-label="Zusatzseite abziehen"
-                      title="Eine Zusatzseite weniger"
-                    >
-                      -
-                    </button>
-                    <span className="stepper-number">{zusatzQty}</span>
-                    <button 
-                      type="button" 
-                      onClick={() => handleUpdateZusatzseiten(1)}
-                      aria-label="Zusatzseite hinzufügen"
-                      title="Eine Zusatzseite mehr"
-                    >
-                      +
-                    </button>
-                  </div>
-                  {zusatzQty > 0 && (
-                    <span className="quickstrip-sum-tag">
-                      +{(zusatzQty * 100).toLocaleString('de-AT')} €
-                    </span>
-                  )}
-                </div>
-              </div>
-            )}
 
             {/* Step 6: Final Review Stage */}
             {currentStepIndex === 5 && (
@@ -937,27 +892,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                               </div>
                               <div className="item-price-wrap">
                                 <span className="item-price">{item.priceFormatted}</span>
-                                {item.code === 'B-04' ? (
-                                  <div className="stepper-btn-group mini-sidebar-stepper">
-                                    <button 
-                                      type="button" 
-                                      onClick={() => handleUpdateZusatzseiten(-1)}
-                                      aria-label="Zusatzseite abziehen"
-                                      title="Eine Zusatzseite weniger"
-                                    >
-                                      -
-                                    </button>
-                                    <span className="stepper-number">{zusatzQty}</span>
-                                    <button 
-                                      type="button" 
-                                      onClick={() => handleUpdateZusatzseiten(1)}
-                                      aria-label="Zusatzseite hinzufügen"
-                                      title="Eine Zusatzseite mehr"
-                                    >
-                                      +
-                                    </button>
-                                  </div>
-                                ) : (item.code !== 'B-01' && item.code !== 'B-02' && item.code !== 'B-03') ? (
+                                {item.code !== 'B-01' && item.code !== 'B-02' && item.code !== 'B-03' && item.code !== 'B-04' && (
                                   <button 
                                     type="button"
                                     className="btn-remove-item"
@@ -967,7 +902,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                                   >
                                     <Trash2 size={12} />
                                   </button>
-                                ) : null}
+                                )}
                               </div>
                             </div>
                           ))}
@@ -1155,7 +1090,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                       </div>
                       <div className="sheet-item-price-wrap">
                         <span className="sheet-item-price">{item.priceFormatted}</span>
-                        {item.code !== 'B-01' && item.code !== 'B-02' && item.code !== 'B-03' && (
+                        {item.code !== 'B-01' && item.code !== 'B-02' && item.code !== 'B-03' && item.code !== 'B-04' && (
                           <button 
                             type="button"
                             className="btn-remove-item"
