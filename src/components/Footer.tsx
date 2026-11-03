@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp, Mail, MapPin, Heart, Sparkles, Cpu } from 'lucide-react';
+import { ArrowUp, Mail, MapPin, Heart, Sparkles } from 'lucide-react';
 
 interface FooterProps {
   onOpenLegal: (tab: 'impressum' | 'datenschutz') => void;
@@ -26,8 +26,14 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Brand Info & Mission */}
           <div className="footer-about-col">
             <a href="#hero" className="footer-mark" onClick={(e) => { e.preventDefault(); scrollToTop(); }}>
-              <div className="brand-icon-shield" aria-hidden="true">
-                <Cpu size={16} />
+              <div className="brand-logo-icon" aria-hidden="true">
+                <img 
+                  src="/assets/puresite-logo.png" 
+                  alt="PureSite Logo" 
+                  className="brand-logo-img" 
+                  width={28} 
+                  height={28} 
+                />
               </div>
               <span className="brand-title">PureSite</span>
             </a>

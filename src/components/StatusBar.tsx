@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 interface StatusBarProps {
   onScrollToPricing: () => void;
@@ -11,33 +11,6 @@ export const StatusBar: React.FC<StatusBarProps> = ({
   onScrollToWhy,
   onScrollToAbout
 }) => {
-  const [timeStr, setTimeStr] = useState(() => {
-    return new Date().toLocaleTimeString('de-AT', {
-      timeZone: 'Europe/Vienna',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-  });
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTimeStr(
-        now.toLocaleTimeString('de-AT', {
-          timeZone: 'Europe/Vienna',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        })
-      );
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="status-row">
       <dl className="hero-status section-shell">
@@ -69,11 +42,12 @@ export const StatusBar: React.FC<StatusBarProps> = ({
           </dd>
         </div>
 
-        <div className="status-item status-clock-col">
-          <dt>Lokalzeit</dt>
+        <div className="status-item">
+          <dt>Infrastruktur</dt>
           <dd>
-            <time className="tabular-time">{timeStr}</time>
-            <span className="hero-status-meta">Graz, AT</span>
+            <button className="status-link-btn" onClick={onScrollToWhy}>
+              <span>NVMe Graz · 100% DSGVO</span>
+            </button>
           </dd>
         </div>
       </dl>

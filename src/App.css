@@ -10,20 +10,23 @@
   color: var(--ink);
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* -------------------------------------------------------------------------
    SIGNATURE STICKY HEADER (GRID-CELL ARCHITECTURE)
    ------------------------------------------------------------------------- */
 .site-header {
-  z-index: 100;
-  border-bottom: 1px solid var(--rule-2);
-  background: var(--paper);
   position: sticky;
   top: 0;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
 .site-header-bar {
@@ -1245,12 +1248,12 @@
 .wizard-stepper-bar {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 0.25rem;
-  padding: 0.2rem;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-full);
-  margin-bottom: 0.85rem;
+  gap: 8px;
+  padding: 6px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
 }
 
 .wizard-stepper-mobile {
@@ -1259,73 +1262,84 @@
 
 .stepper-tab-btn {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.3rem;
-  padding: 0.3rem 0.45rem;
-  border-radius: var(--radius-full);
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-secondary);
+  gap: 4px;
+  padding: 8px 6px;
+  border-radius: 6px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+  font-family: var(--font-mono);
   font-size: 0.74rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-fast, 0.16s ease);
   white-space: nowrap;
 }
 
 .stepper-tab-btn:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--rule-2);
+  color: var(--ink);
+  background: var(--paper-3);
 }
 
 .stepper-tab-btn.active {
-  background: rgba(0, 242, 254, 0.14);
-  border-color: rgba(0, 242, 254, 0.4);
-  color: var(--accent-cyan);
+  background: rgba(88, 252, 165, 0.12);
+  border-color: var(--pure-mint);
+  color: var(--pure-mint);
   font-weight: 700;
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+  box-shadow: 0 0 12px var(--pure-mint-glow);
 }
 
 .stepper-tab-btn.completed {
-  color: var(--text-primary);
+  border-color: var(--signal-line);
+  color: var(--ink);
 }
 
 .stepper-tab-number {
-  width: 17px;
-  height: 17px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.64rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--paper-3);
+  border: 1px solid var(--rule);
   flex-shrink: 0;
+  color: inherit;
 }
 
 .stepper-tab-btn.active .stepper-tab-number {
-  background: var(--accent-cyan);
+  background: var(--pure-mint);
   color: #07090e;
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
+  border-color: var(--pure-mint);
 }
 
 .stepper-tab-btn.completed .stepper-tab-number {
-  background: rgba(16, 185, 129, 0.2);
-  border-color: var(--accent-emerald);
-  color: var(--accent-emerald);
+  background: rgba(88, 252, 165, 0.15);
+  border-color: var(--pure-mint);
+  color: var(--pure-mint);
+}
+
+.stepper-tab-text {
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
 }
 
 .stepper-tab-count {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  color: var(--accent-cyan);
-  background: rgba(0, 242, 254, 0.16);
-  border: 1px solid rgba(0, 242, 254, 0.3);
-  padding: 0.02rem 0.32rem;
-  border-radius: var(--radius-full);
+  color: #07090e;
+  background: var(--pure-mint);
+  padding: 1px 6px;
+  border-radius: 999px;
+  min-width: 16px;
+  text-align: center;
 }
 
 /* Step Header */
@@ -4774,7 +4788,7 @@
 @media (max-width: 480px) {
   /* Ultra-safe global horizontal overflow prevention */
   html, body, #root, .app-root {
-    overflow-x: hidden !important;
+    overflow-x: clip !important;
     max-width: 100vw !important;
   }
 
@@ -6712,18 +6726,20 @@
 .wizard-stepper-bar.desktop-stepper {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 18px;
+  gap: 8px;
+  padding: 6px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
   margin-bottom: 22px;
 }
 
 .stepper-tab-btn {
-  background: var(--paper);
+  background: var(--paper-2);
   border: 1px solid var(--rule);
   color: var(--ink-2);
-  padding: 8px 6px;
-  border-radius: var(--radius-sm);
+  padding: 10px 6px;
+  border-radius: 6px;
   font-family: var(--font-mono);
   font-size: 0.74rem;
   display: flex;
@@ -6731,12 +6747,13 @@
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  transition: all 0.16s;
+  transition: all 0.16s ease;
 }
 
 .stepper-tab-btn:hover {
   border-color: var(--rule-2);
   color: var(--ink);
+  background: var(--paper-3);
 }
 
 .stepper-tab-btn.active {
@@ -6747,11 +6764,30 @@
   box-shadow: 0 0 14px var(--pure-mint-glow);
 }
 
+[data-theme="light"] .wizard-stepper-bar,
+[data-theme="light"] .wizard-stepper-bar.desktop-stepper {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  border-radius: 10px;
+}
+
+[data-theme="light"] .stepper-tab-btn {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+
+[data-theme="light"] .stepper-tab-btn:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
 [data-theme="light"] .stepper-tab-btn.active {
-  background: rgba(5, 150, 105, 0.12);
-  color: #059669;
+  background: #ecfdf5;
+  color: #065f46;
   border-color: #059669;
-  box-shadow: 0 0 8px rgba(5, 150, 105, 0.15);
+  box-shadow: 0 0 0 1px #059669;
 }
 
 .stepper-tab-btn.completed {
@@ -6777,8 +6813,15 @@
   border-radius: 999px;
 }
 
+[data-theme="light"] .stepper-tab-btn.active .stepper-tab-number {
+  background: #059669;
+  color: #ffffff;
+  border-color: #059669;
+}
+
 [data-theme="light"] .stepper-tab-count {
   background: #059669;
+  color: #ffffff;
   color: #ffffff;
 }
 
@@ -7151,6 +7194,28 @@
   color: var(--pure-mint);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.brand-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  transition: transform var(--transition-fast, 0.2s ease);
+}
+
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.brand:hover .brand-logo-icon,
+.footer-mark:hover .brand-logo-icon {
+  transform: scale(1.08);
 }
 
 .brand:hover .brand-icon-shield {

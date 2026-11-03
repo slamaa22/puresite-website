@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, Menu, X, Sun, Moon, Cpu } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, Menu, X, Sun, Moon } from 'lucide-react';
 
 interface NavbarProps {
   theme: 'dark' | 'light';
@@ -15,29 +15,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenLegal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [timeShort, setTimeShort] = useState(() => {
-    return new Date().toLocaleTimeString('de-AT', {
-      timeZone: 'Europe/Vienna',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  });
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTimeShort(
-        now.toLocaleTimeString('de-AT', {
-          timeZone: 'Europe/Vienna',
-          hour: '2-digit',
-          minute: '2-digit'
-        })
-      );
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 10000);
-    return () => clearInterval(interval);
-  }, []);
 
   const scrollTo = (id: string) => {
     setMobileMenuOpen(false);
@@ -57,8 +34,17 @@ export const Navbar: React.FC<NavbarProps> = ({
           onClick={(e) => { e.preventDefault(); scrollTo('hero'); }}
           aria-label="PureSite Home"
         >
-          <div className="brand-icon-shield" aria-hidden="true">
-            <Cpu size={16} />
+          <div className="brand-logo-icon" aria-hidden="true">
+            <img 
+              src={theme === 'light' ? '/assets/puresite-logo-dark-stroke.png' : '/assets/puresite-logo.png'} 
+              alt="PureSite Logo" 
+              className="brand-logo-img" 
+              width={32} 
+              height={32}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = '/assets/puresite-logo.png';
+              }}
+            />
           </div>
           <span className="brand-title">PureSite</span>
           <span className="brand-telemetry-badge">
@@ -93,12 +79,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Header Utils */}
         <div className="header-utils">
-          {/* Austrian Local Clock Header Item */}
-          <div className="header-clock" title="Lokalzeit Steiermark (Österreich)">
-            <span className="clock-pulse-dot" aria-hidden="true"></span>
-            <span className="tabular-time">{timeShort || '18:15'}</span>
-            <span className="clock-region">Graz</span>
-          </div>
 
           {/* Theme Toggle Button */}
           <button 
