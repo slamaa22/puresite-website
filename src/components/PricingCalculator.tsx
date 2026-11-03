@@ -320,7 +320,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
     return selectedItemsStructured.map(i => i.fullText);
   }, [selectedItemsStructured]);
 
-  // Dynamic Next Button Text (Exact user requirement)
+  // Dynamic Next Button Text (Clean text without duplicate arrow)
   const nextButtonText = useMemo(() => {
     if (currentStepIndex === 5) {
       return 'Projekt jetzt unverbindlich anfragen';
@@ -332,21 +332,21 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
       if (countInCurrentStep === 0) {
         return 'Bitte wähle ein Basispaket';
       }
-      return `Weiter zu ${step.nextStepName} →`;
+      return `Weiter zu ${step.nextStepName}`;
     }
 
     if (countInCurrentStep === 0) {
       if (currentStepIndex === 4) {
-        return `Ohne ${step.categoryName} zur Gesamtkalkulation →`;
+        return `Ohne ${step.categoryName} zur Gesamtkalkulation`;
       }
-      return `Ohne ${step.categoryName} fortfahren →`;
+      return `Ohne ${step.categoryName} fortfahren`;
     }
 
     if (currentStepIndex === 4) {
-      return 'Weiter zur Gesamtkalkulation →';
+      return 'Weiter zur Gesamtkalkulation';
     }
 
-    return `Weiter zu ${step.nextStepName} →`;
+    return `Weiter zu ${step.nextStepName}`;
   }, [currentStepIndex, countInCurrentStep]);
 
   // Smooth scroll to top of configurator on mobile step change
@@ -1055,7 +1055,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
               className={`btn-mobile-dock-next ${countInCurrentStep === 0 && currentStepIndex > 0 ? 'skip-mode' : ''}`}
               onClick={handleNextStep}
             >
-              <span>{nextButtonText.replace(/→$/, '').trim()}</span>
+              <span>{nextButtonText}</span>
               <ArrowRight size={15} />
             </button>
           </div>
