@@ -143,6 +143,8 @@ export function App() {
             module={activeDemoModule}
             onClose={() => setActiveDemoModule(null)}
             isSelected={false}
+            currentTheme={theme}
+            onToggleTheme={toggleTheme}
             onSelectModule={() => {
               setActiveDemoModule(null);
               scrollToPricing();

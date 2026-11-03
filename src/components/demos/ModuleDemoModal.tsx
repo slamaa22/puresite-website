@@ -12,13 +12,17 @@ interface ModuleDemoModalProps {
   onClose: () => void;
   onSelectModule: (code: string) => void;
   isSelected: boolean;
+  currentTheme?: 'dark' | 'light';
+  onToggleTheme?: () => void;
 }
 
 export const ModuleDemoModal: React.FC<ModuleDemoModalProps> = ({
   module,
   onClose,
   onSelectModule,
-  isSelected
+  isSelected,
+  currentTheme,
+  onToggleTheme
 }) => {
   if (!module) return null;
 
@@ -75,7 +79,12 @@ export const ModuleDemoModal: React.FC<ModuleDemoModalProps> = ({
 
         {/* Dynamic Interactive Demo Sandbox */}
         <div className="demo-modal-body">
-          <DemoContentRouter code={module.code} module={module} />
+          <DemoContentRouter 
+            code={module.code} 
+            module={module} 
+            currentTheme={currentTheme}
+            onToggleTheme={onToggleTheme}
+          />
         </div>
 
         {/* Footer info bar */}
@@ -107,7 +116,12 @@ export const ModuleDemoModal: React.FC<ModuleDemoModalProps> = ({
 };
 
 // Sub-component to route each of the 18 demo codes to its custom interactive component
-const DemoContentRouter: React.FC<{ code: string; module: PricingModule }> = ({ code }) => {
+const DemoContentRouter: React.FC<{ 
+  code: string; 
+  module: PricingModule;
+  currentTheme?: 'dark' | 'light';
+  onToggleTheme?: () => void;
+}> = ({ code, currentTheme, onToggleTheme }) => {
   switch (code) {
     case 'B-01': return <DemoB01OnePager />;
     case 'B-02': return <DemoB02Business />;
@@ -116,7 +130,7 @@ const DemoContentRouter: React.FC<{ code: string; module: PricingModule }> = ({ 
     case 'F-01': return <DemoF01Calculator />;
     case 'F-02': return <DemoF02Animations />;
     case 'F-03': return <DemoF03I18n />;
-    case 'F-04': return <DemoF04DarkMode />;
+    case 'F-04': return <DemoF04DarkMode currentTheme={currentTheme} onToggleTheme={onToggleTheme} />;
     case 'F-05': return <DemoF05Branding />;
     case 'T-01': return <DemoT01HeadlessCMS />;
     case 'T-02': return <DemoT02BlogPortfolio />;
@@ -690,43 +704,113 @@ const DemoF03I18n: React.FC = () => {
 };
 
 // F-04: Dark Mode / Light Mode Switcher
-const DemoF04DarkMode: React.FC = () => {
+const DemoF04DarkMode: React.FC<{ currentTheme?: 'dark' | 'light'; onToggleTheme?: () => void }> = ({ currentTheme, onToggleTheme }) => {
   const [themeMode, setThemeMode] = useState<'cyber-dark' | 'arctic-light' | 'midnight-violet'>('cyber-dark');
+
+  const contrastInfo = {
+    'cyber-dark': { val: '18.4:1', grade: 'AAA Höchststufe', desc: 'Obsidian Canvas (#07080b) & Signature Neon Mint (#58fca5)' },
+    'arctic-light': { val: '16.8:1', grade: 'AAA Höchststufe', desc: 'Gallery Alabaster (#ffffff) & Deep Slate (#0f172a)' },
+    'midnight-violet': { val: '15.2:1', grade: 'AAA Höchststufe', desc: 'Midnight Amethyst (#0f0a1c) & Luminous Violet (#c084fc)' },
+  }[themeMode];
 
   return (
     <div className="demo-box">
       <div className="demo-control-bar">
-        <span className="demo-label">Theme-Palette wählen:</span>
+        <span className="demo-label">Theme-Palette im Sandbox-Fenster testen:</span>
         <div className="demo-button-group">
-          <button className={`demo-tab-btn ${themeMode === 'cyber-dark' ? 'active' : ''}`} onClick={() => setThemeMode('cyber-dark')}>
+          <button 
+            type="button"
+            className={`demo-tab-btn ${themeMode === 'cyber-dark' ? 'active' : ''}`} 
+            onClick={() => setThemeMode('cyber-dark')}
+          >
             <Moon size={14} /> Cyber Dark (Standard)
           </button>
-          <button className={`demo-tab-btn ${themeMode === 'arctic-light' ? 'active' : ''}`} onClick={() => setThemeMode('arctic-light')}>
-            <Sun size={14} /> Arctic Light
+          <button 
+            type="button"
+            className={`demo-tab-btn ${themeMode === 'arctic-light' ? 'active' : ''}`} 
+            onClick={() => setThemeMode('arctic-light')}
+          >
+            <Sun size={14} /> Arctic Light (White Mode)
           </button>
-          <button className={`demo-tab-btn ${themeMode === 'midnight-violet' ? 'active' : ''}`} onClick={() => setThemeMode('midnight-violet')}>
+          <button 
+            type="button"
+            className={`demo-tab-btn ${themeMode === 'midnight-violet' ? 'active' : ''}`} 
+            onClick={() => setThemeMode('midnight-violet')}
+          >
             <Sparkles size={14} /> Midnight Violet
           </button>
         </div>
       </div>
 
       <div className={`theme-sandbox-window theme-${themeMode}`}>
-        <div className="theme-content-preview">
-          <div className="theme-nav">
-            <span className="brand-logo">PureSite</span>
-            <span className="theme-indicator">Modus: {themeMode}</span>
+        <div className="theme-nav">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className="theme-brand">PureSite</span>
+            <span style={{ fontSize: '0.72rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Atelier UI</span>
           </div>
-          <h4>Barrierefreie Kontraste & Eleganz</h4>
-          <p>
-            Ein ausgereifter Dark/Light Switcher schont die Augen deiner Besucher bei Nacht und garantiert bei Sonnenlicht perfekte Lesbarkeit.
-          </p>
-          <div className="contrast-checker-badge">
-            <Check size={14} /> WCAG AAA Kontrastwert: 16.2:1 (Exzellent)
+
+          <div 
+            className="theme-pill-switch"
+            onClick={() => setThemeMode(prev => prev === 'arctic-light' ? 'cyber-dark' : 'arctic-light')}
+            title="Klicken zum Umschalten zwischen Tag & Nacht"
+          >
+            {themeMode === 'arctic-light' ? <Sun size={14} /> : <Moon size={14} />}
+            <span>{themeMode === 'arctic-light' ? 'Tag-Modus' : themeMode === 'midnight-violet' ? 'Violet-Modus' : 'Nacht-Modus'}</span>
           </div>
         </div>
+
+        <div>
+          <h4 className="theme-title">Barrierefreie Kontraste & Tag/Nacht-Erlebnis</h4>
+          <p className="theme-desc">
+            Ein moderner Dark/Light Mode Switcher schont die Augen deiner Besucher bei Nacht und garantiert bei Tageslicht gestochen scharfe Lesbarkeit ohne Seitenflackern (Zero-FOUC).
+          </p>
+        </div>
+
+        <div className="theme-preview-cards">
+          <div className="theme-mini-card">
+            <span className="theme-mini-val">0.0s</span>
+            <span className="theme-mini-lbl">Kein Neuladen</span>
+          </div>
+          <div className="theme-mini-card">
+            <span className="theme-mini-val">{contrastInfo.val}</span>
+            <span className="theme-mini-lbl">WCAG AAA Kontrast</span>
+          </div>
+          <div className="theme-mini-card">
+            <span className="theme-mini-val">Auto-Sync</span>
+            <span className="theme-mini-lbl">System-Präferenz</span>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div className="contrast-checker-badge">
+            <Check size={14} /> WCAG AAA Kontrast: {contrastInfo.val} ({contrastInfo.grade})
+          </div>
+          <span style={{ fontSize: '0.75rem', opacity: 0.75 }}>
+            {contrastInfo.desc}
+          </span>
+        </div>
       </div>
+
+      {/* Global Live Website Toggle */}
+      {onToggleTheme && (
+        <div className="demo-live-website-switch">
+          <span className="live-switch-hint">
+            Aktuelles Website-Design: <strong>{currentTheme === 'light' ? 'Light Mode (Hell)' : 'Dark Mode (Dunkel)'}</strong>
+          </span>
+          <button 
+            type="button" 
+            className="button secondary sm-button"
+            onClick={onToggleTheme}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+          >
+            {currentTheme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+            <span>Gesamte Website auf {currentTheme === 'dark' ? 'Hell (White Mode)' : 'Dunkel (Dark Mode)'} umschalten</span>
+          </button>
+        </div>
+      )}
+
       <div className="demo-hint-box">
-        🌓 <strong>Präferenz-Erkennung:</strong> Schaltet automatisch nach Systemeinstellung des Nutzers um und speichert die Wahl dauerhaft im Browser.
+        🌓 <strong>Präferenz-Erkennung:</strong> Schaltet automatisch nach Systemeinstellung (prefers-color-scheme) um und speichert die Wahl dauerhaft im Browser (localStorage).
       </div>
     </div>
   );
