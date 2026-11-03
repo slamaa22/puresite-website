@@ -463,7 +463,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   };
 
   return (
-    <section id="preise" className="band section-shell fullpage-wizard-section" aria-labelledby="calculator-title">
+    <section id="preise" className="band section-shell fullpage-wizard-section pricing-section" aria-labelledby="calculator-title">
       <div className="section-head">
         <h2 id="calculator-title">Festpreis-Kalkulator</h2>
         <span className="section-head-meta">Schritt {currentStepIndex + 1} von 6 · 100% verbindlich online</span>

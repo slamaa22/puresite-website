@@ -45,10 +45,20 @@
   --signal-green: var(--pure-mint);
   --accent-cyan: var(--pure-mint);
   --accent-blue: var(--pure-cyan);
+  --accent-emerald: var(--pure-mint);
+  --accent-purple: var(--pure-violet);
+  --accent-rose: #f43f5e;
   --bg-primary: var(--bg-canvas);
   --bg-secondary: var(--bg-panel);
   --bg-tertiary: var(--bg-card);
   --text-primary: var(--text-pure);
+  --font-display: var(--font-heading);
+  --gradient-brand: linear-gradient(135deg, var(--pure-mint) 0%, var(--pure-cyan) 100%);
+  --radius-xl: 20px;
+  --shadow-glow: 0 0 24px var(--pure-mint-glow);
+  --signal-line: rgba(88, 252, 165, 0.35);
+  --signal-bg: rgba(88, 252, 165, 0.08);
+  --transition-smooth: var(--transition-normal);
   
   /* Geometric Micro-Grid Pattern */
   --grid-line: rgba(255, 255, 255, 0.025);
@@ -123,10 +133,20 @@
   --signal-green: var(--pure-mint);
   --accent-cyan: var(--pure-mint);
   --accent-blue: var(--pure-cyan);
+  --accent-emerald: #059669;
+  --accent-purple: #7c3aed;
+  --accent-rose: #e11d48;
   --bg-primary: var(--bg-canvas);
   --bg-secondary: var(--bg-panel);
   --bg-tertiary: var(--bg-card);
   --text-primary: var(--text-pure);
+  --font-display: var(--font-heading);
+  --gradient-brand: linear-gradient(135deg, #059669 0%, #0284c7 100%);
+  --radius-xl: 20px;
+  --shadow-glow: 0 0 16px rgba(5, 150, 105, 0.25);
+  --signal-line: rgba(5, 150, 105, 0.35);
+  --signal-bg: rgba(5, 150, 105, 0.08);
+  --transition-smooth: var(--transition-normal);
   
   --grid-line: rgba(15, 23, 42, 0.035);
   
