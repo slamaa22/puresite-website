@@ -1387,7 +1387,7 @@ const DemoM01Hosting: React.FC = () => {
         </div>
       </div>
       <div className="demo-hint-box">
-        🛡️ <strong>Sicher schlafen:</strong> Schnelles Dedicated Server Hosting in der EU, tägliche Backups und automatische Sicherheits-Updates.
+        🛡️ <strong>Sicher schlafen:</strong> Schnelles Dedicated Server Hosting in der EU, tägliche Backups, Sicherheits-Updates und <strong>1 Stunde Änderungen pro Monat</strong> inklusive.
       </div>
     </div>
   );
@@ -1431,7 +1431,7 @@ const DemoM02SorglosPro: React.FC = () => {
           {status === 'done' && (
             <div className="bubble agent">
               <p>
-                Servus! Erledigt 👍 Die neuen Öffnungszeiten sind bereits live auf der Website aktiv. Du hast diesen Monat noch 45 Minuten Support-Guthaben übrig.
+                Servus! Erledigt 👍 Die neuen Öffnungszeiten sind bereits live auf der Website aktiv. Du hast diesen Monat noch 2 Stunden und 44 Minuten Support-Guthaben übrig.
               </p>
               <span className="time">14:38 Uhr (Erledigt in 16 Minuten)</span>
             </div>
@@ -1456,7 +1456,7 @@ const DemoM02SorglosPro: React.FC = () => {
         </div>
       </div>
       <div className="demo-hint-box">
-        ☕ <strong>1 Stunde monatlich inklusive:</strong> Schicke Änderungen einfach per Mail oder WhatsApp an uns – wir setzen es sofort für dich um!
+        ☕ <strong>3 Stunden monatlich inklusive:</strong> Schicke Änderungen einfach per Mail oder WhatsApp an uns – wir setzen es sofort für dich um!
       </div>
     </div>
   );

@@ -126,7 +126,7 @@ const WIZARD_STEPS: WizardStepConfig[] = [
     nextStepName: 'Gesamtkalkulation',
     title: 'Schritt 5 von 5: Dedicated Hosting & Zuruf-Service',
     subtitle:
-      'Dedizierte High-Performance-Server in der EU, tägliche Backups und auf Wunsch 1 Stunde Entwickler-Änderungen pro Monat inklusive.'
+      'Dedizierte High-Performance-Server in der EU, tägliche Backups sowie 1 Stunde (Basis) bzw. 3 Stunden (Pro) Entwickler-Änderungen pro Monat inklusive.'
   },
   {
     id: 6,
@@ -318,7 +318,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
       if (m) {
         suggestions.push({
           mod: m,
-          reason: 'Dedicated Hosting inkl. täglicher Backups & 1h Änderungen/Monat per WhatsApp.'
+          reason: 'Dedicated Hosting inkl. täglicher Backups & 3h Änderungen/Monat per WhatsApp.'
         });
       }
     }
@@ -857,7 +857,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                             )}
                             {mod.code === 'M-02' && selectedConfig['M-01']?.selected && (
                               <span className="badge-tag upgrade-diff">
-                                Nur +14 €/mtl. Upgrade
+                                Nur +14 €/mtl. für 3h statt 1h
                               </span>
                             )}
                           </div>

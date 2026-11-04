@@ -313,15 +313,15 @@ export function useProjectConfig() {
       if (care === 'self_cms') {
         map['T-01'] = 1;
         map['M-01'] = 1;
-        reasons.push('Inhouse Admin-Dashboard (T-01) ohne laufende CMS-Abokosten + Dedicated Hosting');
+        reasons.push('Inhouse Admin-Dashboard (T-01) ohne laufende CMS-Abokosten + Standard-Hosting inkl. 1h Support/Monat');
       } else if (care === 'concierge') {
         map['M-02'] = 1;
-        reasons.push('Sorglos-Paket Pro (M-02) inkl. 1h Änderungen/Monat direkt per WhatsApp');
+        reasons.push('Sorglos-Paket Pro (M-02) inkl. 3h Änderungen/Monat direkt per WhatsApp');
       } else {
         const pageUnits = map['B-03'] ? 6 : map['B-02'] ? 5 : 2;
         map['C-01'] = pageUnits;
         map['M-02'] = 1;
-        reasons.push(`Verkaufsstarkes Copywriting (${pageUnits} Einheiten) + Sorglos-Betreuung Pro`);
+        reasons.push(`Verkaufsstarkes Copywriting (${pageUnits} Einheiten) + Sorglos-Betreuung Pro (3h/Monat)`);
       }
 
       setSelectedConfig(createConfigFromPreset(map));
