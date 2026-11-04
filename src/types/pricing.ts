@@ -2,6 +2,13 @@ export type CategoryId = 'all' | 'basis' | 'frontend' | 'tech' | 'content' | 'ho
 
 export type BillingType = 'Pauschal (Einmalig)' | 'Pro Seite' | 'Pro Modul' | 'Pro Sprache' | 'Monatlich';
 
+export interface ModuleImpactScores {
+  seo: number;
+  conversion: number;
+  brand: number;
+  autonomy: number;
+}
+
 export interface PricingModule {
   code: string;
   category: 'basis' | 'frontend' | 'tech' | 'content' | 'hosting';
@@ -22,6 +29,18 @@ export interface PricingModule {
   demoShortDesc: string;
   iconName: string;
   externalNotice?: string;
+  impactTag?: string;
+  socialProof?: string;
+  recommendedWith?: string[];
+  impactScores?: ModuleImpactScores;
+}
+
+export interface ProjectPotential {
+  seo: number;
+  conversion: number;
+  brand: number;
+  autonomy: number;
+  overall: number;
 }
 
 export interface SelectedConfig {

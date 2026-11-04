@@ -6,6 +6,17 @@ interface StatusBarProps {
   onScrollToAbout: () => void;
 }
 
+const TICKER_SPECS = [
+  '100/100 GOOGLE LIGHTHOUSE',
+  '< 0.38S FIRST CONTENTFUL PAINT',
+  '0% WORDPRESS-BALLAST',
+  'DEDICATED EU-SERVER INFRASTRUKTUR',
+  '50 / 50 MEILENSTEIN-ZAHLUNG',
+  '100% QUELLCODE-EIGENTUM',
+  'DSGVO-CLEAN OHNE COOKIE-ZWANG',
+  'REACT 19 + TYPESCRIPT ENGINEERING'
+];
+
 export const StatusBar: React.FC<StatusBarProps> = ({
   onScrollToPricing,
   onScrollToWhy,
@@ -25,10 +36,10 @@ export const StatusBar: React.FC<StatusBarProps> = ({
         </div>
 
         <div className="status-item">
-          <dt>Engine & Stack</dt>
+          <dt>Engine &amp; Stack</dt>
           <dd>
             <button className="status-link-btn" onClick={onScrollToWhy}>
-              <span>React 19 · TypeScript · NVMe Graz</span>
+              <span>React 19 · TypeScript · Vite</span>
             </button>
           </dd>
         </div>
@@ -37,7 +48,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({
           <dt>Engineering</dt>
           <dd>
             <button className="status-link-btn" onClick={onScrollToAbout}>
-              <span>Maximilian & Loreno · Steiermark</span>
+              <span>Maximilian &amp; Loreno · Steiermark</span>
             </button>
           </dd>
         </div>
@@ -46,11 +57,23 @@ export const StatusBar: React.FC<StatusBarProps> = ({
           <dt>Infrastruktur</dt>
           <dd>
             <button className="status-link-btn" onClick={onScrollToWhy}>
-              <span>NVMe Graz · 100% DSGVO</span>
+              <span>Dedicated Server · 100% DSGVO</span>
             </button>
           </dd>
         </div>
       </dl>
+
+      {/* Seamless GPU-composited Engineering Spec Marquee */}
+      <div className="telemetry-marquee-strip" aria-hidden="true">
+        <div className="telemetry-marquee-track">
+          {[...TICKER_SPECS, ...TICKER_SPECS].map((spec, idx) => (
+            <span key={idx} className="telemetry-marquee-item">
+              <span className="marquee-dot" />
+              {spec}
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

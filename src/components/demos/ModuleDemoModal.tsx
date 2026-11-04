@@ -26,17 +26,26 @@ export const ModuleDemoModal: React.FC<ModuleDemoModalProps> = ({
 }) => {
   if (!module) return null;
 
+  const unitSuffix =
+    module.billingType === 'Monatlich'
+      ? '/mtl.'
+      : module.billingType === 'Pro Seite'
+        ? '/Seite'
+        : module.billingType === 'Pro Sprache'
+          ? '/Sprache'
+          : '';
+
   return (
     <div className="demo-modal-overlay" onClick={onClose}>
       <div 
-        className="demo-modal-container glass-panel" 
+        className="demo-modal-container glass-panel modal-enter-anim" 
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="demo-modal-header">
           <div className="demo-header-left">
             <span className="demo-code-badge">
-              <Sparkles size={14} /> Live-Demo
+              <Sparkles size={14} /> Live-Demo · {module.code}
             </span>
             <div>
               <div className="demo-category-tag">{module.categoryLabel}</div>
@@ -54,7 +63,7 @@ export const ModuleDemoModal: React.FC<ModuleDemoModalProps> = ({
                 </>
               ) : (
                 <>
-                  <Sparkles size={16} /> Modul für {module.fixedPrice} € hinzufügen
+                  <Sparkles size={16} /> Modul für {module.fixedPrice} €{unitSuffix} hinzufügen
                 </>
               )}
             </button>
@@ -68,6 +77,11 @@ export const ModuleDemoModal: React.FC<ModuleDemoModalProps> = ({
         <div className="demo-modal-desc-bar">
           <p className="demo-desc-text">
             <strong>Feature: {module.name}</strong> – {module.demoShortDesc}
+            {module.impactTag && (
+              <span className="work-impact-mini" style={{ marginLeft: '8px' }}>
+                {module.impactTag}
+              </span>
+            )}
           </p>
           {module.externalNotice && (
             <div className="demo-modal-notice-pill">
@@ -91,8 +105,8 @@ export const ModuleDemoModal: React.FC<ModuleDemoModalProps> = ({
         <div className="demo-modal-footer">
           <div className="demo-footer-info">
             <span className="demo-price-tag">
-              Fixpreis: <strong>{module.fixedPrice} €</strong> 
-              <span className="demo-original-price">({module.maxPrice} € Marktpreis)</span>
+              Fixpreis: <strong>{module.fixedPrice} €{unitSuffix}</strong> 
+              <span className="demo-original-price">({module.maxPrice} €{unitSuffix} Marktpreis)</span>
             </span>
           </div>
           <div className="demo-footer-actions">
@@ -423,7 +437,7 @@ const DemoB04ExtraPages: React.FC = () => {
             className="demo-input"
           />
           <button className="btn-primary-sm" onClick={addPage}>
-            <FilePlus size={16} /> Hinzufügen (+100 €)
+            <FilePlus size={16} /> Hinzufügen (+80 €)
           </button>
         </div>
       </div>
@@ -443,7 +457,7 @@ const DemoB04ExtraPages: React.FC = () => {
         ))}
       </div>
       <div className="demo-hint-box">
-        📄 <strong>Skalierbar:</strong> Jede Zusatzseite wird komplett im Designraster deines Basispakets gestaltet (+100 € Fixpreis pro Seite).
+        📄 <strong>Skalierbar:</strong> Jede Zusatzseite wird komplett im Designraster deines Basispakets gestaltet (+80 € Fixpreis pro Seite).
       </div>
     </div>
   );
@@ -1373,7 +1387,7 @@ const DemoM01Hosting: React.FC = () => {
         </div>
       </div>
       <div className="demo-hint-box">
-        🛡️ <strong>Sicher schlafen:</strong> Schnelles österreichisches NVMe-Hosting, tägliche Backups und automatische Sicherheits-Updates.
+        🛡️ <strong>Sicher schlafen:</strong> Schnelles Dedicated Server Hosting in der EU, tägliche Backups und automatische Sicherheits-Updates.
       </div>
     </div>
   );

@@ -1,30 +1,40 @@
 import React from 'react';
 import { Code2, HeartHandshake, ShieldCheck, Zap } from 'lucide-react';
+import { handleSpotlightMove } from '../hooks/useMotion';
 
 export const AboutUs: React.FC = () => {
   return (
     <section id="ueber-uns" className="band section-shell" aria-labelledby="about-title">
-      <div className="section-head">
-        <h2 id="about-title">Über uns & Handwerk</h2>
-        <span className="section-head-meta">Gegründet in der Steiermark · Software Engineering</span>
+      <div className="section-head" data-reveal>
+        <h2 id="about-title">Über uns &amp; Handwerk</h2>
+        <span className="section-head-meta">
+          Gegründet in der Steiermark · Software Engineering
+        </span>
       </div>
 
-      <div className="about-intro-deck">
+      <div className="about-intro-deck" data-reveal>
         <p className="services-lead">
-          Wir sind Maximilian Schlacher und Loreno Zanaboni, Softwareentwickler aus der Steiermark mit fundierter technischer IT-Ausbildung. Wir haben PureSite gegründet, um Betrieben in Österreich handgeschriebene High-Performance-Websites mit echter Preistransparenz und kompromissloser Ladezeit zu liefern – ohne WordPress-Ballast und ohne anonyme Großagentur-Bürokratie.
+          Wir sind Maximilian Schlacher und Loreno Zanaboni, Softwareentwickler aus der Steiermark
+          mit fundierter technischer IT-Ausbildung. Wir haben PureSite gegründet, um Betrieben in
+          Österreich handgeschriebene High-Performance-Websites mit echter Preistransparenz und
+          kompromissloser Ladezeit zu liefern – ohne WordPress-Ballast und ohne anonyme
+          Großagentur-Bürokratie.
         </p>
       </div>
 
       {/* 2 Equal Founders Grid */}
-      <div className="founders-editorial-grid">
+      <div className="founders-editorial-grid" data-reveal>
         {/* Founder 1: Maximilian Schlacher */}
-        <article className="founder-editorial-card">
+        <article
+          className="founder-editorial-card spotlight-surface"
+          onMouseMove={handleSpotlightMove}
+        >
           <div className="founder-frame">
             <picture>
               <source srcSet="/assets/maximilian-schlacher.webp" type="image/webp" />
-              <img 
-                src="/assets/maximilian-schlacher.jpg" 
-                alt="Maximilian Schlacher - Co-Founder & Web Development" 
+              <img
+                src="/assets/maximilian-schlacher.jpg"
+                alt="Maximilian Schlacher - Co-Founder & Web Development"
                 className="founder-photo-editorial"
                 width={800}
                 height={1000}
@@ -46,9 +56,10 @@ export const AboutUs: React.FC = () => {
               <h3>Maximilian Schlacher</h3>
               <span className="founder-badge">Co-Founder</span>
             </div>
-            <p className="founder-spec-role">Web-Entwicklung & UI/UX Engineering</p>
+            <p className="founder-spec-role">Web-Entwicklung &amp; UI/UX Engineering</p>
             <p className="founder-bio-text">
-              Spezialisiert auf rasend schnelle Frontends, interaktive Rechner und intuitive Benutzerführung, die Besucher zu echten Kundenanfragen konvertiert.
+              Spezialisiert auf rasend schnelle Frontends, interaktive Rechner und intuitive
+              Benutzerführung, die Besucher zu echten Kundenanfragen konvertiert.
             </p>
 
             <div className="founder-skills-row">
@@ -61,13 +72,16 @@ export const AboutUs: React.FC = () => {
         </article>
 
         {/* Founder 2: Loreno Zanaboni */}
-        <article className="founder-editorial-card">
+        <article
+          className="founder-editorial-card spotlight-surface"
+          onMouseMove={handleSpotlightMove}
+        >
           <div className="founder-frame">
             <picture>
               <source srcSet="/assets/loreno-zanaboni.webp" type="image/webp" />
-              <img 
-                src="/assets/loreno-zanaboni.jpg" 
-                alt="Loreno Zanaboni - Co-Founder & Softwarearchitektur" 
+              <img
+                src="/assets/loreno-zanaboni.jpg"
+                alt="Loreno Zanaboni - Co-Founder & Softwarearchitektur"
                 className="founder-photo-editorial"
                 width={800}
                 height={1000}
@@ -89,15 +103,16 @@ export const AboutUs: React.FC = () => {
               <h3>Loreno Zanaboni</h3>
               <span className="founder-badge">Co-Founder</span>
             </div>
-            <p className="founder-spec-role">Softwarearchitektur & Systeme</p>
+            <p className="founder-spec-role">Softwarearchitektur &amp; Systeme</p>
             <p className="founder-bio-text">
-              Spezialisiert auf modulare Architekturen, schlanke State-Logik und zukunftssichere Deployments für maximale Stabilität, Sicherheit und Skalierbarkeit.
+              Spezialisiert auf modulare Architekturen, schlanke State-Logik und zukunftssichere
+              Deployments für maximale Stabilität, Sicherheit und Skalierbarkeit.
             </p>
 
             <div className="founder-skills-row">
               <span className="skill-chip">System Design</span>
               <span className="skill-chip">Jamstack</span>
-              <span className="skill-chip">NVMe Hosting</span>
+              <span className="skill-chip">Dedicated Hosting</span>
               <span className="skill-chip">State Logic</span>
             </div>
           </div>
@@ -105,40 +120,65 @@ export const AboutUs: React.FC = () => {
       </div>
 
       {/* Engineering Values Grid */}
-      <div className="about-values-grid">
-        <div className="about-value-card">
+      <div className="about-values-grid" data-reveal>
+        <div
+          className="about-value-card spotlight-surface"
+          onMouseMove={handleSpotlightMove}
+        >
           <Code2 size={20} className="text-signal" />
           <h4>Handgeschriebener Quellcode</h4>
-          <p>Jede Zeile Code wird maßgeschneidert entwickelt. Keine 45 Plugins, die nach dem nächsten Update abstürzen.</p>
+          <p>
+            Jede Zeile Code wird maßgeschneidert entwickelt. Keine 45 Plugins, die nach dem
+            nächsten Update abstürzen.
+          </p>
         </div>
 
-        <div className="about-value-card">
+        <div
+          className="about-value-card spotlight-surface"
+          onMouseMove={handleSpotlightMove}
+        >
           <Zap size={20} className="text-signal" />
           <h4>Kompromisslose Performance</h4>
-          <p>Ladezeiten unter 0.4 Sekunden. Bessere Google-Rankings und keine genervten Absprünge mobiler Besucher.</p>
+          <p>
+            Ladezeiten unter 0.4 Sekunden. Bessere Google-Rankings und keine genervten Absprünge
+            mobiler Besucher.
+          </p>
         </div>
 
-        <div className="about-value-card">
+        <div
+          className="about-value-card spotlight-surface"
+          onMouseMove={handleSpotlightMove}
+        >
           <HeartHandshake size={20} className="text-signal" />
           <h4>Direkter Draht zu den Entwicklern</h4>
-          <p>Keine Junior-Account-Manager oder Ticket-Warteschlangen. Schnelle Abstimmung direkt mit Maximilian und Loreno.</p>
+          <p>
+            Keine Junior-Account-Manager oder Ticket-Warteschlangen. Schnelle Abstimmung direkt mit
+            Maximilian und Loreno.
+          </p>
         </div>
 
-        <div className="about-value-card">
+        <div
+          className="about-value-card spotlight-surface"
+          onMouseMove={handleSpotlightMove}
+        >
           <ShieldCheck size={20} className="text-signal" />
           <h4>100% Festpreisgarantie</h4>
-          <p>Verbindliche Modulpreise vor Projektstart. 50/50 Zahlung: Du zahlst die zweite Hälfte erst bei erfolgreichem Livegang.</p>
+          <p>
+            Verbindliche Modulpreise vor Projektstart. 50/50 Zahlung: Du zahlst die zweite Hälfte
+            erst bei erfolgreichem Livegang.
+          </p>
         </div>
       </div>
 
       {/* Developer Contribution & Engineering Craftsmanship Block */}
-      <div className="contrib-block">
+      <div className="contrib-block spotlight-surface" onMouseMove={handleSpotlightMove} data-reveal>
         <div className="contrib-header">
           <h3>Echter Quellcode statt WordPress-Baukästen</h3>
           <span className="contrib-meta">Handwritten in Styria, Austria</span>
         </div>
         <p className="contrib-lead">
-          Jede Zeile Code auf PureSite wird von uns handgeschrieben und optimiert. Keine aufgeblähten Fremd-Bibliotheken, keine Sicherheitsrisiken.
+          Jede Zeile Code auf PureSite wird von uns handgeschrieben und optimiert. Keine
+          aufgeblähten Fremd-Bibliotheken, keine Sicherheitsrisiken.
         </p>
 
         <div className="code-metrics-grid">
@@ -163,7 +203,7 @@ export const AboutUs: React.FC = () => {
           <div className="code-metric-item">
             <span className="metric-number">100%</span>
             <span className="metric-label">DSGVO-Konform</span>
-            <span className="metric-desc">Österreichischer NVMe Serverstandort</span>
+            <span className="metric-desc">Dedizierte EU-Server ohne Tracker-Zwang</span>
           </div>
         </div>
       </div>

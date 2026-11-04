@@ -1,5 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, Play, Zap, Shield, Cpu, Gauge, RefreshCw, CheckCircle2, Sparkles } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  ArrowRight,
+  Play,
+  Zap,
+  Shield,
+  Cpu,
+  Gauge,
+  RefreshCw,
+  CheckCircle2,
+  Sparkles
+} from 'lucide-react';
+import { useAnimatedNumber, handleSpotlightMove } from '../hooks/useMotion';
 
 interface HeroProps {
   onScrollToPricing: () => void;
@@ -16,19 +27,51 @@ export const Hero: React.FC<HeroProps> = ({
   const [wpProgress, setWpProgress] = useState(100);
   const [raceWinner, setRaceWinner] = useState<string | null>(null);
 
+  const pureTimerRef = useRef<number | null>(null);
+  const wpTimerRef = useRef<number | null>(null);
+  const heroStageRef = useRef<HTMLElement | null>(null);
+
+  const clearRaceTimers = () => {
+    if (pureTimerRef.current !== null) {
+      window.clearInterval(pureTimerRef.current);
+      pureTimerRef.current = null;
+    }
+    if (wpTimerRef.current !== null) {
+      window.clearInterval(wpTimerRef.current);
+      wpTimerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => clearRaceTimers();
+  }, []);
+
+  const handleEngineSwitch = (engine: 'puresite' | 'wordpress') => {
+    clearRaceTimers();
+    setSelectedEngine(engine);
+    setPureSiteProgress(100);
+    setWpProgress(100);
+    setIsSimulating(false);
+    setRaceWinner(null);
+  };
+
   const runSpeedSimulation = () => {
     if (isSimulating) return;
+    clearRaceTimers();
     setIsSimulating(true);
     setRaceWinner(null);
     setPureSiteProgress(0);
     setWpProgress(0);
 
     // PureSite completes in ~380ms
-    const pureInterval = setInterval(() => {
+    pureTimerRef.current = window.setInterval(() => {
       setPureSiteProgress(prev => {
         if (prev >= 100) {
-          clearInterval(pureInterval);
-          if (!raceWinner) setRaceWinner('puresite');
+          if (pureTimerRef.current !== null) {
+            window.clearInterval(pureTimerRef.current);
+            pureTimerRef.current = null;
+          }
+          setRaceWinner(curr => curr ?? 'puresite');
           return 100;
         }
         return prev + 25;
@@ -36,42 +79,68 @@ export const Hero: React.FC<HeroProps> = ({
     }, 75);
 
     // WordPress takes ~3600ms
-    const wpInterval = setInterval(() => {
+    wpTimerRef.current = window.setInterval(() => {
       setWpProgress(prev => {
         if (prev >= 100) {
-          clearInterval(wpInterval);
+          if (wpTimerRef.current !== null) {
+            window.clearInterval(wpTimerRef.current);
+            wpTimerRef.current = null;
+          }
           setIsSimulating(false);
           return 100;
         }
-        return prev + 3;
+        return Math.min(100, prev + 3);
       });
     }, 90);
   };
 
-  // If user switches tab, reset simulation state
-  useEffect(() => {
-    setPureSiteProgress(100);
-    setWpProgress(100);
-    setIsSimulating(false);
-  }, [selectedEngine]);
+  const handleHeroPointerMove = (e: React.MouseEvent<HTMLElement>) => {
+    const el = heroStageRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty('--hero-x', `${e.clientX - rect.left}px`);
+    el.style.setProperty('--hero-y', `${e.clientY - rect.top}px`);
+  };
+
+  // Smooth animated instrument readouts
+  const lighthouseScore = useAnimatedNumber(selectedEngine === 'puresite' ? 100 : 41, 420);
+  const fcpHundredths = useAnimatedNumber(selectedEngine === 'puresite' ? 38 : 360, 420);
+  const payloadKb = useAnimatedNumber(selectedEngine === 'puresite' ? 124 : 4800, 420);
+  const cookieCount = useAnimatedNumber(selectedEngine === 'puresite' ? 0 : 14, 360);
+
+  const ringCircumference = 2 * Math.PI * 19;
+  const ringOffset = ringCircumference * (1 - lighthouseScore / 100);
 
   return (
-    <section id="hero" className="hero-stage" aria-labelledby="hero-title">
+    <section
+      id="hero"
+      ref={heroStageRef}
+      onMouseMove={handleHeroPointerMove}
+      className="hero-stage"
+      aria-labelledby="hero-title"
+    >
+      {/* Ambient Precision Spotlight Layer (GPU-composited, zero CLS) */}
+      <div className="hero-ambient-spotlight" aria-hidden="true" />
+
       <div className="hero section-shell">
         {/* Eyebrow Status Chip */}
-        <div className="eyebrow-container">
+        <div className="eyebrow-container hero-enter-1">
           <div className="eyebrow" role="status">
             <span className="eyebrow-pulse-dot" aria-hidden="true"></span>
             <span className="eyebrow-text">
-              <span className="eyebrow-text-long">Handgeschriebene High-Performance-Websites aus Österreich</span>
-              <span className="eyebrow-text-short">High-Performance Websites · Österreich</span>
+              <span className="eyebrow-text-long">
+                Handgeschriebene High-Performance-Websites aus Österreich
+              </span>
+              <span className="eyebrow-text-short">
+                High-Performance Websites · Österreich
+              </span>
             </span>
           </div>
         </div>
 
-        {/* Hero Title */}
-        <h1 id="hero-title">
-          Websites, die <span className="display-em">begeistern</span>.
+        {/* Hero Title (kept opacity:1 for sub-0.4s LCP & 100/100 Lighthouse) */}
+        <h1 id="hero-title" className="hero-enter-2">
+          Websites, die <span className="display-em hero-shimmer-text">begeistern</span>.
           <br />
           Modular. Rasend schnell.
           <br />
@@ -79,16 +148,20 @@ export const Hero: React.FC<HeroProps> = ({
         </h1>
 
         {/* Hero Text */}
-        <p className="hero-text">
-          Gegründet von zwei Softwareentwicklern in der Steiermark. Wir bauen moderne, handgeschriebene High-Performance-Websites ohne überflüssige Plugins, ohne Sicherheitslücken und ohne intransparente Großagentur-Stundensätze. Mit <strong>100% verbindlichen Festpreisen</strong> ab 1.000 € und messbarer Google-Spitzenleistung.
+        <p className="hero-text hero-enter-3">
+          Gegründet von zwei Softwareentwicklern in der Steiermark. Wir bauen moderne,
+          handgeschriebene High-Performance-Websites ohne überflüssige Plugins, ohne
+          Sicherheitslücken und ohne intransparente Großagentur-Stundensätze. Mit{' '}
+          <strong>100% verbindlichen Festpreisen</strong> ab 1.000 € und messbarer
+          Google-Spitzenleistung.
         </p>
 
         {/* Hero Actions */}
-        <div className="hero-actions">
-          <button className="button primary" onClick={onScrollToPricing}>
+        <div className="hero-actions hero-enter-4">
+          <button className="button primary button-shimmer" onClick={onScrollToPricing}>
             <Sparkles size={16} />
             <span>Festpreis online kalkulieren</span>
-            <ArrowRight size={15} />
+            <ArrowRight size={15} className="btn-arrow-glide" />
           </button>
           <button className="button secondary" onClick={onExploreDemos}>
             <Play size={14} className="play-icon" />
@@ -97,7 +170,7 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
 
         {/* Trust Chips Bar */}
-        <div className="hero-feature-tags">
+        <div className="hero-feature-tags hero-enter-5">
           <div className="hero-feature-item">
             <span className="hero-tag-bullet">✓</span>
             <span>Festpreis ab 1.000 € (Verbindlich vor Beginn)</span>
@@ -108,13 +181,13 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
           <div className="hero-feature-item">
             <span className="hero-tag-bullet">✓</span>
-            <span>0 Cookies nötig & österreichische NVMe-Server</span>
+            <span>0 Cookies nötig &amp; DSGVO-konformes EU-Hosting</span>
           </div>
         </div>
       </div>
 
       {/* Interactive Performance Speed Lab (Tactile Hardware Rig) */}
-      <div id="speed-lab" className="section-shell speed-lab-container">
+      <div id="speed-lab" className="section-shell speed-lab-container" data-reveal>
         <div className="speed-lab-chassis">
           {/* Chassis Top Machine Header */}
           <div className="lab-machine-header">
@@ -129,7 +202,7 @@ export const Hero: React.FC<HeroProps> = ({
 
             <div className="lab-header-right">
               <span className="lab-spec-badge">Lighthouse v12.1 Audit</span>
-              <span className="lab-server-badge">Graz NVMe Cluster</span>
+              <span className="lab-server-badge">Dedicated EU-Server</span>
             </div>
           </div>
 
@@ -146,11 +219,11 @@ export const Hero: React.FC<HeroProps> = ({
                 role="radio"
                 aria-checked={selectedEngine === 'puresite'}
                 className={`engine-switch-btn ${selectedEngine === 'puresite' ? 'is-active-pure' : ''}`}
-                onClick={() => setSelectedEngine('puresite')}
+                onClick={() => handleEngineSwitch('puresite')}
               >
                 <span className="switch-status-dot green"></span>
                 <strong>PureSite Engine</strong>
-                <span className="switch-sub-pill">React 19 & TypeScript</span>
+                <span className="switch-sub-pill">React 19 &amp; TypeScript</span>
               </button>
 
               <button
@@ -158,11 +231,11 @@ export const Hero: React.FC<HeroProps> = ({
                 role="radio"
                 aria-checked={selectedEngine === 'wordpress'}
                 className={`engine-switch-btn ${selectedEngine === 'wordpress' ? 'is-active-wp' : ''}`}
-                onClick={() => setSelectedEngine('wordpress')}
+                onClick={() => handleEngineSwitch('wordpress')}
               >
                 <span className="switch-status-dot amber"></span>
                 <strong>Typisches WordPress</strong>
-                <span className="switch-sub-pill">PHP & 38 Plugins</span>
+                <span className="switch-sub-pill">PHP &amp; 38 Plugins</span>
               </button>
             </div>
 
@@ -175,7 +248,9 @@ export const Hero: React.FC<HeroProps> = ({
               title="Starte eine Live-Simulation des Ladezeit-Unterschieds"
             >
               <RefreshCw size={13} className={isSimulating ? 'spin-anim' : ''} />
-              <span>{isSimulating ? 'Simuliere Ladevorgang...' : 'Ladezeit-Rennen starten'}</span>
+              <span>
+                {isSimulating ? 'Simuliere Ladevorgang...' : 'Ladezeit-Rennen starten'}
+              </span>
             </button>
           </div>
 
@@ -188,8 +263,8 @@ export const Hero: React.FC<HeroProps> = ({
                   <span className="race-val">{pureSiteProgress}%</span>
                 </div>
                 <div className="race-track-rail">
-                  <div 
-                    className="race-track-fill race-fill-puresite" 
+                  <div
+                    className="race-track-fill race-fill-puresite"
                     style={{ width: `${pureSiteProgress}%` }}
                   ></div>
                 </div>
@@ -201,17 +276,20 @@ export const Hero: React.FC<HeroProps> = ({
                   <span className="race-val">{wpProgress}%</span>
                 </div>
                 <div className="race-track-rail">
-                  <div 
-                    className="race-track-fill race-fill-wordpress" 
+                  <div
+                    className="race-track-fill race-fill-wordpress"
                     style={{ width: `${wpProgress}%` }}
                   ></div>
                 </div>
               </div>
 
-              {pureSiteProgress === 100 && wpProgress < 100 && (
+              {raceWinner === 'puresite' && wpProgress < 100 && (
                 <div className="race-winner-banner">
                   <CheckCircle2 size={15} className="text-signal-green" />
-                  <span>PureSite ist bereits vollständig geladen, während WordPress noch Plugins initialisiert!</span>
+                  <span>
+                    PureSite ist bereits zu 100% interaktiv, während WordPress noch Datenbank
+                    &amp; Plugins lädt!
+                  </span>
                 </div>
               )}
             </div>
@@ -219,8 +297,11 @@ export const Hero: React.FC<HeroProps> = ({
 
           {/* Telemetry Dials & Instrument Gauges */}
           <div className="lab-gauges-grid">
-            {/* Instrument 1: Google Lighthouse Score */}
-            <div className={`gauge-card ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}>
+            {/* Instrument 1: Google Lighthouse Score with Animated Radial Ring */}
+            <div
+              onMouseMove={handleSpotlightMove}
+              className={`gauge-card spotlight-surface ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}
+            >
               <div className="gauge-card-head">
                 <span className="gauge-label">Google Lighthouse</span>
                 {selectedEngine === 'puresite' ? (
@@ -231,32 +312,69 @@ export const Hero: React.FC<HeroProps> = ({
               </div>
 
               <div className="gauge-display-row">
-                <div className="gauge-huge-value">
-                  {selectedEngine === 'puresite' ? (
-                    <span className="text-signal-green">100</span>
-                  ) : (
-                    <span className="text-danger">41</span>
-                  )}
-                  <span className="gauge-unit">/100</span>
+                <div className="gauge-ring-row">
+                  <svg
+                    className="gauge-radial-svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="19"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeOpacity="0.14"
+                      strokeWidth="4"
+                    />
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="19"
+                      fill="none"
+                      stroke={selectedEngine === 'puresite' ? 'var(--pure-mint)' : '#ef4444'}
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeDasharray={ringCircumference}
+                      strokeDashoffset={ringOffset}
+                      transform="rotate(-90 24 24)"
+                      style={{ transition: 'stroke-dashoffset 0.45s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.25s' }}
+                    />
+                  </svg>
+                  <div className="gauge-huge-value" style={{ marginBottom: 0 }}>
+                    <span
+                      className={
+                        selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
+                      }
+                    >
+                      {lighthouseScore}
+                    </span>
+                    <span className="gauge-unit">/100</span>
+                  </div>
                 </div>
 
-                <div className="gauge-bar-track">
-                  <div 
+                <div className="gauge-bar-track mt-2">
+                  <div
                     className={`gauge-bar-fill ${selectedEngine === 'puresite' ? 'fill-mint' : 'fill-danger'}`}
-                    style={{ width: selectedEngine === 'puresite' ? '100%' : '41%' }}
+                    style={{ width: `${lighthouseScore}%` }}
                   ></div>
                 </div>
               </div>
 
               <p className="gauge-desc">
-                {selectedEngine === 'puresite' 
+                {selectedEngine === 'puresite'
                   ? 'Alle Core Web Vitals im grünen Bestwert. Höchstes Vertrauen bei Google SEO.'
                   : 'Träge Ladezeit straft dein Google Ranking ab. 53% der mobilen Besucher springen ab.'}
               </p>
             </div>
 
             {/* Instrument 2: First Contentful Paint */}
-            <div className={`gauge-card ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}>
+            <div
+              onMouseMove={handleSpotlightMove}
+              className={`gauge-card spotlight-surface ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}
+            >
               <div className="gauge-card-head">
                 <span className="gauge-label">First Contentful Paint</span>
                 {selectedEngine === 'puresite' ? (
@@ -268,31 +386,45 @@ export const Hero: React.FC<HeroProps> = ({
 
               <div className="gauge-display-row">
                 <div className="gauge-huge-value">
-                  {selectedEngine === 'puresite' ? (
-                    <span className="text-signal-green">0.38</span>
-                  ) : (
-                    <span className="text-danger">3.60</span>
-                  )}
+                  <span
+                    className={
+                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
+                    }
+                  >
+                    {(fcpHundredths / 100).toFixed(2)}
+                  </span>
                   <span className="gauge-unit">sek</span>
                 </div>
 
                 <div className="gauge-micro-metric">
-                  <Zap size={14} className={selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'} />
-                  <span>{selectedEngine === 'puresite' ? 'Praktisch kein Ladebalken' : 'Verzögerter Seitenaufbau'}</span>
+                  <Zap
+                    size={14}
+                    className={
+                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
+                    }
+                  />
+                  <span>
+                    {selectedEngine === 'puresite'
+                      ? 'Praktisch kein Ladebalken'
+                      : 'Verzögerter Seitenaufbau'}
+                  </span>
                 </div>
               </div>
 
               <p className="gauge-desc">
-                {selectedEngine === 'puresite' 
+                {selectedEngine === 'puresite'
                   ? 'Inhalte erscheinen augenblicklich im Browser. Maximale Konversionsrate.'
                   : 'Kunden warten sekundenlang auf einen weißen Bildschirm, bevor Inhalte erscheinen.'}
               </p>
             </div>
 
             {/* Instrument 3: Payload Weight & Dependencies */}
-            <div className={`gauge-card ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}>
+            <div
+              onMouseMove={handleSpotlightMove}
+              className={`gauge-card spotlight-surface ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}
+            >
               <div className="gauge-card-head">
-                <span className="gauge-label">Code-Gewicht & Ballast</span>
+                <span className="gauge-label">Code-Gewicht &amp; Ballast</span>
                 {selectedEngine === 'puresite' ? (
                   <span className="gauge-status-chip chip-success">0 PLUGINS</span>
                 ) : (
@@ -302,31 +434,47 @@ export const Hero: React.FC<HeroProps> = ({
 
               <div className="gauge-display-row">
                 <div className="gauge-huge-value">
-                  {selectedEngine === 'puresite' ? (
-                    <span className="text-signal-green">124</span>
-                  ) : (
-                    <span className="text-danger">4.800</span>
-                  )}
-                  <span className="gauge-unit">{selectedEngine === 'puresite' ? 'KB' : 'KB (4.8 MB)'}</span>
+                  <span
+                    className={
+                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
+                    }
+                  >
+                    {payloadKb.toLocaleString('de-AT')}
+                  </span>
+                  <span className="gauge-unit">
+                    {selectedEngine === 'puresite' ? 'KB' : 'KB (4.8 MB)'}
+                  </span>
                 </div>
 
                 <div className="gauge-micro-metric">
-                  <Cpu size={14} className={selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'} />
-                  <span>{selectedEngine === 'puresite' ? 'Reiner TypeScript-Code' : 'Schweres PHP & Fremdcode'}</span>
+                  <Cpu
+                    size={14}
+                    className={
+                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
+                    }
+                  />
+                  <span>
+                    {selectedEngine === 'puresite'
+                      ? 'Reiner TypeScript-Code'
+                      : 'Schweres PHP & Fremdcode'}
+                  </span>
                 </div>
               </div>
 
               <p className="gauge-desc">
-                {selectedEngine === 'puresite' 
+                {selectedEngine === 'puresite'
                   ? 'Kein Sicherheitsrisiko durch veraltete Dritt-Erweiterungen. 100% stabile Architektur.'
                   : 'Jedes Plugin erhöht das Hack-Risiko und führt bei Updates regelmäßig zu Abstürzen.'}
               </p>
             </div>
 
             {/* Instrument 4: Privacy & DSGVO */}
-            <div className={`gauge-card ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}>
+            <div
+              onMouseMove={handleSpotlightMove}
+              className={`gauge-card spotlight-surface ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}
+            >
               <div className="gauge-card-head">
-                <span className="gauge-label">DSGVO & Tracking-Freiheit</span>
+                <span className="gauge-label">DSGVO &amp; Tracking-Freiheit</span>
                 {selectedEngine === 'puresite' ? (
                   <span className="gauge-status-chip chip-success">0 COOKIES</span>
                 ) : (
@@ -336,22 +484,33 @@ export const Hero: React.FC<HeroProps> = ({
 
               <div className="gauge-display-row">
                 <div className="gauge-huge-value">
-                  {selectedEngine === 'puresite' ? (
-                    <span className="text-signal-green">0</span>
-                  ) : (
-                    <span className="text-danger">14</span>
-                  )}
+                  <span
+                    className={
+                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
+                    }
+                  >
+                    {cookieCount}
+                  </span>
                   <span className="gauge-unit">Cookies</span>
                 </div>
 
                 <div className="gauge-micro-metric">
-                  <Shield size={14} className={selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'} />
-                  <span>{selectedEngine === 'puresite' ? 'Kein Cookie-Banner nötig' : 'Cookie-Banner Zwang'}</span>
+                  <Shield
+                    size={14}
+                    className={
+                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
+                    }
+                  />
+                  <span>
+                    {selectedEngine === 'puresite'
+                      ? 'Kein Cookie-Banner nötig'
+                      : 'Cookie-Banner Zwang'}
+                  </span>
                 </div>
               </div>
 
               <p className="gauge-desc">
-                {selectedEngine === 'puresite' 
+                {selectedEngine === 'puresite'
                   ? '100% DSGVO-konform ohne lästige Zustimmungs-Banner. Besucher gelangen sofort zu deinem Angebot.'
                   : 'Besucher werden mit Cookie-Bannern genervt und US-Schriftarten übertragen Daten in Drittländer.'}
               </p>
@@ -361,7 +520,9 @@ export const Hero: React.FC<HeroProps> = ({
           {/* Machine Bottom Spec Bar */}
           <div className="lab-machine-footer">
             <div className="lab-footer-summary">
-              <strong>Fazit aus der Praxis:</strong> PureSite lädt im Durchschnitt <strong>9x schneller</strong> als traditionelle Baukästen oder WordPress-Agenturen – bei <strong>0 Wartungsaufwand</strong>.
+              <strong>Fazit aus der Praxis:</strong> PureSite lädt im Durchschnitt{' '}
+              <strong>9x schneller</strong> als traditionelle Baukästen oder WordPress-Agenturen –
+              bei <strong>0 Wartungsaufwand</strong>.
             </div>
             <button className="button primary sm-button" onClick={onScrollToPricing}>
               <span>Projekt jetzt kalkulieren</span>

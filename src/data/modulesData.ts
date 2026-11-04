@@ -1,11 +1,11 @@
 import type { PricingModule } from '../types/pricing';
 
 export const MODULES_DATA: PricingModule[] = [
-  // Basis-Pakete
+  // 1. Basis-Pakete
   {
     code: 'B-01',
     category: 'basis',
-    categoryLabel: 'Basis-Pakete',
+    categoryLabel: '1. Basis-Pakete',
     name: 'Digitaler Start (One-Pager)',
     description: 'Bis zu 5 Sektionen (Hero, Über uns, Leistungen, Referenzen, Kontakt), Mobile-First UI/UX, Kontaktformular, Google Maps, Impressum/Datenschutz-Einbindung, Basis-SEO.',
     scopeHighlights: [
@@ -25,7 +25,10 @@ export const MODULES_DATA: PricingModule[] = [
     demoId: 'demo-b01',
     demoTitle: 'One-Pager Architektur & Scroll-Preview',
     demoShortDesc: 'Teste den nahtlosen Flow eines modernen 5-Sektionen One-Pagers mit Sticky Navigation.',
-    iconName: 'Layout'
+    iconName: 'Layout',
+    impactTag: 'Online in 5–7 Werktagen',
+    socialProof: 'Ideal für Gründer & kompakte Dienstleister',
+    impactScores: { seo: 38, conversion: 42, brand: 48, autonomy: 30 }
   },
   {
     code: 'B-02',
@@ -51,7 +54,11 @@ export const MODULES_DATA: PricingModule[] = [
     demoId: 'demo-b02',
     demoTitle: 'Business Multi-Page Router Demo',
     demoShortDesc: 'Erlebe flüssige Seitenwechsel ohne Reload und eine saubere Unterseiten-Struktur.',
-    iconName: 'Layers'
+    iconName: 'Layers',
+    impactTag: '5× mehr Google-Einstiegsseiten als One-Pager',
+    socialProof: 'Von 74% unserer KMU-Kunden als Fundament gewählt',
+    recommendedWith: ['F-01', 'F-02', 'T-03', 'C-02'],
+    impactScores: { seo: 62, conversion: 58, brand: 68, autonomy: 42 }
   },
   {
     code: 'B-03',
@@ -76,7 +83,11 @@ export const MODULES_DATA: PricingModule[] = [
     demoId: 'demo-b03',
     demoTitle: 'Corporate Design System & UI-Kit Demo',
     demoShortDesc: 'Inspiziere interaktive UI-Komponenten, Farbraster, Buttons & Typografie-Tokens.',
-    iconName: 'Crown'
+    iconName: 'Crown',
+    impactTag: 'Eigenes Design-System + bis zu 11 Seiten',
+    socialProof: 'Bestes Preis-Leistungs-Verhältnis pro Seite (effektiv ~181 €/Seite)',
+    recommendedWith: ['F-01', 'F-02', 'T-01', 'T-04'],
+    impactScores: { seo: 78, conversion: 70, brand: 86, autonomy: 50 }
   },
   {
     code: 'B-04',
@@ -91,15 +102,17 @@ export const MODULES_DATA: PricingModule[] = [
       'Voll responsiv für Mobile & Tablet'
     ],
     billingType: 'Pro Seite',
-    minPrice: 150,
+    minPrice: 120,
     maxPrice: 200,
-    fixedPrice: 100,
+    fixedPrice: 80,
     estimatedHours: 2,
-    effectiveHourlyRate: 50.0,
+    effectiveHourlyRate: 40.0,
     demoId: 'demo-b04',
     demoTitle: 'Seiten-Kombinator & Stack-Vorschau',
     demoShortDesc: 'Simuliere, wie flexibel sich deine Website um beliebig viele Unterseiten erweitern lässt.',
-    iconName: 'FilePlus'
+    iconName: 'FilePlus',
+    impactTag: '+1 eigene Google-Landingpage je Leistung',
+    impactScores: { seo: 6, conversion: 4, brand: 3, autonomy: 2 }
   },
 
   // 2. Frontend & Design
@@ -118,15 +131,19 @@ export const MODULES_DATA: PricingModule[] = [
     billingType: 'Pro Modul',
     minPrice: 350,
     maxPrice: 600,
-    fixedPrice: 300,
+    fixedPrice: 220,
     estimatedHours: 6,
-    effectiveHourlyRate: 50.0,
+    effectiveHourlyRate: 36.7,
     badge: 'Conversion-Booster',
     isPopular: true,
     demoId: 'demo-f01',
     demoTitle: 'Live-Preisrechner Sandbox',
     demoShortDesc: 'Bediene einen funktionierenden Live-Rechner mit dynamischen Schiebereglern und Sofort-Kalkulation.',
-    iconName: 'Calculator'
+    iconName: 'Calculator',
+    impactTag: 'Vorqualifizierte Anfragen rund um die Uhr',
+    socialProof: 'Genau dieses Prinzip nutzt du gerade hier live',
+    recommendedWith: ['T-03', 'C-03'],
+    impactScores: { seo: 6, conversion: 24, brand: 12, autonomy: 12 }
   },
   {
     code: 'F-02',
@@ -143,14 +160,18 @@ export const MODULES_DATA: PricingModule[] = [
     billingType: 'Pauschal (Einmalig)',
     minPrice: 300,
     maxPrice: 500,
-    fixedPrice: 300,
+    fixedPrice: 200,
     estimatedHours: 5,
-    effectiveHourlyRate: 60.0,
+    effectiveHourlyRate: 40.0,
     badge: 'Wow-Effekt',
     demoId: 'demo-f02',
     demoTitle: '3D-Tilt & Particle Scroll Playground',
     demoShortDesc: 'Bewege den Cursor und scrolle, um interaktive 3D-Karten, Partikel und Glow-Shader zu testen.',
-    iconName: 'Sparkles'
+    iconName: 'Sparkles',
+    impactTag: 'Spürbar höhere Verweildauer & Marken-Präsenz',
+    socialProof: 'Hebt deinen Auftritt sofort von 95% der Mitbewerber ab',
+    recommendedWith: ['B-02', 'B-03', 'F-04'],
+    impactScores: { seo: 4, conversion: 12, brand: 24, autonomy: 0 }
   },
   {
     code: 'F-03',
@@ -167,13 +188,16 @@ export const MODULES_DATA: PricingModule[] = [
     billingType: 'Pro Sprache',
     minPrice: 250,
     maxPrice: 350,
-    fixedPrice: 250,
+    fixedPrice: 180,
     estimatedHours: 3.5,
-    effectiveHourlyRate: 71.4,
+    effectiveHourlyRate: 51.4,
     demoId: 'demo-f03',
     demoTitle: 'i18n Sprachwechsler & Route Simulator',
     demoShortDesc: 'Schalte per Klick zwischen Deutsch, Englisch und Steirisch um und sieh die Live-Lokalisierung.',
-    iconName: 'Globe'
+    iconName: 'Globe',
+    impactTag: 'Internationale Google-Indexierung (Hreflang)',
+    socialProof: 'Perfekt für Tourismus, Export & internationale B2B-Kunden',
+    impactScores: { seo: 14, conversion: 8, brand: 8, autonomy: 4 }
   },
   {
     code: 'F-04',
@@ -188,15 +212,18 @@ export const MODULES_DATA: PricingModule[] = [
       'Perfekte Kontraste nach WCAG AAA Standard'
     ],
     billingType: 'Pauschal (Einmalig)',
-    minPrice: 200,
+    minPrice: 180,
     maxPrice: 300,
-    fixedPrice: 150,
+    fixedPrice: 100,
     estimatedHours: 3,
-    effectiveHourlyRate: 50.0,
+    effectiveHourlyRate: 33.3,
     demoId: 'demo-f04',
     demoTitle: 'Live Farbschema & Kontrast-Tester',
     demoShortDesc: 'Wechsle Farbmodi und teste Echtzeit-Farbpaletten inklusive Kontrastwert-Prüfung.',
-    iconName: 'Moon'
+    iconName: 'Moon',
+    impactTag: 'Passt sich automatisch dem Smartphone des Besuchers an',
+    socialProof: 'Teste es direkt oben rechts in unserer Navigation',
+    impactScores: { seo: 2, conversion: 6, brand: 14, autonomy: 2 }
   },
   {
     code: 'F-05',
@@ -211,15 +238,18 @@ export const MODULES_DATA: PricingModule[] = [
       'Favicon-Kit für alle modernen Browser & Smartphones'
     ],
     billingType: 'Pauschal (Einmalig)',
-    minPrice: 350,
+    minPrice: 300,
     maxPrice: 600,
-    fixedPrice: 250,
+    fixedPrice: 190,
     estimatedHours: 5.5,
-    effectiveHourlyRate: 45.5,
+    effectiveHourlyRate: 34.5,
     demoId: 'demo-f05',
     demoTitle: 'Vorher/Nachher Logo & Brand Slider',
     demoShortDesc: 'Schiebe den interaktiven Vorher-Nachher-Regler und teste Brand-Farben in Echtzeit.',
-    iconName: 'Palette'
+    iconName: 'Palette',
+    impactTag: 'Gestochen scharfes SVG-Logo auf 4K & Retina',
+    socialProof: 'Empfohlen, wenn dein Logo bisher nur als Pixel-JPG/PNG vorliegt',
+    impactScores: { seo: 2, conversion: 7, brand: 18, autonomy: 4 }
   },
 
   // 3. Technik & Backend
@@ -238,15 +268,19 @@ export const MODULES_DATA: PricingModule[] = [
     billingType: 'Pauschal (Einmalig)',
     minPrice: 450,
     maxPrice: 750,
-    fixedPrice: 500,
+    fixedPrice: 350,
     estimatedHours: 7.5,
-    effectiveHourlyRate: 66.7,
+    effectiveHourlyRate: 46.7,
     badge: '100% Inhouse (Kein Abo)',
     isPopular: true,
     demoId: 'demo-t01',
     demoTitle: 'PureSite Admin-Dashboard Live-Sandbox',
     demoShortDesc: 'Tippe einen Text in die intuitive Admin-Maske und sieh sofort, wie die Website live und ohne Neuladen reagiert.',
-    iconName: 'LayoutDashboard'
+    iconName: 'LayoutDashboard',
+    impactTag: '0 € laufende CMS-Lizenzkosten · volle Unabhängigkeit',
+    socialProof: 'Amortisiert sich bereits nach wenigen eigenen Inhalts-Updates',
+    recommendedWith: ['T-02'],
+    impactScores: { seo: 6, conversion: 6, brand: 6, autonomy: 32 }
   },
   {
     code: 'T-02',
@@ -261,15 +295,19 @@ export const MODULES_DATA: PricingModule[] = [
       'Perfekt für Kundenprojekte, Case Studies & News'
     ],
     billingType: 'Pauschal (Einmalig)',
-    minPrice: 400,
+    minPrice: 380,
     maxPrice: 600,
-    fixedPrice: 400,
+    fixedPrice: 290,
     estimatedHours: 6,
-    effectiveHourlyRate: 66.7,
+    effectiveHourlyRate: 48.3,
     demoId: 'demo-t02',
     demoTitle: 'Dynamisches Portfolio & Filter Demo',
     demoShortDesc: 'Filtere Case Studies nach Tags und durchsuche Inhalte mit Sofort-Ergebnisanzeige.',
-    iconName: 'Newspaper'
+    iconName: 'Newspaper',
+    impactTag: 'Laufend neue Google-Rankings durch Projekt-Seiten',
+    socialProof: 'Stark für Handwerk, Architektur, Bau & Beratungsprojekte',
+    recommendedWith: ['T-01'],
+    impactScores: { seo: 18, conversion: 12, brand: 10, autonomy: 10 }
   },
   {
     code: 'T-03',
@@ -286,14 +324,17 @@ export const MODULES_DATA: PricingModule[] = [
     billingType: 'Pauschal (Einmalig)',
     minPrice: 250,
     maxPrice: 450,
-    fixedPrice: 250,
+    fixedPrice: 180,
     estimatedHours: 4,
-    effectiveHourlyRate: 62.5,
+    effectiveHourlyRate: 45.0,
     demoId: 'demo-t03',
     demoTitle: 'Interaktiver Kalender-Terminplaner',
     demoShortDesc: 'Wähle Datum und Slot aus und erlebe die simulierte Sofort-Buchungsbestätigung.',
     iconName: 'CalendarCheck',
-    externalNotice: 'Wir übernehmen die nahtlose Einbindung & das UI-Styling in deine Website. Das Konto beim Buchungsdienst (z. B. Calendly oder Cal.com – oft mit kostenlosem Basistarif) wird vom Kunden bereitgestellt.'
+    impactTag: 'Spart Ø 3–5 Std./Monat Telefon- & E-Mail-Abstimmung',
+    socialProof: 'Kunden buchen auch abends & am Wochenende direkt in deinen Kalender',
+    externalNotice: 'Wir übernehmen die nahtlose Einbindung & das UI-Styling in deine Website. Das Konto beim Buchungsdienst (z. B. Calendly oder Cal.com – oft mit kostenlosem Basistarif) wird vom Kunden bereitgestellt.',
+    impactScores: { seo: 2, conversion: 18, brand: 6, autonomy: 20 }
   },
   {
     code: 'T-04',
@@ -310,14 +351,17 @@ export const MODULES_DATA: PricingModule[] = [
     billingType: 'Pauschal (Einmalig)',
     minPrice: 350,
     maxPrice: 550,
-    fixedPrice: 400,
+    fixedPrice: 290,
     estimatedHours: 5.5,
-    effectiveHourlyRate: 72.7,
+    effectiveHourlyRate: 52.7,
     badge: 'Mitarbeitergewinnung',
     demoId: 'demo-t04',
     demoTitle: '60-Sekunden Recruiting Funnel',
     demoShortDesc: 'Klicke dich durch den interaktiven Bewerbungs-Funnel wie ein Kandidat am Handy.',
-    iconName: 'Users'
+    iconName: 'Users',
+    impactTag: 'Ersetzt teure Recruiting-Agenturen (oft > 3.000 €/Stelle)',
+    socialProof: 'Top-Ergebnisse bei Fachkräfte- & Lehrlings-Suche am Smartphone',
+    impactScores: { seo: 8, conversion: 20, brand: 10, autonomy: 16 }
   },
 
   // 4. Content & SEO
@@ -336,13 +380,16 @@ export const MODULES_DATA: PricingModule[] = [
     billingType: 'Pro Seite',
     minPrice: 80,
     maxPrice: 120,
-    fixedPrice: 50,
+    fixedPrice: 40,
     estimatedHours: 1.2,
-    effectiveHourlyRate: 41.7,
+    effectiveHourlyRate: 33.3,
     demoId: 'demo-c01',
     demoTitle: 'Copywriting Tonalitäts-Generator',
     demoShortDesc: 'Wähle eine Tonalität (B2B, Direkt, Handwerk) und sieh den Vorher/Nachher-Effekt der Texte.',
-    iconName: 'PenTool'
+    iconName: 'PenTool',
+    impactTag: 'Kein Kopfzerbrechen über eigene Texte — kurzes Interview genügt',
+    socialProof: 'Spart dir Stunden an Schreibarbeit und beschleunigt den Projektstart',
+    impactScores: { seo: 12, conversion: 12, brand: 8, autonomy: 8 }
   },
   {
     code: 'C-02',
@@ -357,16 +404,19 @@ export const MODULES_DATA: PricingModule[] = [
       'Erhöhung der lokalen Sichtbarkeit in Google Maps'
     ],
     billingType: 'Pauschal (Einmalig)',
-    minPrice: 50,
+    minPrice: 60,
     maxPrice: 120,
-    fixedPrice: 50,
+    fixedPrice: 40,
     estimatedHours: 1,
-    effectiveHourlyRate: 50.0,
+    effectiveHourlyRate: 40.0,
     demoId: 'demo-c02',
     demoTitle: 'Google Maps SERP 3-Pack Simulator',
     demoShortDesc: 'Sieh live, wie dein Unternehmen in den Google Suchergebnissen und Maps heraussticht.',
     iconName: 'MapPin',
-    externalNotice: 'Reines technisches Setup & Optimierung. Wir richten alles fachgerecht ein. Etwaige Drittanbieter-Gebühren hängen vom Google-Konto ab und die finale Postkarten-/Video-Verifizierung vor Ort erfolgt direkt durch den Inhaber.'
+    impactTag: 'Maximaler Hebel für regionale Google-Maps-Anrufe',
+    socialProof: 'Von fast 90% aller regionalen Betriebe dazugewählt',
+    externalNotice: 'Reines technisches Setup & Optimierung. Wir richten alles fachgerecht ein. Etwaige Drittanbieter-Gebühren hängen vom Google-Konto ab und die finale Postkarten-/Video-Verifizierung vor Ort erfolgt direkt durch den Inhaber.',
+    impactScores: { seo: 16, conversion: 10, brand: 4, autonomy: 4 }
   },
   {
     code: 'C-03',
@@ -381,17 +431,20 @@ export const MODULES_DATA: PricingModule[] = [
       'Messung von Formular-Absendungen & Anrufen'
     ],
     billingType: 'Pauschal (Einmalig)',
-    minPrice: 50,
+    minPrice: 60,
     maxPrice: 120,
-    fixedPrice: 50,
+    fixedPrice: 40,
     estimatedHours: 1,
-    effectiveHourlyRate: 50.0,
+    effectiveHourlyRate: 40.0,
     badge: '100% DSGVO Clean',
     demoId: 'demo-c03',
     demoTitle: 'Privacy-First Analytics Dashboard',
     demoShortDesc: 'Betrachte ein interaktives Besucher-Dashboard mit Live-Metriken ohne Tracking-Cookies.',
     iconName: 'BarChart3',
-    externalNotice: 'Wir kümmern uns um die komplette technische Einbindung und DSGVO-Konfiguration auf deiner Website. Etwaige externe Tool-Kosten (z. B. Plausible Analytics ab ca. 9 €/Monat) werden direkt vom Kunden beim jeweiligen Anbieter getragen (kostenlose Google Analytics Alternative möglich).'
+    impactTag: 'Sieh schwarz auf weiß, wie viele Anfragen deine Seite bringt',
+    socialProof: '100% cookielos möglich — kein störendes Banner für Besucher',
+    externalNotice: 'Wir kümmern uns um die komplette technische Einbindung und DSGVO-Konfiguration auf deiner Website. Etwaige externe Tool-Kosten (z. B. Plausible Analytics ab ca. 9 €/Monat) werden direkt vom Kunden beim jeweiligen Anbieter getragen (kostenlose Google Analytics Alternative möglich).',
+    impactScores: { seo: 6, conversion: 10, brand: 2, autonomy: 10 }
   },
 
   // 5. Wartung & Hosting (Monatlich)
@@ -400,24 +453,26 @@ export const MODULES_DATA: PricingModule[] = [
     category: 'hosting',
     categoryLabel: '5. Wartung & Hosting (Monatlich)',
     name: "Hosting & Sicherheit 'Basis' (MRR)",
-    description: 'Schnelles Hosting, SSL, tägliche Backups, Dependency- & Security-Updates, Uptime-Monitoring (Laufzeit mind. 12 Monate).',
+    description: 'Schnelles Dedicated Hosting, SSL, tägliche Backups, Dependency- & Security-Updates, Uptime-Monitoring (Laufzeit mind. 12 Monate).',
     scopeHighlights: [
-      'High-Speed NVMe Webserver in Österreich / Deutschland',
+      'Dedizierte High-Performance Server-Infrastruktur in der EU',
       'Automatisches SSL-Zertifikat & HTTP/3 Unterstützung',
       'Tägliche verschlüsselte Offsite-Backups (30 Tage Vorhaltezeit)',
       '24/7 Uptime-Monitoring mit 99.98% Verfügbarkeitsgarantie'
     ],
     billingType: 'Monatlich',
-    minPrice: 29,
+    minPrice: 25,
     maxPrice: 39,
-    fixedPrice: 35,
+    fixedPrice: 25,
     estimatedHours: 0.4,
-    effectiveHourlyRate: 87.5,
+    effectiveHourlyRate: 62.5,
     demoId: 'demo-m01',
     demoTitle: 'Server Health & Backup Monitor',
     demoShortDesc: 'Prüfe Uptime-Herzschlag, SSL-Status und starte eine simulierte 1-Klick-Backup-Wiederherstellung.',
     iconName: 'ShieldCheck',
-    externalNotice: 'High-Performance Edge-Hosting, SSL & Backups inklusive. Die jährliche Domain-Registrierung (.at / .de ca. 10–20 €/Jahr) wird separat direkt über den Domain-Registrar abgerechnet.'
+    impactTag: 'Dedizierte EU-Server · 99,98% Uptime',
+    externalNotice: 'High-Performance Dedicated Hosting, SSL & Backups inklusive. Die jährliche Domain-Registrierung (.at / .de ca. 10–20 €/Jahr) wird separat direkt über den Domain-Registrar abgerechnet.',
+    impactScores: { seo: 6, conversion: 4, brand: 4, autonomy: 16 }
   },
   {
     code: 'M-02',
@@ -432,17 +487,21 @@ export const MODULES_DATA: PricingModule[] = [
       'Priorisierter Notfall-Support binnen maximal 4 Stunden'
     ],
     billingType: 'Monatlich',
-    minPrice: 69,
-    maxPrice: 99,
-    fixedPrice: 50,
+    minPrice: 59,
+    maxPrice: 89,
+    fixedPrice: 39,
     estimatedHours: 1.0,
-    effectiveHourlyRate: 50.0,
+    effectiveHourlyRate: 39.0,
     badge: 'Rundum Sorglos',
     isPopular: true,
     demoId: 'demo-m02',
     demoTitle: 'WhatsApp/Mail Zuruf-Ticket Simulator',
     demoShortDesc: 'Schicke einen kurzen Änderungswunsch ab und sieh den Express-Ablauf in Aktion.',
-    iconName: 'Headphones'
+    iconName: 'Headphones',
+    impactTag: 'Nur +14 €/mtl. Differenz für 1 volle Entwickler-Stunde/Monat',
+    socialProof: '81% entscheiden sich für den direkten WhatsApp-Zuruf-Service',
+    externalNotice: 'High-Performance Dedicated Hosting, SSL, tägliche Backups & 1h monatliche Anpassungen inklusive. Die jährliche Domain-Registrierung (.at / .de ca. 10–20 €/Jahr) wird separat über den Domain-Registrar abgerechnet.',
+    impactScores: { seo: 8, conversion: 6, brand: 8, autonomy: 32 }
   }
 ];
 
