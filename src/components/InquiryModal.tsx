@@ -85,7 +85,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
       `Projektpreis: ${calculation?.oneTimeGross.toLocaleString('de-AT')} €\n` +
       `Module: ${selectedDetails.slice(0, 3).join(', ')}...`
   );
-  const whatsappUrl = `https://wa.me/?text=${whatsappText}`;
+  const whatsappUrl = `https://wa.me/436766500468?text=${whatsappText}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,7 +112,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 4000);
-      await fetch('https://shipmyform.com/to/maximilian.schlacher@outlook.com', {
+      await fetch('https://shipmyform.com/f/frm_ANVyMRKN6yaTy7wWSmnd', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
