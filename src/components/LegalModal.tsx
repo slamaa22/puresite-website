@@ -49,36 +49,55 @@ export const LegalModal: React.FC<LegalModalProps> = ({
           {activeTab === 'impressum' ? (
             <div className="legal-content-block">
               <h3>Impressum</h3>
-              <p className="legal-sub">Informationspflicht laut § 5 E-Commerce Gesetz, § 14 Unternehmensgesetzbuch, § 63 Gewerbeordnung und Offenlegungspflicht laut § 25 Mediengesetz.</p>
+              <p className="legal-sub">
+                Informationspflicht laut § 5 E-Commerce Gesetz (ECG), § 14 Unternehmensgesetzbuch (UGB), § 63 Gewerbeordnung (GewO) und Offenlegungspflicht laut § 25 Mediengesetz.
+              </p>
 
-              <h4>Dienstanbieter & Medieninhaber</h4>
+              <h4>Dienstanbieter &amp; Medieninhaber</h4>
               <p>
-                <strong>PureSite – Webdesign & Softwareentwicklung</strong><br />
-                Gegründet von Constantin & Partner<br />
-                Kaindorf / Steiermark, Österreich<br />
-                E-Mail: <a href="mailto:office@puresite.at" className="text-cyan">office@puresite.at</a><br />
+                <strong>PureSite Software Studio</strong><br />
+                Inhaber: Maximilian Schlacher<br />
+                Am Leopoldsgrund 19<br />
+                8055 Graz, Österreich
+              </p>
+
+              <h4>Kontakt</h4>
+              <p>
+                Telefon: <a href="tel:+436766500468" className="text-cyan">+43 676 6500468</a><br />
+                E-Mail: <a href="mailto:maximilian.schlacher@outlook.com" className="text-cyan">maximilian.schlacher@outlook.com</a> / <a href="mailto:office@puresite.at" className="text-cyan">office@puresite.at</a><br />
                 Website: <a href="https://puresite.at" className="text-cyan">www.puresite.at</a>
               </p>
 
               <h4>Unternehmensgegenstand</h4>
               <p>
-                Dienstleistungen in der automatischen Datenverarbeitung und Informationstechnik (Programmierung, Webentwicklung, UI/UX Design und IT-Beratung).
+                Dienstleistungen in der automatischen Datenverarbeitung und Informationstechnik (Webdesign, moderne Web- und Softwareentwicklung, UI/UX Design und IT-Dienstleistungen).
               </p>
 
-              <h4>Berufsrecht / Gewerberecht</h4>
+              <h4>Umsatzsteuer-Hinweis</h4>
               <p>
-                Gewerbeordnung: <a href="https://www.ris.bka.gv.at" target="_blank" rel="noreferrer" className="text-cyan">www.ris.bka.gv.at</a><br />
-                Zuständige Aufsichtsbehörde: Bezirkshauptmannschaft Hartberg-Fürstenfeld / Steiermark
+                Umsatzsteuerbefreit aufgrund der Kleinunternehmerregelung gemäß § 6 Abs. 1 Z 27 UStG.
+              </p>
+
+              <h4>Gewerbe- &amp; Aufsichtsbehörde</h4>
+              <p>
+                Zuständige Aufsichtsbehörde: Magistrat der Stadt Graz (Gewerbebehörde)<br />
+                Berufsrecht: Gewerbeordnung (GewO), abrufbar unter <a href="https://www.ris.bka.gv.at" target="_blank" rel="noreferrer" className="text-cyan">www.ris.bka.gv.at</a><br />
+                Kammerzugehörigkeit: Wirtschaftskammer Steiermark (WKO), Fachgruppe UBIT (Unternehmensberatung, Buchhaltung und Informationstechnologie)
               </p>
 
               <h4>Haftung für Inhalte dieser Website</h4>
               <p>
-                Wir entwickeln die Inhalte dieser Webseite ständig weiter und bemühen uns, korrekte und aktuelle Informationen bereitzustellen. Sollten Ihnen problematische oder rechtswidrige Inhalte auffallen, bitten wir Sie, uns umgehend zu kontaktieren.
+                Wir entwickeln die Inhalte dieser Website ständig weiter und bemühen uns, korrekte und aktuelle Informationen bereitzustellen. Sollten Ihnen problematische oder rechtswidrige Inhalte auffallen, bitten wir Sie, uns umgehend zu kontaktieren.
+              </p>
+
+              <h4>Haftung für Links auf dieser Website</h4>
+              <p>
+                Unsere Website enthält Links zu anderen Websites, für deren Inhalt wir nicht verantwortlich sind. Sollten Ihnen rechtswidrige Links auf unserer Website auffallen, bitten wir Sie, uns zu kontaktieren.
               </p>
 
               <h4>Urheberrecht</h4>
               <p>
-                Alle Inhalte dieser Webseite (Bilder, Fotos, Texte, Videos, Quellcode) unterliegen dem Urheberrecht. Unerlaubte Vervielfältigung oder Nutzung wird rechtlich verfolgt.
+                Alle Inhalte dieser Website (Bilder, Texte, Videos, Quellcode, Layout) unterliegen dem Urheberrecht. Unerlaubte Vervielfältigung, Bearbeitung oder Verbreitung wird rechtlich verfolgt.
               </p>
             </div>
           ) : (
@@ -96,8 +115,10 @@ export const LegalModal: React.FC<LegalModalProps> = ({
 
               <h4>1. Verantwortlicher</h4>
               <p>
-                PureSite – Webdesign & Softwareentwicklung Kaindorf<br />
-                E-Mail: office@puresite.at
+                Maximilian Schlacher — PureSite Software Studio<br />
+                Am Leopoldsgrund 19, 8055 Graz, Österreich<br />
+                Telefon: +43 676 6500468<br />
+                E-Mail: maximilian.schlacher@outlook.com / office@puresite.at
               </p>
 
               <h4>2. Server-Logfiles & Hosting</h4>

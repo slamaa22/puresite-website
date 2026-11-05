@@ -130,6 +130,11 @@ export const Footer: React.FC<FooterProps> = ({
                 {copiedMail ? <Check size={13} /> : <Copy size={13} />}
               </button>
             </li>
+            <li className="wit-footer-phone-row">
+              <a href="tel:+436766500468" style={{ color: 'inherit', textDecoration: 'none' }}>
+                +43 676 6500468
+              </a>
+            </li>
             <li>
               <button type="button" onClick={onOpenContact}>
                 Kostenlose Erstberatung anfragen ↗
@@ -138,7 +143,7 @@ export const Footer: React.FC<FooterProps> = ({
             <li className="wit-footer-address">
               Maximilian Schlacher &amp; Loreno Zanaboni
               <br />
-              Steiermark, Österreich
+              Am Leopoldsgrund 19, 8055 Graz
             </li>
           </ul>
         </div>
