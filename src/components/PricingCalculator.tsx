@@ -155,7 +155,7 @@ const BLUEPRINT_SLOTS: { code: string; label: string }[] = [
 export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   selectedConfig,
   useTax,
-  setUseTax,
+  setUseTax: _setUseTax,
   activePreset,
   setPreset,
   toggleModule,
@@ -1507,47 +1507,19 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 })}
               </div>
 
-              {/* Tax Toggle */}
-              <div className="sidebar-tax-block">
-                <div className="tax-label-row">
-                  <span className="tax-head">Umsatzsteuer:</span>
-                  <span className="tax-sub">
-                    {useTax ? '20% Regelbesteuerung' : '0% Kleinunternehmer'}
-                  </span>
-                </div>
-                <div className="tax-toggle-pill">
-                  <button
-                    type="button"
-                    className={`tax-btn ${!useTax ? 'active' : ''}`}
-                    onClick={() => setUseTax(false)}
-                  >
-                    0% USt-frei
-                  </button>
-                  <button
-                    type="button"
-                    className={`tax-btn ${useTax ? 'active' : ''}`}
-                    onClick={() => setUseTax(true)}
-                  >
-                    +20% USt.
-                  </button>
-                </div>
-              </div>
-
               {/* Price Calculations Box with Smooth Rolling Numbers */}
               <div className="sidebar-pricing-box">
                 <div className="pricing-calc-row">
-                  <span>Projektpreis Netto:</span>
+                  <span>Projektpreis:</span>
                   <strong className="calc-amount">
                     {animatedNet.toLocaleString('de-AT')} €
                   </strong>
                 </div>
 
                 <div className="pricing-calc-row">
-                  <span>USt. ({calculation.taxRate}%):</span>
-                  <span>
-                    {useTax
-                      ? `${Math.round(calculation.oneTimeNet * 0.2).toLocaleString('de-AT')} €`
-                      : '0 € (gem. § 6 Abs. 1 Z 27)'}
+                  <span>Umsatzsteuer:</span>
+                  <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                    0 € (gem. § 6 Abs. 1 Z 27 UStG)
                   </span>
                 </div>
 
