@@ -15,6 +15,7 @@ import type {
   StructuredSelectedItem
 } from '../hooks/useProjectConfig';
 import { useAnimatedNumber, handleSpotlightMove } from '../hooks/useMotion';
+import { trackEvent } from '../utils/analytics';
 import {
   Check,
   Plus,
@@ -409,6 +410,11 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
   const handleApplyAdvisor = () => {
     const reasons = applyAdvisorRecommendation(advisorGoal, advisorScope, advisorCare);
+    trackEvent('compass_recommendation_applied', {
+      goal: advisorGoal,
+      scope: advisorScope,
+      care: advisorCare
+    });
     setAdvisorAppliedReasons(reasons);
     setAdvisorOpen(false);
     setCurrentStepIndex(0);
@@ -416,6 +422,10 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
   const handleCopyShareLink = async () => {
     const url = getShareableUrl();
+    trackEvent('share_link_copied', {
+      totalGross: calculation.oneTimeGross,
+      itemCount: calculation.itemCount
+    });
     try {
       await navigator.clipboard.writeText(url);
       if (typeof window !== 'undefined' && window.history?.replaceState) {
@@ -433,6 +443,11 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
   const handleDownloadPdfOffer = async () => {
     if (calculation.itemCount === 0 || isGeneratingPdf) return;
+    trackEvent('pdf_quote_downloaded', {
+      source: 'configurator',
+      totalGross: calculation.oneTimeGross,
+      itemCount: calculation.itemCount
+    });
     setIsGeneratingPdf(true);
     try {
       const itemsForPdf = selectedItemsStructured.map(i => ({

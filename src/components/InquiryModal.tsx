@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { ProjectCalculation } from '../types/pricing';
 import type { StructuredSelectedItem } from '../hooks/useProjectConfig';
 import { MODULES_DATA } from '../data/modulesData';
+import { trackEvent } from '../utils/analytics';
 import {
   X,
   Send,
@@ -139,6 +140,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
     setIsSubmitting(false);
     setSubmitted(true);
+    trackEvent('inquiry_submitted', {
+      totalGross: calculation?.oneTimeGross ?? 0,
+      itemCount: calculation?.itemCount ?? 0,
+      timeline
+    });
     try {
       const { default: confetti } = await import('canvas-confetti');
       confetti({
@@ -153,6 +159,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
   const handleDownloadPdf = async () => {
     if (!calculation || isGeneratingPdf) return;
+    trackEvent('pdf_quote_downloaded', {
+      source: 'inquiry_modal',
+      totalGross: calculation.oneTimeGross,
+      itemCount: calculation.itemCount
+    });
     setIsGeneratingPdf(true);
     try {
       const exactPdfItems =
@@ -481,6 +492,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="button secondary"
+                onClick={() =>
+                  trackEvent('whatsapp_cta_clicked', {
+                    totalGross: calculation?.oneTimeGross ?? 0
+                  })
+                }
                 style={{
                   textDecoration: 'none',
                   width: '100%',

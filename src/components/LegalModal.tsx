@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Shield, FileText, Check } from 'lucide-react';
 
 interface LegalModalProps {
@@ -13,6 +13,10 @@ export const LegalModal: React.FC<LegalModalProps> = ({
   onClose
 }) => {
   const [activeTab, setActiveTab] = useState<'impressum' | 'datenschutz'>(initialTab);
+
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab, isOpen]);
 
   if (!isOpen) return null;
 
@@ -106,7 +110,12 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                 Wenn Sie per Formular, E-Mail oder WhatsApp Kontakt mit uns aufnehmen, werden Ihre angegebenen Daten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter (Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO).
               </p>
 
-              <h4>4. Ihre Rechte nach der DSGVO</h4>
+              <h4>4. Anonyme Reichweitenmessung (Cookieloses Open-Source-Analytics)</h4>
+              <p>
+                Zur technischen Optimierung unseres Angebots nutzen wir die quelloffene Software <strong>Umami Analytics</strong> in rein cookieloser Konfiguration. Es werden <strong>keine Cookies</strong> auf Ihrem Endgerät gespeichert, keine geräteübergreifenden Profile gebildet und keine Daten an Werbenetzwerke weitergegeben. Die rein statistische Auswertung erfolgt anonymisiert auf Grundlage unseres berechtigten Interesses gemäß Art. 6 Abs. 1 lit. f DSGVO sowie § 165 Abs. 3 TKG 2021.
+              </p>
+
+              <h4>5. Ihre Rechte nach der DSGVO</h4>
               <p>
                 Ihnen stehen grundsätzlich die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerruf und Widerspruch zu. Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht verstößt, können Sie sich an die österreichische Datenschutzbehörde (Barichgasse 40-42, 1030 Wien, dsb@dsb.gv.at) wenden.
               </p>

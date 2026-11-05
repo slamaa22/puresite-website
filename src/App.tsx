@@ -12,6 +12,7 @@ import type { PricingModule } from './types/pricing';
 import { MODULES_DATA } from './data/modulesData';
 import { useScrollReveal, useAnimatedNumber } from './hooks/useMotion';
 import { useProjectConfig } from './hooks/useProjectConfig';
+import { initAnalytics, trackEvent } from './utils/analytics';
 import { Layers, ArrowUpRight } from 'lucide-react';
 
 // Below-the-Fold Sections (Code-split to keep initial JS payload ultra-lean)
@@ -146,9 +147,11 @@ export default function App() {
     };
   }, []);
 
-  // Jump to #preise automatically if opened via a shared #konfig=... link
+  // Initialize cookieless open-source analytics (Umami) & jump to #preise if opened via #konfig=
   useEffect(() => {
+    initAnalytics();
     if (window.location.hash.startsWith('#konfig=')) {
+      trackEvent('shared_config_opened');
       const timer = setTimeout(() => {
         const el = document.getElementById('preise');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -162,11 +165,21 @@ export default function App() {
   };
 
   const handleOpenDemo = (mod: PricingModule) => {
+    trackEvent('demo_opened', { code: mod.code, name: mod.name });
     setActiveDemoModule(mod);
   };
 
-  const handleRequestQuote = () => {
+  const handleOpenInquiry = (source: string) => {
+    trackEvent('inquiry_modal_opened', {
+      source,
+      totalGross: calculation.oneTimeGross,
+      itemCount: calculation.itemCount
+    });
     setIsInquiryOpen(true);
+  };
+
+  const handleRequestQuote = () => {
+    handleOpenInquiry('configurator');
   };
 
   const handleOpenLegal = (tab: 'impressum' | 'datenschutz') => {
@@ -199,7 +212,7 @@ export default function App() {
       <Navbar
         theme={theme}
         onToggleTheme={toggleTheme}
-        onOpenContact={() => setIsInquiryOpen(true)}
+        onOpenContact={() => handleOpenInquiry('navbar')}
         onOpenLegal={handleOpenLegal}
         configuredCount={calculation.itemCount}
         onSelectCatalogCategory={setCatalogCategory}
@@ -256,13 +269,13 @@ export default function App() {
           />
 
           {/* 5. 4-Column Collaboration Process ("Direkter Draht. Alle Schritte.") */}
-          <ProcessSection onOpenContact={() => setIsInquiryOpen(true)} />
+          <ProcessSection onOpenContact={() => handleOpenInquiry('process')} />
 
           {/* 6. Asymmetric Founders Section (Maximilian Schlacher & Loreno Zanaboni) */}
-          <AboutUs onOpenContact={() => setIsInquiryOpen(true)} />
+          <AboutUs onOpenContact={() => handleOpenInquiry('about')} />
 
           {/* 7. Asymmetric Sticky FAQ + Full-Width Closing Contact Band */}
-          <FAQSection onOpenContact={() => setIsInquiryOpen(true)} />
+          <FAQSection onOpenContact={() => handleOpenInquiry('faq')} />
         </React.Suspense>
       </main>
 
@@ -270,7 +283,7 @@ export default function App() {
       <Footer
         theme={theme}
         onOpenLegal={handleOpenLegal}
-        onOpenContact={() => setIsInquiryOpen(true)}
+        onOpenContact={() => handleOpenInquiry('footer')}
       />
 
       {/* Floating High-Density Smoked Liquid Glass Configurator Pill (Portaled above all stacking contexts) */}
