@@ -64,7 +64,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               <h4>Kontakt</h4>
               <p>
                 Telefon: <a href="tel:+436766500468" className="text-cyan">+43 676 6500468</a><br />
-                E-Mail: <a href="mailto:maximilian.schlacher@outlook.com" className="text-cyan">maximilian.schlacher@outlook.com</a> / <a href="mailto:office@puresite.at" className="text-cyan">office@puresite.at</a><br />
+                E-Mail: <a href="mailto:maximilian.schlacher@outlook.com" className="text-cyan">maximilian.schlacher@outlook.com</a><br />
                 Website: <a href="https://puresite.at" className="text-cyan">www.puresite.at</a>
               </p>
 
@@ -118,7 +118,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                 Maximilian Schlacher — PureSite Software Studio<br />
                 Am Leopoldsgrund 19, 8055 Graz, Österreich<br />
                 Telefon: +43 676 6500468<br />
-                E-Mail: maximilian.schlacher@outlook.com / office@puresite.at
+                E-Mail: maximilian.schlacher@outlook.com
               </p>
 
               <h4>2. Server-Logfiles & Hosting</h4>

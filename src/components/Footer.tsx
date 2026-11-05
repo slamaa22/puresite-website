@@ -25,7 +25,7 @@ export const Footer: React.FC<FooterProps> = ({
 
   const handleCopyMail = async () => {
     try {
-      await navigator.clipboard.writeText('office@puresite.at');
+      await navigator.clipboard.writeText('maximilian.schlacher@outlook.com');
       setCopiedMail(true);
       setTimeout(() => setCopiedMail(false), 2200);
     } catch {
@@ -119,7 +119,7 @@ export const Footer: React.FC<FooterProps> = ({
           <p className="wit-overline">Kontakt</p>
           <ul>
             <li className="wit-footer-mail-row">
-              <a href="mailto:office@puresite.at">office@puresite.at</a>
+              <a href="mailto:maximilian.schlacher@outlook.com">maximilian.schlacher@outlook.com</a>
               <button
                 type="button"
                 className="footer-copy-mail-btn"
