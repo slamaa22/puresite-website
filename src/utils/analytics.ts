@@ -18,7 +18,8 @@ declare global {
 }
 
 const UMAMI_OPT_OUT_KEY = 'umami.disabled';
-const DEFAULT_SCRIPT_URL = 'https://cloud.umami.is/script.js';
+const DEFAULT_SCRIPT_URL = 'https://umami-rdwbvgp90oheesgnn9nvg9ns.87.237.54.127.sslip.io/script.js';
+const HARDCODED_WEBSITE_ID = 'a3929d98-7aad-4f91-ba5c-fecf97892212';
 let initialized = false;
 
 function injectUmamiScript(websiteId: string, scriptUrl: string): void {
@@ -58,7 +59,8 @@ export function initAnalytics(): void {
     // Ignore storage access errors in strict privacy modes
   }
 
-  const buildWebsiteId = (import.meta.env.VITE_UMAMI_WEBSITE_ID as string | undefined)?.trim();
+  const buildWebsiteId =
+    (import.meta.env.VITE_UMAMI_WEBSITE_ID as string | undefined)?.trim() || HARDCODED_WEBSITE_ID;
   const buildScriptUrl =
     (import.meta.env.VITE_UMAMI_SCRIPT_URL as string | undefined)?.trim() || DEFAULT_SCRIPT_URL;
 
