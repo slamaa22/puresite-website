@@ -11,8 +11,8 @@ RUN npm ci
 
 # Copy source and build (accept optional Coolify build-time analytics variables)
 COPY . .
-ARG VITE_UMAMI_WEBSITE_ID=""
-ARG VITE_UMAMI_SCRIPT_URL="https://cloud.umami.is/script.js"
+ARG VITE_UMAMI_WEBSITE_ID="a3929d98-7aad-4f91-ba5c-fecf97892212"
+ARG VITE_UMAMI_SCRIPT_URL="https://umami-rdwbvgp90oheesgnn9nvg9ns.87.237.54.127.sslip.io/script.js"
 ENV VITE_UMAMI_WEBSITE_ID=$VITE_UMAMI_WEBSITE_ID
 ENV VITE_UMAMI_SCRIPT_URL=$VITE_UMAMI_SCRIPT_URL
 RUN npm run build
@@ -28,8 +28,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Generate /env-config.json at container startup so Coolify runtime env vars work without rebuilds
 RUN printf '#!/bin/sh\ncat <<EOF > /usr/share/nginx/html/env-config.json\n{\n  "umamiWebsiteId": "%s",\n  "umamiScriptUrl": "%s"\n}\nEOF\n' \
-  '${VITE_UMAMI_WEBSITE_ID:-${UMAMI_WEBSITE_ID:-}}' \
-  '${VITE_UMAMI_SCRIPT_URL:-${UMAMI_SCRIPT_URL:-https://cloud.umami.is/script.js}}' \
+  '${VITE_UMAMI_WEBSITE_ID:-${UMAMI_WEBSITE_ID:-a3929d98-7aad-4f91-ba5c-fecf97892212}}' \
+  '${VITE_UMAMI_SCRIPT_URL:-${UMAMI_SCRIPT_URL:-https://umami-rdwbvgp90oheesgnn9nvg9ns.87.237.54.127.sslip.io/script.js}}' \
   > /docker-entrypoint.d/40-puresite-env.sh && chmod +x /docker-entrypoint.d/40-puresite-env.sh
 
 # Expose standard HTTP port (Coolify Traefik reverse proxy maps this to SSL)
