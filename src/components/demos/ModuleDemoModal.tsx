@@ -73,26 +73,25 @@ export const ModuleDemoModal: React.FC<ModuleDemoModalProps> = ({
           </div>
         </div>
 
-        {/* Demo Subtitle / Description */}
-        <div className="demo-modal-desc-bar">
-          <p className="demo-desc-text">
-            <strong>Feature: {module.name}</strong> – {module.demoShortDesc}
-            {module.impactTag && (
-              <span className="work-impact-mini" style={{ marginLeft: '8px' }}>
-                {module.impactTag}
-              </span>
-            )}
-          </p>
-          {module.externalNotice && (
-            <div className="demo-modal-notice-pill">
-              <Info size={14} className="notice-icon" />
-              <span><strong>Setup-Hinweis:</strong> {module.externalNotice}</span>
-            </div>
-          )}
-        </div>
-
-        {/* Dynamic Interactive Demo Sandbox */}
+        {/* Dynamic Interactive Demo Sandbox (Description + Notice scroll smoothly with Sandbox) */}
         <div className="demo-modal-body">
+          <div className="demo-modal-desc-bar">
+            <p className="demo-desc-text">
+              <strong>Feature: {module.name}</strong> – {module.demoShortDesc}
+              {module.impactTag && (
+                <span className="work-impact-mini demo-impact-pill">
+                  {module.impactTag}
+                </span>
+              )}
+            </p>
+            {module.externalNotice && (
+              <div className="demo-modal-notice-pill">
+                <Info size={14} className="notice-icon" />
+                <span><strong>Setup-Hinweis:</strong> {module.externalNotice}</span>
+              </div>
+            )}
+          </div>
+
           <DemoContentRouter 
             code={module.code} 
             module={module} 

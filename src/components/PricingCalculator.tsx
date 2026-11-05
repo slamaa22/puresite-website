@@ -369,11 +369,18 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   }, [currentStepIndex, countInCurrentStep]);
 
   const scrollToConfiguratorTop = () => {
-    const el = document.getElementById('preise');
-    if (el) {
-      const topOffset = el.getBoundingClientRect().top + window.scrollY - 68;
-      if (window.scrollY > topOffset) {
-        window.scrollTo({ top: topOffset, behavior: 'smooth' });
+    const isMobile = window.innerWidth <= 850;
+    const targetEl = isMobile
+      ? (document.querySelector('.wizard-selection-panel') as HTMLElement | null) ||
+        document.getElementById('preise')
+      : (document.querySelector('.wizard-split-workspace') as HTMLElement | null) ||
+        document.getElementById('preise');
+
+    if (targetEl) {
+      const headerOffset = isMobile ? 84 : 92;
+      const topOffset = targetEl.getBoundingClientRect().top + window.scrollY - headerOffset;
+      if (isMobile ? Math.abs(window.scrollY - topOffset) > 48 : window.scrollY > topOffset) {
+        window.scrollTo({ top: Math.max(0, topOffset), behavior: 'smooth' });
       }
     }
   };

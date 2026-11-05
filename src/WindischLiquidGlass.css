@@ -164,7 +164,7 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
+  overflow: clip;
   contain: strict;
 }
 
@@ -366,6 +366,7 @@ body {
   background: none;
   border: none;
   padding: 0;
+  text-align: left;
   cursor: pointer;
   transition: color 0.2s ease;
 }
@@ -798,7 +799,21 @@ body {
   padding: 16px 22px 22px;
   max-height: calc(100svh - 96px);
   overflow-y: auto;
+  background:
+    radial-gradient(120% 180% at 14% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 56%),
+    linear-gradient(155deg, #152328 0%, #0c1519 100%) !important;
+  backdrop-filter: blur(32px) saturate(195%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(195%) !important;
+  border: 1px solid var(--border-medium) !important;
+  box-shadow: var(--lg-specular-rim), 0 24px 60px rgba(0, 0, 0, 0.62) !important;
   animation: mobileDrawerReveal 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] .wit-mobile-nav {
+  background:
+    radial-gradient(120% 180% at 14% 0%, #ffffff 0%, transparent 60%),
+    linear-gradient(155deg, #ffffff 0%, #f4faf7 100%) !important;
+  box-shadow: inset 0 1.5px 0 #ffffff, 0 22px 54px rgba(18, 42, 37, 0.18) !important;
 }
 
 .wit-mobile-main-link {
@@ -853,7 +868,7 @@ body {
 .wit-hero {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  overflow: clip;
   text-align: center;
   padding-block: clamp(72px, 7.6vw, 128px) clamp(64px, 6vw, 96px);
   --hero-x: 50%;
@@ -865,6 +880,7 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  overflow: clip;
   background:
     radial-gradient(
       620px circle at var(--hero-x, 50%) var(--hero-y, 34%),
@@ -2057,15 +2073,110 @@ body {
 /* -------------------------------------------------------------------------
    12. MODALS & PORTALED MOBILE DOCK / FLOATING PILL SAFETY
    ------------------------------------------------------------------------- */
+.demo-modal-overlay {
+  z-index: 2500 !important;
+  background: rgba(4, 9, 12, 0.86) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+
+[data-theme="light"] .demo-modal-overlay {
+  background: rgba(14, 28, 25, 0.56) !important;
+}
+
+.mobile-sheet-backdrop {
+  z-index: 2200 !important;
+  background: rgba(4, 9, 12, 0.82) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+[data-theme="light"] .mobile-sheet-backdrop {
+  background: rgba(14, 28, 25, 0.52) !important;
+}
+
+/* High-density Smoked/Pearl Liquid Glass surfaces so background text NEVER bleeds through */
+.demo-modal-container,
 .demo-modal-content,
 .inquiry-modal-container,
-.legal-modal-container {
-  background: var(--lg-popover-bg) !important;
+.legal-modal-container,
+.mobile-sheet-content {
+  background:
+    radial-gradient(120% 180% at 14% 0%, rgba(255, 255, 255, 0.075) 0%, transparent 56%),
+    linear-gradient(155deg, #142227 0%, #0b1418 100%) !important;
   backdrop-filter: blur(32px) saturate(195%) !important;
   -webkit-backdrop-filter: blur(32px) saturate(195%) !important;
   border: 1px solid var(--border-medium) !important;
   border-radius: 26px !important;
-  box-shadow: var(--lg-specular-rim), 0 28px 70px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: var(--lg-specular-rim), 0 28px 72px rgba(0, 0, 0, 0.68) !important;
+}
+
+[data-theme="light"] .demo-modal-container,
+[data-theme="light"] .demo-modal-content,
+[data-theme="light"] .inquiry-modal-container,
+[data-theme="light"] .legal-modal-container,
+[data-theme="light"] .mobile-sheet-content {
+  background:
+    radial-gradient(120% 180% at 14% 0%, #ffffff 0%, transparent 60%),
+    linear-gradient(155deg, #ffffff 0%, #f3f9f6 100%) !important;
+  border-color: rgba(23, 107, 97, 0.26) !important;
+  box-shadow: inset 0 1.5px 0 #ffffff, 0 24px 60px rgba(18, 42, 37, 0.22) !important;
+}
+
+.mobile-sheet-content {
+  border-radius: 26px 26px 0 0 !important;
+}
+
+/* Smooth scrollable modal body with integrated description bar */
+.demo-modal-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.demo-modal-body > .demo-modal-desc-bar {
+  margin: -1.65rem -1.65rem 1.35rem -1.65rem;
+  padding: 0.9rem 1.65rem;
+  background: rgba(255, 255, 255, 0.025);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+[data-theme="light"] .demo-modal-body > .demo-modal-desc-bar {
+  background: rgba(23, 107, 97, 0.04);
+}
+
+.demo-impact-pill.work-impact-mini {
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: middle;
+  line-height: 1.35;
+}
+
+/* Browser URL bar & flex child min-width safety across all demos & configurator */
+.browser-mock-header,
+.browser-url-bar,
+.configured-item-row .item-info,
+.sheet-item-row .sheet-item-info {
+  min-width: 0;
+}
+
+.configured-item-row {
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.configured-item-row .item-info {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.configured-item-row .item-name {
+  display: block;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
 }
 
 /* High-density Smoked/Pearl Liquid Glass so background text never bleeds through */
@@ -2225,6 +2336,24 @@ body {
   }
 }
 
+@media (max-width: 960px) {
+  /* Prevent CSS Grid min-content expansion on Step 6 & mobile configurator */
+  .wizard-split-workspace {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .wizard-selection-panel,
+  .wizard-summary-column,
+  .summary-sidebar-card,
+  .blueprint-cockpit-box,
+  .blueprint-modules-grid {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
+
 @media (max-width: 850px) {
   .wit-section-heading {
     grid-template-columns: 1fr;
@@ -2242,6 +2371,210 @@ body {
 
   .pricing-section.fullpage-wizard-section {
     padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+@media (max-width: 680px) {
+  /* Speed-Lab segmented switch: clean rounded card stack instead of clipped 999px pill */
+  .wit-speed-lab .lab-control-deck {
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .wit-speed-lab .engine-switch-capsule {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 18px;
+    padding: 5px;
+    gap: 5px;
+  }
+
+  .wit-speed-lab .engine-switch-btn {
+    width: 100%;
+    justify-content: space-between;
+    border-radius: 13px;
+    padding: 10px 14px;
+    text-align: left;
+  }
+
+  .wit-speed-lab .lab-race-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Modals: maximize usable mobile screen width & dynamic viewport height */
+  .demo-modal-overlay {
+    padding: 8px !important;
+    align-items: center !important;
+  }
+
+  .demo-modal-container,
+  .inquiry-modal-container,
+  .legal-modal-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - 16px) !important;
+    margin: 0 auto !important;
+    border-radius: 22px !important;
+  }
+
+  /* Modal Header: stack badge + full-width title cleanly, pin close [X] top-right */
+  .demo-modal-header {
+    position: relative;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: 14px 14px 12px !important;
+  }
+
+  .demo-modal-header .demo-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    z-index: 3;
+  }
+
+  .demo-header-left {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    padding-right: 42px !important;
+  }
+
+  .demo-header-left > div {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .demo-modal-title {
+    font-size: 1.12rem !important;
+    line-height: 1.25 !important;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .demo-header-actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .demo-select-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 7px 12px !important;
+    font-size: 0.78rem !important;
+    white-space: normal !important;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* LegalModal tabs header on mobile */
+  .legal-tabs-header {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    padding-right: 42px;
+    gap: 6px;
+  }
+
+  .legal-tab-btn {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    white-space: normal;
+    text-align: left;
+  }
+
+  /* Modal Body & Impact Pill on mobile */
+  .demo-modal-body,
+  .inquiry-form-body,
+  .legal-modal-body {
+    padding: 1rem 0.95rem !important;
+  }
+
+  .demo-modal-body > .demo-modal-desc-bar {
+    margin: -1rem -0.95rem 1rem -0.95rem;
+    padding: 0.8rem 0.95rem;
+    font-size: 0.83rem;
+  }
+
+  .demo-impact-pill.work-impact-mini {
+    display: inline-block;
+    margin-left: 0 !important;
+    margin-top: 6px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    white-space: normal !important;
+  }
+
+  /* Modal Footer: stack price & grid buttons so nothing is ever clipped */
+  .demo-modal-footer {
+    padding: 11px 14px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 9px !important;
+  }
+
+  .demo-footer-info {
+    width: 100%;
+    justify-content: space-between;
+    font-size: 0.84rem;
+  }
+
+  .demo-price-tag {
+    font-size: 0.86rem;
+    line-height: 1.35;
+  }
+
+  .demo-footer-actions {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px !important;
+  }
+
+  .demo-footer-actions .btn-primary-sm,
+  .demo-footer-actions .btn-secondary-sm {
+    padding: 0.6rem 0.95rem;
+    font-size: 0.82rem;
+    min-width: 0;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+  }
+
+  .legal-modal-container .demo-modal-footer .btn-primary-sm {
+    width: 100%;
+  }
+
+  .modal-actions-right {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+
+  .modal-actions-right .btn-primary-sm,
+  .modal-actions-right .btn-secondary-sm {
+    min-width: 0;
+    padding: 0.65rem 0.95rem;
+    font-size: 0.83rem;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .inquiry-success-stage {
+    padding: 1.5rem 1rem !important;
   }
 }
 
@@ -2339,6 +2672,407 @@ body {
   .wit-footer-grid {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+
+  /* Clearance at bottom of footer so floating configurator pill never covers legal links */
+  .wit-footer-bottom {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Configurator selection cards: prevent badge/price header collision */
+  .wizard-selection-panel {
+    padding: 18px 14px !important;
+  }
+
+  .selection-card {
+    padding: 15px 14px !important;
+  }
+
+  .card-header-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .card-badges-left {
+    flex-wrap: wrap;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .card-badges-left .badge-tag {
+    white-space: normal;
+  }
+
+  .summary-sidebar-card {
+    padding: 18px 14px !important;
+  }
+
+  .blueprint-modules-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .blueprint-mod-chip {
+    min-width: 0;
+    font-size: 0.7rem !important;
+    padding: 5px 7px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 18 Live Demo Sandboxes: Mobile Zero-Overflow Rules */
+  .demo-box {
+    gap: 0.95rem;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .demo-control-bar {
+    padding: 0.65rem 0.75rem;
+    gap: 0.55rem;
+  }
+
+  .demo-label {
+    white-space: normal;
+    line-height: 1.3;
+  }
+
+  .demo-tab-btn {
+    white-space: normal;
+    text-align: left;
+    line-height: 1.25;
+  }
+
+  /* B-01 / B-02 / F-03: Browser mock & wireframe sections */
+  .wireframe-content,
+  .subpage-viewport {
+    padding: 1rem;
+  }
+
+  .wireframe-section {
+    padding: 0.9rem;
+  }
+
+  .wireframe-section-header {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .wireframe-section-header h4 {
+    font-size: 0.9rem;
+    min-width: 0;
+  }
+
+  /* B-03: UI-Kit Showcase (4-col Lighthouse -> 2x2 grid, 1-col samples) */
+  .lighthouse-score-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .score-badge {
+    padding: 0.7rem 0.5rem;
+  }
+
+  .score-num {
+    font-size: 1.35rem;
+  }
+
+  .component-samples-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0.85rem;
+  }
+
+  .sample-card {
+    padding: 1rem;
+    min-width: 0;
+  }
+
+  .sample-actions button {
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* B-04: Extra Pages Combinator */
+  .add-page-input-wrap {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .add-page-input-wrap .btn-primary-sm {
+    width: 100%;
+  }
+
+  .pages-stack-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* F-01: Live Price Calculator Sandbox */
+  .calc-demo-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1rem;
+  }
+
+  .calc-inputs-pane,
+  .calc-result-card {
+    min-width: 0;
+  }
+
+  .calc-result-card {
+    padding: 1.15rem;
+  }
+
+  /* F-02 & F-03: 3D Tilt & i18n */
+  .tilt-card-3d {
+    padding: 1.15rem;
+  }
+
+  .tilt-card-header {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .i18n-preview-box {
+    padding: 1.35rem 1rem;
+  }
+
+  /* F-04: Theme & Contrast Tester */
+  .theme-sandbox-window {
+    padding: 1rem;
+    min-width: 0;
+  }
+
+  .theme-nav {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .theme-preview-cards {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0.45rem;
+  }
+
+  .theme-mini-card {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .contrast-checker-badge {
+    white-space: normal;
+    border-radius: 12px;
+    line-height: 1.35;
+  }
+
+  /* F-05: Before / After Brand Slider */
+  .before-after-container {
+    height: 185px;
+  }
+
+  .brand-side {
+    padding: 0.65rem 0.45rem;
+    text-align: center;
+    min-width: 0;
+  }
+
+  .brand-label {
+    white-space: normal;
+    font-size: 0.6rem;
+    line-height: 1.25;
+    margin-bottom: 0.45rem;
+    overflow-wrap: anywhere;
+  }
+
+  .pixelated-text {
+    font-size: 0.78rem;
+    overflow-wrap: anywhere;
+  }
+
+  .vector-logo-mark {
+    font-size: 0.92rem;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .brand-side small,
+  .brand-side span {
+    max-width: 100%;
+    font-size: 0.68rem;
+    line-height: 1.25;
+  }
+
+  /* T-01: Headless CMS Split View */
+  .cms-split-view {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1rem;
+  }
+
+  .cms-editor-pane,
+  .cms-preview-pane {
+    min-width: 0;
+  }
+
+  .live-preview-stage {
+    padding: 1.15rem;
+  }
+
+  /* T-02: Dynamic Portfolio & Filter */
+  .portfolio-items-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0.75rem;
+  }
+
+  .portfolio-item-card {
+    padding: 1rem;
+    min-width: 0;
+  }
+
+  .item-meta {
+    flex-wrap: wrap;
+    gap: 0.45rem 0.85rem;
+  }
+
+  /* T-03: Appointment Booking & 7-Day Calendar Strip */
+  .booking-widget-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1.1rem;
+  }
+
+  .booking-widget-grid > * {
+    min-width: 0;
+  }
+
+  .calendar-strip {
+    gap: 4px;
+  }
+
+  .cal-day-btn {
+    padding: 0.45rem 0.1rem;
+    min-width: 0;
+    border-radius: 9px;
+  }
+
+  .cal-weekday {
+    font-size: 0.58rem;
+  }
+
+  .cal-date {
+    font-size: 0.84rem;
+  }
+
+  /* T-04, C-01, C-02: Funnel, Copywriting & Google SERP */
+  .funnel-step-card,
+  .copy-preview-card {
+    padding: 1.1rem;
+  }
+
+  .copy-headline {
+    font-size: 1.08rem;
+  }
+
+  .google-serp-mock {
+    padding: 0.95rem;
+  }
+
+  .serp-listing {
+    padding: 0.9rem;
+    gap: 0.65rem;
+  }
+
+  .serp-info {
+    min-width: 0;
+  }
+
+  /* C-03: Privacy-First Analytics Dashboard */
+  .analytics-dashboard-mock {
+    padding: 1rem;
+    min-width: 0;
+  }
+
+  .analytics-header {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0.5rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .header-stat {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    padding: 0.7rem 0.85rem;
+  }
+
+  .stat-num {
+    font-size: 1.25rem;
+  }
+
+  .analytics-chart-mock {
+    gap: 0.45rem;
+  }
+
+  .chart-bar span {
+    font-size: 0.58rem;
+  }
+
+  /* M-01 & M-02: Server Monitor & WhatsApp Zuruf Chat */
+  .server-monitor-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .chat-bubble-stream {
+    padding: 0.95rem;
+  }
+
+  .chat-input-bar {
+    padding: 0.6rem 0.75rem;
+    gap: 0.45rem;
+  }
+
+  .chat-input-bar .demo-input {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Hero headline scaling so long German words ("Handgeschriebene") never overflow 375px */
+  .wit-hero {
+    padding-block: 56px 52px;
+  }
+
+  .wit-hero h1 {
+    font-size: clamp(1.85rem, 7.6vw, 2.28rem);
+    line-height: 1.14;
+    letter-spacing: -0.036em;
+  }
+
+  .wit-hero-pill {
+    padding: 6px 12px;
+    font-size: 0.76rem;
+    max-width: 100%;
+  }
+
+  /* Mobile Stepper compact fit on 360px-390px screens */
+  .mobile-stepper-grid {
+    gap: 2px !important;
+    padding: 3px !important;
+    border-radius: 18px !important;
+  }
+
+  .mobile-step-pill {
+    padding: 5px 1px !important;
+    min-width: 0;
+    border-radius: 14px !important;
+  }
+
+  .mobile-pill-name {
+    font-size: 0.56rem !important;
+    letter-spacing: -0.02em;
   }
 }
 

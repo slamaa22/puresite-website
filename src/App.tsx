@@ -92,6 +92,17 @@ export default function App() {
     localStorage.setItem('puresite-theme', theme);
   }, [theme]);
 
+  // Lock background page scroll while any modal dialog is open
+  const isAnyModalOpen = Boolean(activeDemoModule || isInquiryOpen || isLegalOpen);
+  useEffect(() => {
+    if (!isAnyModalOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isAnyModalOpen]);
+
   // Idle background preloading for zero-lag scrolling
   useEffect(() => {
     const idlePreload = () => {
@@ -309,39 +320,45 @@ export default function App() {
           document.body
         )}
 
-      {/* Lazy Modals loaded on-demand */}
+      {/* Lazy Modals loaded on-demand (Portaled to document.body above sticky header & docks) */}
       <React.Suspense fallback={null}>
-        {activeDemoModule && (
-          <ModuleDemoModal
-            module={activeDemoModule}
-            onClose={() => setActiveDemoModule(null)}
-            isSelected={!!selectedConfig[activeDemoModule.code]?.selected}
-            currentTheme={theme}
-            onToggleTheme={toggleTheme}
-            onSelectModule={code => {
-              toggleModule(code);
-            }}
-          />
-        )}
+        {activeDemoModule &&
+          createPortal(
+            <ModuleDemoModal
+              module={activeDemoModule}
+              onClose={() => setActiveDemoModule(null)}
+              isSelected={!!selectedConfig[activeDemoModule.code]?.selected}
+              currentTheme={theme}
+              onToggleTheme={toggleTheme}
+              onSelectModule={code => {
+                toggleModule(code);
+              }}
+            />,
+            document.body
+          )}
 
-        {isInquiryOpen && (
-          <InquiryModal
-            isOpen={isInquiryOpen}
-            onClose={() => setIsInquiryOpen(false)}
-            calculation={calculation}
-            selectedDetails={selectedDetails}
-            structuredItems={selectedItemsStructured}
-            useTax={useTax}
-          />
-        )}
+        {isInquiryOpen &&
+          createPortal(
+            <InquiryModal
+              isOpen={isInquiryOpen}
+              onClose={() => setIsInquiryOpen(false)}
+              calculation={calculation}
+              selectedDetails={selectedDetails}
+              structuredItems={selectedItemsStructured}
+              useTax={useTax}
+            />,
+            document.body
+          )}
 
-        {isLegalOpen && (
-          <LegalModal
-            isOpen={isLegalOpen}
-            onClose={() => setIsLegalOpen(false)}
-            initialTab={legalTab}
-          />
-        )}
+        {isLegalOpen &&
+          createPortal(
+            <LegalModal
+              isOpen={isLegalOpen}
+              onClose={() => setIsLegalOpen(false)}
+              initialTab={legalTab}
+            />,
+            document.body
+          )}
       </React.Suspense>
     </div>
   );
