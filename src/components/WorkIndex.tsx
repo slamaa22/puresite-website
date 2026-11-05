@@ -1,30 +1,42 @@
 import React, { useState } from 'react';
 import { MODULES_DATA } from '../data/modulesData';
 import type { PricingModule, SelectedConfig } from '../types/pricing';
-import { Play, ArrowRight, Filter, Check, Plus } from 'lucide-react';
+import { Play, Check, Plus } from 'lucide-react';
 
 interface WorkIndexProps {
   onOpenDemo: (module: PricingModule) => void;
   onScrollToPricing: () => void;
   selectedConfig?: SelectedConfig;
   onToggleModule?: (code: string) => void;
+  activeCategoryFilter?: string;
+  onCategoryFilterChange?: (cat: string) => void;
 }
 
 export const WorkIndex: React.FC<WorkIndexProps> = ({
   onOpenDemo,
   onScrollToPricing,
   selectedConfig,
-  onToggleModule
+  onToggleModule,
+  activeCategoryFilter,
+  onCategoryFilterChange
 }) => {
-  const [selectedCat, setSelectedCat] = useState<string>('all');
+  const [localCat, setLocalCat] = useState<string>('all');
+  const selectedCat = activeCategoryFilter ?? localCat;
+
+  const handleCatSelect = (id: string) => {
+    setLocalCat(id);
+    if (onCategoryFilterChange) {
+      onCategoryFilterChange(id);
+    }
+  };
 
   const categories = [
     { id: 'all', label: 'Alle Module (18)' },
     { id: 'basis', label: 'Basis-Pakete' },
-    { id: 'frontend', label: 'Frontend-Features' },
-    { id: 'tech', label: 'Backend & Tools' },
-    { id: 'content', label: 'Content & SEO' },
-    { id: 'hosting', label: 'Hosting & Wartung' }
+    { id: 'frontend', label: 'Frontend & Interaktion' },
+    { id: 'tech', label: 'CMS & Buchung' },
+    { id: 'content', label: 'Texte, Maps & SEO' },
+    { id: 'hosting', label: 'Hosting & Betreuung' }
   ];
 
   const filteredModules =
@@ -33,154 +45,153 @@ export const WorkIndex: React.FC<WorkIndexProps> = ({
       : MODULES_DATA.filter(m => m.category === selectedCat);
 
   return (
-    <section id="demos" className="band section-shell" aria-labelledby="demos-catalog-title">
-      <div className="section-head" data-reveal>
-        <h2 id="demos-catalog-title">Modul-Katalog &amp; Live-Demos</h2>
-        <span className="section-head-meta">18 kombinierbare Funktions-Bausteine</span>
-      </div>
-
-      <div className="catalogue-intro-row" data-reveal>
-        <p className="services-lead">
-          Jedes Feature ist als eigenständiger Software-Baustein konzipiert. Teste jedes Modul
-          live im Browser und füge es auf Wunsch mit einem Klick direkt deiner Konfiguration hinzu.
-        </p>
-
-        {/* Category Filters */}
-        <div className="catalog-filter-bar">
-          <span className="filter-bar-label">
-            <Filter size={13} className="text-signal" /> Filter:
-          </span>
-          {categories.map(cat => (
-            <button
-              key={cat.id}
-              className={`filter-chip ${selectedCat === cat.id ? 'active' : ''}`}
-              onClick={() => setSelectedCat(cat.id)}
-            >
-              {cat.label}
-            </button>
-          ))}
+    <section id="demos" className="wit-section wit-wrap wit-home-services" aria-labelledby="demos-catalog-title">
+      {/* Windisch-style 2-Column Section Heading */}
+      <div className="wit-section-heading" data-reveal>
+        <div>
+          <p className="wit-overline">Leistungen &amp; 18 Live-Module</p>
+          <h2 id="demos-catalog-title">Wobei wir Sie konkret unterstützen</h2>
         </div>
+        <button type="button" className="wit-text-link" onClick={onScrollToPricing}>
+          <span>Alle Bausteine im Kalkulator kombinieren</span>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M4 12h16M13 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
 
-      {/* The Johannes Grof Style Work Index Table with Live Configurator Sync */}
-      <ul key={selectedCat} className="work-index work-index-anim" data-reveal>
+      {/* Liquid Glass Category Capsule Bar */}
+      <div className="wit-filter-capsule-bar" data-reveal>
+        {categories.map(cat => (
+          <button
+            key={cat.id}
+            type="button"
+            className={`wit-filter-pill ${selectedCat === cat.id ? 'is-active' : ''}`}
+            onClick={() => handleCatSelect(cat.id)}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Windisch-style Service Rows in Sculpted Liquid Glass */}
+      <div key={selectedCat} className="wit-service-list lg-glass-panel work-index-anim" data-reveal>
         {filteredModules.map(mod => {
           const hasInteractiveDemo = Boolean(mod.demoId);
           const isSelected = !!selectedConfig?.[mod.code]?.selected;
-          const isHighlight = isSelected || mod.isPopular || mod.code === 'B-01' || mod.code === 'F-01';
 
           return (
-            <li
+            <div
               key={mod.code}
-              className={`work-index-row ${isHighlight ? 'is-highlight' : ''} ${isSelected ? 'is-configured-row' : ''}`}
+              className={`wit-service-row ${isSelected ? 'is-selected-row' : ''}`}
             >
-              <div className="work-row-inner">
-                {/* Module Code Badge */}
-                <div className="work-code-col">
-                  <span className={`mono-code-badge ${isSelected ? 'badge-selected-glow' : ''}`}>
+              {/* Col 1: Code + Title + Impact Pill */}
+              <div className="wit-service-title-col">
+                <div className="wit-service-code-line">
+                  <span className={`wit-code-pill ${isSelected ? 'is-active' : ''}`}>
                     {mod.code}
                   </span>
+                  {mod.impactTag && (
+                    <span className="wit-impact-chip">{mod.impactTag}</span>
+                  )}
                 </div>
+                <h3
+                  onClick={() => (hasInteractiveDemo ? onOpenDemo(mod) : onScrollToPricing())}
+                  className="wit-service-name"
+                >
+                  {mod.name}
+                </h3>
+              </div>
 
-                {/* Name & Tagline */}
-                <div className="work-name-col">
-                  <div className="work-item-title-line">
-                    <strong className="work-item-name">{mod.name}</strong>
-                    {mod.impactTag && (
-                      <span className="work-impact-mini">{mod.impactTag}</span>
-                    )}
-                  </div>
-                  <span className="work-item-desc">{mod.description}</span>
-                </div>
+              {/* Col 2: Calm Editorial Description */}
+              <div className="wit-service-desc-col">
+                <p>{mod.description}</p>
+              </div>
 
-                {/* Scope & Details */}
-                <div className="work-scope-col">
-                  <span className="work-cat-tag">{mod.categoryLabel}</span>
-                  <span className="work-scope-bullet">
-                    {mod.scopeHighlights?.[0] || 'Maßgeschneiderte Umsetzung'}
-                  </span>
-                </div>
-
-                {/* Price */}
-                <div className="work-price-col">
-                  <span className="work-price-val">
+              {/* Col 3: Transparent Price + Live Demo + Direct Select + Windisch Rotating Arrow */}
+              <div className="wit-service-meta-col">
+                <div className="wit-service-price-box">
+                  <strong>
                     {mod.fixedPrice
-                      ? `€ ${mod.fixedPrice.toLocaleString('de-AT')}`
-                      : `ab € ${mod.minPrice.toLocaleString('de-AT')}`}
-                  </span>
-                  <span className="work-billing-meta">
+                      ? `${mod.fixedPrice.toLocaleString('de-AT')} €`
+                      : `ab ${mod.minPrice.toLocaleString('de-AT')} €`}
+                  </strong>
+                  <span>
                     {mod.billingType.includes('Monat')
-                      ? '/ Monat'
+                      ? 'pro Monat'
                       : mod.billingType === 'Pro Seite'
-                        ? '/ Seite'
+                        ? 'pro Seite'
                         : mod.billingType === 'Pro Sprache'
-                          ? '/ Sprache'
-                          : 'Fixpreis'}
+                          ? 'pro Sprache'
+                          : 'Festpreis'}
                   </span>
                 </div>
 
-                {/* Action CTAs: Live Demo + Direct Config Toggle */}
-                <div className="work-actions-col work-actions-dual">
+                <div className="wit-service-actions">
                   {hasInteractiveDemo && (
                     <button
                       type="button"
-                      className="button secondary sm-button"
+                      className="wit-mini-glass-btn"
                       onClick={() => onOpenDemo(mod)}
-                      title="Interaktive Demo im Browser testen"
+                      title="Interaktive Vorschau im Browser öffnen"
                     >
-                      <Play size={12} className="play-icon" />
-                      <span>Demo</span>
+                      <Play size={12} />
+                      <span>Live-Demo</span>
                     </button>
                   )}
 
-                  {onToggleModule ? (
+                  {onToggleModule && (
                     <button
                       type="button"
-                      className={`button sm-button ${isSelected ? 'work-btn-selected' : 'tertiary'}`}
+                      className={`wit-mini-glass-btn ${isSelected ? 'is-selected' : ''}`}
                       onClick={() => onToggleModule(mod.code)}
                       title={
                         isSelected
-                          ? 'Im Konfigurator ausgewählt (Klick zum Ändern)'
-                          : 'Direkt zur Konfiguration hinzufügen'
+                          ? 'Im Konfigurator aktiv (Klick zum Ändern)'
+                          : 'Direkt zur Kalkulation hinzufügen'
                       }
                     >
-                      {isSelected ? (
-                        <>
-                          <Check size={12} />
-                          <span>Aktiv</span>
-                        </>
-                      ) : (
-                        <>
-                          <Plus size={12} />
-                          <span>Wählen</span>
-                        </>
-                      )}
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="button tertiary sm-button"
-                      onClick={onScrollToPricing}
-                    >
-                      <span>Wählen</span>
+                      {isSelected ? <Check size={13} /> : <Plus size={13} />}
+                      <span>{isSelected ? 'Gewählt' : 'Wählen'}</span>
                     </button>
                   )}
+
+                  <button
+                    type="button"
+                    className="wit-service-arrow"
+                    onClick={() => (hasInteractiveDemo ? onOpenDemo(mod) : onScrollToPricing())}
+                    aria-label={`${mod.name} ansehen`}
+                    title={hasInteractiveDemo ? 'Interaktive Demo starten' : 'Zum Kalkulator'}
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 18 18 6M6 6h12v12" />
+                    </svg>
+                  </button>
                 </div>
               </div>
-            </li>
+            </div>
           );
         })}
-      </ul>
-
-      {/* Catalogue Bottom CTA */}
-      <div className="catalogue-cta" data-reveal>
-        <p>
-          Deine ausgewählten Bausteine werden automatisch in den Festpreis-Konfigurator übernommen.
-        </p>
-        <button className="button primary" onClick={onScrollToPricing}>
-          <span>Konfiguration &amp; Festpreis ansehen</span>
-          <ArrowRight size={14} />
-        </button>
       </div>
     </section>
   );

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { MessageSquare, ArrowRight } from 'lucide-react';
 
 interface FAQSectionProps {
   onOpenContact?: () => void;
@@ -10,81 +9,144 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenContact }) => {
 
   const faqs = [
     {
-      q: 'Warum verwendet PureSite kein WordPress?',
-      a: 'WordPress wurde 2003 für Weblogs erfunden und ist heute durch hunderte Plugins oft quälend langsam, wartungsintensiv und ein permanentes Ziel für Sicherheitslücken. Wir entwickeln mit modernen Frameworks (React 19 & TypeScript): Deine Seite lädt in unter 0.4 Sekunden, ist DSGVO-konform ohne Cookie-Tracking-Pflicht und benötigt praktisch keinen Wartungsaufwand.'
+      q: 'Ist das Erstgespräch wirklich kostenlos und unverbindlich?',
+      a: 'Ja. Das Erstgespräch ist zu 100% kostenlos und unverbindlich – telefonisch, per Video-Meeting oder direkt über Ihre vorab zusammengestellte Konfiguration. Bezahlte Arbeiten beginnen erst, wenn Umfang und Festpreis gemeinsam fixiert sind.'
     },
     {
-      q: 'Warum arbeitet PureSite mit einem modularen Baustein-Konzept?',
-      a: 'Klassische Agenturen verlangen Pauschalen von 5.000 € bis 10.000 €, in denen Leistungen eingerechnet sind, die du gar nicht benötigst. Mit unserem Bausteinkonzept zahlst du ausschließlich das, was für deinen Betrieb echten Mehrwert bringt. Zudem kannst du jedes Feature vorab in unserer Live-Demo testen.'
+      q: 'Warum entwickelt PureSite handgeschrieben statt mit WordPress?',
+      a: 'WordPress ist durch dutzende Drittanbieter-Plugins oft träge, wartungsintensiv und anfällig für Sicherheitslücken nach Updates. Unsere modernen React- & TypeScript-Websites laden in unter 0,4 Sekunden, benötigen keine anfälligen Plugins und laufen DSGVO-sauber ohne Cookie-Tracking-Zwang.'
     },
     {
-      q: 'Kann ich Texte, Bilder und News später selbst bearbeiten?',
-      a: 'Ja! Mit unserem Modul T-01 ("Integriertes PureSite Admin-Dashboard") erhältst du ein extrem benutzerfreundliches, direkt in deine Website integriertes Cockpit ohne laufende Drittanbieter-Abos. Du kannst Inhalte in Sekunden selbst anpassen – inklusive persönlicher Video-Einführung.'
+      q: 'Wie funktioniert die 50/50 Zahlung und Festpreisgarantie?',
+      a: 'Jedes Modul hat einen klaren, vorab sichtbaren Festpreis ohne Nachverrechnung nach Stunden. 50% des einmaligen Projektpreises werden bei Projektstart fällig, die zweiten 50% erst nach Ihrer finalen Freigabe beim Livegang auf Ihrer Domain.'
     },
     {
-      q: 'Wie läuft die Bezahlung und die 50/50 Meilenstein-Regelung ab?',
-      a: 'Fair und transparent: 50% des einmaligen Projektpreises werden bei Auftragserteilung und Designstart fällig. Die verbleibenden 50% zahlst du erst nach deiner vollkommenen Zufriedenheit und finalen Freigabe kurz vor dem Livegang auf deiner Domain.'
+      q: 'Kann ich Texte und Bilder später selbst ändern oder ändern lassen?',
+      a: 'Beides ist möglich: Mit dem Admin-Dashboard (Modul T-01) bearbeiten Sie Inhalte jederzeit selbst ohne laufende CMS-Abokosten. Alternativ ist in unserem Standard-Hosting (M-01) bereits 1 Stunde und im Sorglos-Paket Pro (M-02) volle 3 Stunden Änderungs-Support pro Monat per kurzem WhatsApp- oder E-Mail-Zuruf inklusive.'
     },
     {
-      q: 'Wie lange dauert die Fertigstellung unserer neuen Website?',
-      a: 'Ein "Digitaler Start" One-Pager ist in der Regel innerhalb von 5 bis 7 Werktagen online. Ein umfassendes "Business"-Paket mit 4 Unterseiten und Spezialmodulen (z.B. Rechner oder Terminbuchung) benötigt typischerweise 2 bis 3 Wochen ab Bereitstellung der Inhalte.'
+      q: 'Wie schnell geht unsere neue Website online?',
+      a: 'Ein kompakter One-Pager ("Digitaler Start") ist in der Regel binnen 5 bis 8 Werktagen startklar. Eine mehrseitige Unternehmens-Website inklusive Spezialmodulen wie Preisrechner oder Online-Terminbuchung dauert typischerweise 2 bis 3 Wochen.'
     },
     {
-      q: 'Kann ich später weitere Module nachbestellen?',
-      a: 'Absolut. Weil wir mit moderner, modularer Softwarearchitektur arbeiten, lässt sich deine Website jederzeit flexibel erweitern – beispielsweise um einen Bewerber-Funnel, einen Blog, Mehrsprachigkeit oder einen individuellen Preisrechner.'
+      q: 'Kann ich mit einem kleinen Umfang starten und später erweitern?',
+      a: 'Ja, jederzeit. Dank unserer modularen Architektur können Sie schlank beginnen und später nahtlos weitere Unterseiten, Mehrsprachigkeit, einen Bewerber-Funnel oder interaktive Tools ergänzen.'
     }
   ];
 
   return (
-    <section id="faq" className="band section-shell" aria-labelledby="faq-title">
-      <div className="section-head" data-reveal>
-        <h2 id="faq-title">Häufige Fragen (FAQ)</h2>
-        <span className="section-head-meta">Transparente Antworten ohne Agentur-Floskeln</span>
-      </div>
-
-      <div className="faq-artisan-list" data-reveal>
-        {faqs.map((faq, idx) => {
-          const isOpen = openIdx === idx;
-          return (
-            <div key={idx} className={`faq-artisan-item ${isOpen ? 'is-open' : ''}`}>
-              <button
-                className="faq-artisan-trigger"
-                onClick={() => setOpenIdx(isOpen ? null : idx)}
-                aria-expanded={isOpen}
+    <>
+      {/* 1. WINDISCH-LAYOUT ASYMMETRIC 2-COLUMN FAQ SECTION */}
+      <section id="faq" className="wit-section wit-wrap wit-faq-section" aria-labelledby="faq-title">
+        <div className="wit-faq-intro" data-reveal>
+          <p className="wit-overline">Gut zu wissen</p>
+          <h2 id="faq-title">Häufige Fragen</h2>
+          <p className="wit-faq-sub">
+            Offene Antworten ohne Agentur-Floskeln. Falls Ihr Anliegen nicht dabei ist, schreiben
+            Sie uns einfach direkt.
+          </p>
+          {onOpenContact && (
+            <button type="button" className="wit-text-link" onClick={onOpenContact}>
+              <span>Direkt eine Frage stellen</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
               >
-                <span className="faq-mono-idx">[{String(idx + 1).padStart(2, '0')}]</span>
-                <span className="faq-question-text">{faq.q}</span>
-                <span className={`faq-toggle-icon ${isOpen ? 'is-rotated' : ''}`}>
-                  {isOpen ? '[−]' : '[+]'}
-                </span>
-              </button>
+                <path d="M4 12h16M13 5l7 7-7 7" />
+              </svg>
+            </button>
+          )}
+        </div>
 
-              <div className={`faq-collapse-grid ${isOpen ? 'is-open' : ''}`}>
-                <div className="faq-collapse-inner">
-                  <div className="faq-artisan-body">
-                    <p>{faq.a}</p>
+        <div className="wit-faq-list lg-glass-panel" data-reveal>
+          {faqs.map((faq, idx) => {
+            const isOpen = openIdx === idx;
+            return (
+              <div key={idx} className={`wit-faq-item ${isOpen ? 'is-open' : ''}`}>
+                <button
+                  type="button"
+                  className="wit-faq-trigger"
+                  onClick={() => setOpenIdx(isOpen ? null : idx)}
+                  aria-expanded={isOpen}
+                >
+                  <span>{faq.q}</span>
+                  <svg
+                    width="19"
+                    height="19"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={`wit-faq-plus ${isOpen ? 'is-open' : ''}`}
+                    aria-hidden="true"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+
+                <div className={`faq-collapse-grid ${isOpen ? 'is-open' : ''}`}>
+                  <div className="faq-collapse-inner">
+                    <div className="wit-faq-answer">
+                      <p>{faq.a}</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {onOpenContact && (
-        <div className="faq-direct-cta-bar" data-reveal>
-          <div className="faq-cta-text">
-            <MessageSquare size={18} className="text-signal" />
-            <span>
-              Spezielle Anforderung für deinen Betrieb? Schreib direkt mit Maximilian &amp; Loreno.
-            </span>
-          </div>
-          <button type="button" className="button secondary sm-button" onClick={onOpenContact}>
-            <span>Kurze Frage senden</span>
-            <ArrowRight size={13} />
-          </button>
+            );
+          })}
         </div>
+      </section>
+
+      {/* 2. WINDISCH-LAYOUT FULL-WIDTH CLOSING CONTACT BAND IN PRISMATIC LIQUID GLASS */}
+      {onOpenContact && (
+        <section className="wit-contact-band" aria-labelledby="closing-cta-heading">
+          <div className="wit-wrap wit-contact-band-inner" data-reveal>
+            <div>
+              <p className="wit-overline">Der nächste Schritt</p>
+              <h2 id="closing-cta-heading">
+                Was möchten Sie mit Ihrer neuen Website verändern?
+              </h2>
+              <p>
+                Die Erstberatung ist kostenlos und unverbindlich. Erzählen Sie uns kurz, was Sie
+                vorhaben – wir besprechen gemeinsam den sinnvollsten nächsten Schritt.
+              </p>
+            </div>
+
+            <div className="wit-contact-band-action">
+              <button
+                type="button"
+                className="wit-btn wit-btn-light-glass"
+                onClick={onOpenContact}
+              >
+                <span>Kostenlose Erstberatung anfragen</span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M6 18 18 6M6 6h12v12" />
+                </svg>
+              </button>
+              <span>Persönliche Rückmeldung durch Maximilian &amp; Loreno innerhalb von 24 Stunden.</span>
+            </div>
+          </div>
+        </section>
       )}
-    </section>
+    </>
   );
 };

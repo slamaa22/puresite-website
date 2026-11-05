@@ -1,89 +1,17 @@
-import React, { useState } from 'react';
-import { Zap, Shield, Layers, Check, X, Calculator, ArrowRight } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  Zap,
+  Layers,
+  Shield,
+  Gauge,
+  RefreshCw,
+  CheckCircle2,
+  Calculator,
+  Server,
+  Calendar,
+  MessageSquare
+} from 'lucide-react';
 import { handleSpotlightMove, useAnimatedNumber } from '../hooks/useMotion';
-
-interface ComparisonCriterion {
-  id: string;
-  num: string;
-  title: string;
-  pureSite: {
-    text: string;
-    badge?: string;
-    isCode?: boolean;
-  };
-  agencies: string;
-  builders: string;
-}
-
-const COMPARISON_CRITERIA: ComparisonCriterion[] = [
-  {
-    id: 'speed',
-    num: '01',
-    title: 'Ladezeit & Google Score',
-    pureSite: {
-      text: '98 - 100 (Unter 0.5s)',
-      badge: 'Bestwert'
-    },
-    agencies: '40 - 70 (Träge & 3-6s)',
-    builders: '50 - 65 (Aufgebläht)'
-  },
-  {
-    id: 'pricing',
-    num: '02',
-    title: 'Preistransparenz',
-    pureSite: {
-      text: '100% Fixpreis pro Modul online',
-      badge: 'Garantie'
-    },
-    agencies: 'Oft vage Stundensätze & Nachrechnung',
-    builders: 'Abo-Falle mit ständigen Upgrades'
-  },
-  {
-    id: 'tech',
-    num: '03',
-    title: 'Technologie-Stack',
-    pureSite: {
-      text: 'React 19, TypeScript & Dedicated Server',
-      badge: 'Modern',
-      isCode: true
-    },
-    agencies: 'Altes PHP & schweres WordPress/Elementor',
-    builders: 'Proprietärer, geschlossener Baukastencode'
-  },
-  {
-    id: 'maintenance',
-    num: '04',
-    title: 'Wartungsaufwand & Bugs',
-    pureSite: {
-      text: 'Nahezu 0 (Kein Plugin-Chaos)',
-      badge: 'Stabil'
-    },
-    agencies: 'Ständige Plugin-Updates & Absturzgefahr',
-    builders: 'Automatisch, aber null Kontrolle'
-  },
-  {
-    id: 'contact',
-    num: '05',
-    title: 'Ansprechpartner',
-    pureSite: {
-      text: 'Direkt die beiden Entwickler (WhatsApp/Tel)',
-      badge: 'Direkt'
-    },
-    agencies: 'Anonyme Junior-Account-Manager',
-    builders: 'Nur automatisierte Bots & Tickets'
-  },
-  {
-    id: 'dsgvo',
-    num: '06',
-    title: 'DSGVO & Daten in Österreich',
-    pureSite: {
-      text: '100% DSGVO-Clean ohne Tracker Cookies',
-      badge: '100% Konform'
-    },
-    agencies: 'Oft US-Drittanbieter-Tracking integriert',
-    builders: 'US-Cloud Server mit Tracking-Zwang'
-  }
-];
 
 interface WhyPureSiteProps {
   onScrollToPricing?: () => void;
@@ -91,10 +19,88 @@ interface WhyPureSiteProps {
 
 export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) => {
   const [horizonYears, setHorizonYears] = useState<1 | 3 | 5>(3);
+  const [selectedEngine, setSelectedEngine] = useState<'puresite' | 'wordpress'>('puresite');
+  const [isSimulating, setIsSimulating] = useState(false);
+  const [pureSiteProgress, setPureSiteProgress] = useState(100);
+  const [wpProgress, setWpProgress] = useState(100);
+  const [raceWinner, setRaceWinner] = useState<string | null>(null);
+
+  const pureTimerRef = useRef<number | null>(null);
+  const wpTimerRef = useRef<number | null>(null);
+
+  const clearRaceTimers = () => {
+    if (pureTimerRef.current !== null) {
+      window.clearInterval(pureTimerRef.current);
+      pureTimerRef.current = null;
+    }
+    if (wpTimerRef.current !== null) {
+      window.clearInterval(wpTimerRef.current);
+      wpTimerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => clearRaceTimers();
+  }, []);
+
+  const handleEngineSwitch = (engine: 'puresite' | 'wordpress') => {
+    clearRaceTimers();
+    setSelectedEngine(engine);
+    setPureSiteProgress(100);
+    setWpProgress(100);
+    setIsSimulating(false);
+    setRaceWinner(null);
+  };
+
+  const runSpeedSimulation = () => {
+    if (isSimulating) return;
+    clearRaceTimers();
+    setIsSimulating(true);
+    setRaceWinner(null);
+    setPureSiteProgress(0);
+    setWpProgress(0);
+
+    pureTimerRef.current = window.setInterval(() => {
+      setPureSiteProgress(prev => {
+        if (prev >= 100) {
+          if (pureTimerRef.current !== null) {
+            window.clearInterval(pureTimerRef.current);
+            pureTimerRef.current = null;
+          }
+          setRaceWinner(curr => curr ?? 'puresite');
+          return 100;
+        }
+        return prev + 25;
+      });
+    }, 75);
+
+    wpTimerRef.current = window.setInterval(() => {
+      setWpProgress(prev => {
+        if (prev >= 100) {
+          if (wpTimerRef.current !== null) {
+            window.clearInterval(wpTimerRef.current);
+            wpTimerRef.current = null;
+          }
+          setIsSimulating(false);
+          return 100;
+        }
+        return Math.min(100, prev + 3);
+      });
+    }, 90);
+  };
+
+  // Telemetry animated readouts
+  const lighthouseScore = useAnimatedNumber(selectedEngine === 'puresite' ? 100 : 41, 420);
+  const fcpHundredths = useAnimatedNumber(selectedEngine === 'puresite' ? 38 : 360, 420);
+  const payloadKb = useAnimatedNumber(selectedEngine === 'puresite' ? 124 : 4800, 420);
+  const cookieCount = useAnimatedNumber(selectedEngine === 'puresite' ? 0 : 14, 360);
+
+  const ringCircumference = 2 * Math.PI * 19;
+  const ringOffset = ringCircumference * (1 - lighthouseScore / 100);
 
   // Realistic Austrian market TCO comparison (Business multi-page website + hosting/care)
-  const pureSiteTotal = 1500 + horizonYears * 12 * 25; // Business Web 1.500 € + 25 €/mo Dedicated Hosting
-  const agencyTotal = 5400 + horizonYears * 12 * 130 + (horizonYears === 5 ? 1200 : 0); // 5.400 € WP Agency + 130 €/mo plugin maintenance + plugin repair
+  const pureSiteTotal = 1500 + horizonYears * 12 * 25; // Business Web 1.500 € + 25 €/mo Dedicated Hosting inkl. 1h
+  const agencyTotal = 5400 + horizonYears * 12 * 130 + (horizonYears === 5 ? 1200 : 0);
   const savedAmount = agencyTotal - pureSiteTotal;
 
   const animPure = useAnimatedNumber(pureSiteTotal);
@@ -104,264 +110,438 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
   return (
     <section
       id="warum-wir"
-      className="band band--tint section-shell"
+      className="wit-projects-preview"
       aria-labelledby="why-title"
     >
-      <div className="section-head" data-reveal>
-        <h2 id="why-title">Vergleich &amp; Architektur</h2>
-        <span className="section-head-meta">
-          PureSite vs. Klassische Agenturen &amp; Baukästen
-        </span>
-      </div>
-
-      <p className="services-lead" data-reveal>
-        Schluss mit trägem WordPress-Ballast, 40 anfälligen Plugins und intransparenten 8.000 €
-        Angeboten. Wir haben PureSite gegründet, um Betrieben in Österreich handgeschriebene
-        High-Performance-Websites mit voller Preistransparenz zu bieten.
-      </p>
-
-      {/* 3 Pillar Spec Cards */}
-      <div className="why-specs-grid" data-reveal>
-        <article
-          className="why-spec-card spotlight-surface"
-          onMouseMove={handleSpotlightMove}
-        >
-          <div className="spec-icon-row">
-            <Zap size={20} className="text-signal" />
-            <span className="spec-mono-badge">Ø 0.4s FCP</span>
-          </div>
-          <h3>Radikale Web-Performance</h3>
-          <p>
-            Während normale Agentur-Websites 3 bis 6 Sekunden für den ersten Aufbau brauchen,
-            startet PureSite in unter 0.5 Sekunden. Google belohnt das mit Spitzen-Rankings – und
-            deine Kunden verlassen die Seite nicht frustriert.
-          </p>
-          <ul className="spec-proof-list">
-            <li>Lighthouse Score: 98 - 100/100</li>
-            <li>Optimierte SVGs &amp; WebP Assets</li>
-            <li>Core Web Vitals im grünen Bereich</li>
-          </ul>
-        </article>
-
-        <article
-          className="why-spec-card spotlight-surface"
-          onMouseMove={handleSpotlightMove}
-        >
-          <div className="spec-icon-row">
-            <Layers size={20} className="text-signal" />
-            <span className="spec-mono-badge">18 Module</span>
-          </div>
-          <h3>Echtes Modul-Konzept</h3>
-          <p>
-            Du bezahlst nur, was dein Betrieb wirklich braucht. Kein überladenes Theme mit 90%
-            ungenutztem Code. Brauchst du einen interaktiven Rechner oder Terminbuchung? Klick es
-            einfach dazu.
-          </p>
-          <ul className="spec-proof-list">
-            <li>100% verbindliche Festpreise pro Modul</li>
-            <li>Jederzeit modular erweiterbar</li>
-            <li>Keine versteckten Wartungsfallen</li>
-          </ul>
-        </article>
-
-        <article
-          className="why-spec-card spotlight-surface"
-          onMouseMove={handleSpotlightMove}
-        >
-          <div className="spec-icon-row">
-            <Shield size={20} className="text-signal" />
-            <span className="spec-mono-badge">0 PHP / SQL</span>
-          </div>
-          <h3>100% Ausfallsicher &amp; DSGVO-Clean</h3>
-          <p>
-            Keine Datenbanken, die gehackt werden können, und keine 45 WordPress-Plugins, die nach
-            jedem Update die Seite zerschießen. Unsere Jamstack-Architektur läuft stabil auf
-            dedizierten EU-Servern.
-          </p>
-          <ul className="spec-proof-list">
-            <li>0 Cookies nötig (kein nerviger Banner)</li>
-            <li>DSGVO-konformes EU-Hosting</li>
-            <li>Kein ständiger Wartungs-Stress</li>
-          </ul>
-        </article>
-      </div>
-
-      {/* The Brutalist Comparison Data Table (Desktop) + Bento-Cards (Mobile) */}
-      <div className="comparison-block" data-reveal>
-        <div className="comparison-head">
-          <h3>Der technische Faktencheck</h3>
-          <span className="comparison-meta">Vergleich nach objektiven Kriterien</span>
-        </div>
-
-        {/* Desktop Table View */}
-        <div className="table-scroll-container comparison-desktop-table">
-          <table className="artisan-table">
-            <thead>
-              <tr>
-                <th style={{ width: '28%' }}>Kriterium</th>
-                <th className="th-puresite" style={{ width: '32%' }}>
-                  <div className="th-badge-brand">
-                    <span>PureSite</span>
-                    <span className="badge-recommend">Empfehlung</span>
-                  </div>
-                </th>
-                <th style={{ width: '22%' }}>Klassische Agenturen</th>
-                <th style={{ width: '18%' }}>Baukästen (Wix, Jimdo)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {COMPARISON_CRITERIA.map(item => (
-                <tr key={item.id}>
-                  <td>
-                    <strong>{item.title}</strong>
-                  </td>
-                  <td className="td-puresite">
-                    {item.pureSite.isCode ? (
-                      <code>{item.pureSite.text}</code>
-                    ) : item.pureSite.badge === 'Bestwert' ? (
-                      <span className="table-tag tag-success">{item.pureSite.text}</span>
-                    ) : (
-                      <strong className="text-success inline-flex-center">
-                        <Check size={14} className="mr-1" /> {item.pureSite.text}
-                      </strong>
-                    )}
-                  </td>
-                  <td>
-                    <span className="text-danger inline-flex-center">
-                      <X size={14} className="mr-1" /> {item.agencies}
-                    </span>
-                  </td>
-                  <td>
-                    <span className="text-danger inline-flex-center">
-                      <X size={14} className="mr-1" /> {item.builders}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Mobile Bento-Cards View */}
-        <div className="comparison-mobile-cards" aria-label="Technischer Faktencheck Mobil">
-          {COMPARISON_CRITERIA.map(item => (
-            <article key={item.id} className="comparison-bento-card">
-              <div className="bento-card-header">
-                <span className="bento-card-idx">[{item.num}]</span>
-                <h4 className="bento-card-title">{item.title}</h4>
-              </div>
-
-              <div className="bento-winner-box">
-                <div className="bento-winner-head">
-                  <div className="bento-brand-tag">
-                    <span className="bento-dot-pulse" aria-hidden="true"></span>
-                    <strong>PureSite</strong>
-                  </div>
-                  {item.pureSite.badge && (
-                    <span className="bento-best-badge">{item.pureSite.badge}</span>
-                  )}
-                </div>
-                <div className="bento-winner-value">
-                  <Check size={16} className="text-signal mr-1.5 flex-shrink-0" />
-                  {item.pureSite.isCode ? (
-                    <code>{item.pureSite.text}</code>
-                  ) : (
-                    <strong>{item.pureSite.text}</strong>
-                  )}
-                </div>
-              </div>
-
-              <div className="bento-competitors-block">
-                <div className="bento-comp-row">
-                  <span className="bento-comp-name">Klassische Agenturen:</span>
-                  <div className="bento-comp-val">
-                    <X size={13} className="text-danger mr-1.5 flex-shrink-0" />
-                    <span>{item.agencies}</span>
-                  </div>
-                </div>
-
-                <div className="bento-comp-row">
-                  <span className="bento-comp-name">Baukästen (Wix, Jimdo):</span>
-                  <div className="bento-comp-val">
-                    <X size={13} className="text-danger mr-1.5 flex-shrink-0" />
-                    <span>{item.builders}</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      {/* Interactive TCO (Total Cost of Ownership) Benchmark Bar */}
-      <div className="tco-benchmark-card spotlight-surface" onMouseMove={handleSpotlightMove} data-reveal>
-        <div className="tco-head-row">
-          <div className="tco-title-col">
-            <span className="tco-eyebrow">
-              <Calculator size={13} /> Gesamtkosten-Vergleich (Business-Website inkl. Hosting)
-            </span>
-            <h3>Was kostet eine professionelle Website wirklich auf Sicht?</h3>
-          </div>
-
-          <div className="tco-horizon-pills" role="group" aria-label="Zeitraum wählen">
-            {([1, 3, 5] as const).map(yr => (
-              <button
-                key={yr}
-                type="button"
-                className={`tco-pill-btn ${horizonYears === yr ? 'active' : ''}`}
-                onClick={() => setHorizonYears(yr)}
-              >
-                {yr} {yr === 1 ? 'Jahr' : 'Jahre'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="tco-bars-comparison">
-          <div className="tco-bar-row">
-            <div className="tco-bar-meta">
-              <strong className="text-signal">PureSite (Business + Dedicated Hosting)</strong>
-              <span className="tco-bar-amount text-signal">
-                {animPure.toLocaleString('de-AT')} €
-              </span>
-            </div>
-            <div className="tco-rail">
-              <div
-                className="tco-fill tco-fill-pure"
-                style={{ width: `${Math.round((pureSiteTotal / agencyTotal) * 100)}%` }}
-              />
-            </div>
-          </div>
-
-          <div className="tco-bar-row">
-            <div className="tco-bar-meta">
-              <span>Klassische WordPress-Agentur (Setup + Plugin-Wartungsvertrag)</span>
-              <span className="tco-bar-amount tco-amount-muted">
-                ~{animAgency.toLocaleString('de-AT')} €
-              </span>
-            </div>
-            <div className="tco-rail">
-              <div className="tco-fill tco-fill-agency" style={{ width: '100%' }} />
-            </div>
-          </div>
-        </div>
-
-        <div className="tco-footer-row">
-          <div className="tco-savings-callout">
-            Direkte Budget-Ersparnis über {horizonYears} {horizonYears === 1 ? 'Jahr' : 'Jahre'}:{' '}
-            <strong>ca. {animSaved.toLocaleString('de-AT')} €</strong> – die du direkt in
-            wertsteigernde Module wie Preisrechner oder Terminbuchung investieren kannst.
+      <div className="wit-wrap wit-section">
+        {/* Windisch-style 2-Column Section Heading */}
+        <div className="wit-section-heading" data-reveal>
+          <div>
+            <p className="wit-overline">Praxis, Architektur &amp; Vergleich</p>
+            <h2 id="why-title">So sehen unsere Lösungen in der Praxis aus</h2>
           </div>
           {onScrollToPricing && (
-            <button
-              type="button"
-              className="button primary sm-button"
-              onClick={onScrollToPricing}
-            >
-              <span>Eigenes Paket konfigurieren</span>
-              <ArrowRight size={13} />
+            <button type="button" className="wit-text-link" onClick={onScrollToPricing}>
+              <span>Eigenen Umfang kalkulieren</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 12h16M13 5l7 7-7 7" />
+              </svg>
             </button>
           )}
+        </div>
+
+        {/* 1. WINDISCH-STYLE 3-COLUMN SCHEMATIC ARCHITECTURE TEASERS IN LIQUID GLASS */}
+        <div className="wit-project-teaser-grid" data-reveal>
+          {/* Card 1: High-Speed Jamstack Architecture */}
+          <article className="wit-project-teaser">
+            <figure
+              className="wit-project-diagram lg-glass-card spotlight-surface"
+              onMouseMove={handleSpotlightMove}
+            >
+              <figcaption>Schematische Architektur · Ladezeit &lt; 0,4s</figcaption>
+              <div className="wit-diagram-canvas">
+                <div className="wit-diagram-hub">
+                  <Zap size={22} />
+                  <span>React 19 Frontend (124 KB)</span>
+                </div>
+                <div className="wit-diagram-bridge" aria-hidden="true" />
+                <div className="wit-diagram-branches-two">
+                  <div className="wit-diagram-node">
+                    <Gauge size={20} />
+                    <span>100/100 Google Score</span>
+                  </div>
+                  <div className="wit-diagram-node">
+                    <Shield size={20} />
+                    <span>0 SQL / 0 Plugin-Lücken</span>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            <div className="wit-project-teaser-copy">
+              <h3>Radikale Ladezeit statt WordPress-Trägheit</h3>
+              <p>
+                Keine überladenen Themes und keine 40 Plugins. Ihre Website startet auf Mobilgeräten
+                sofort und wird von Google spürbar besser gereiht.
+              </p>
+            </div>
+          </article>
+
+          {/* Card 2: Modular Interactive Components */}
+          <article className="wit-project-teaser">
+            <figure
+              className="wit-project-diagram lg-glass-card spotlight-surface"
+              onMouseMove={handleSpotlightMove}
+            >
+              <figcaption>Schematische Darstellung · Modul-System</figcaption>
+              <div className="wit-diagram-canvas">
+                <div className="wit-diagram-hub">
+                  <Layers size={22} />
+                  <span>Basis-Website (ab 1.000 €)</span>
+                </div>
+                <div className="wit-diagram-bridge" aria-hidden="true" />
+                <div className="wit-diagram-branches-three">
+                  <div className="wit-diagram-node">
+                    <Calculator size={19} />
+                    <span>Live-Rechner</span>
+                  </div>
+                  <div className="wit-diagram-node">
+                    <Calendar size={19} />
+                    <span>Terminbuchung</span>
+                  </div>
+                  <div className="wit-diagram-node">
+                    <Layers size={19} />
+                    <span>Admin-CMS</span>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            <div className="wit-project-teaser-copy">
+              <h3>Modulares Baukasten-Prinzip ohne Abo-Falle</h3>
+              <p>
+                Sie bezahlen ausschließlich die Funktionen, die Ihr Betrieb wirklich nutzt – mit
+                verbindlichem Festpreis pro Modul und jederzeit erweiterbar.
+              </p>
+            </div>
+          </article>
+
+          {/* Card 3: Dedicated EU Server & Concierge Support */}
+          <article className="wit-project-teaser">
+            <figure
+              className="wit-project-diagram lg-glass-card spotlight-surface"
+              onMouseMove={handleSpotlightMove}
+            >
+              <figcaption>Schematische Darstellung · Betrieb &amp; Pflege</figcaption>
+              <div className="wit-diagram-canvas">
+                <div className="wit-diagram-hub">
+                  <Server size={22} />
+                  <span>Dedicated EU-Server</span>
+                </div>
+                <div className="wit-diagram-bridge" aria-hidden="true" />
+                <div className="wit-diagram-branches-two">
+                  <div className="wit-diagram-node">
+                    <Shield size={20} />
+                    <span>SSL &amp; 30d Backups</span>
+                  </div>
+                  <div className="wit-diagram-node">
+                    <MessageSquare size={20} />
+                    <span>1h – 3h Zuruf / Monat</span>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            <div className="wit-project-teaser-copy">
+              <h3>Dedicated Hosting &amp; WhatsApp-Zuruf</h3>
+              <p>
+                Tägliche Offsite-Backups, Monitoring sowie 1 Stunde (Basis) bzw. 3 Stunden (Pro)
+                Änderungs-Support pro Monat direkt inklusive.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        {/* 2. INTERACTIVE LIQUID GLASS SPEED-LAB */}
+        <div id="speed-lab" className="wit-speed-lab lg-glass-panel" data-reveal>
+          <div className="lab-control-deck">
+            <div className="engine-switch-label">
+              <Gauge size={16} className="text-signal" />
+              <span>Live-Architektur vergleichen:</span>
+            </div>
+
+            <div className="engine-switch-capsule" role="radiogroup" aria-label="Engine-Vergleich">
+              <button
+                type="button"
+                role="radio"
+                aria-checked={selectedEngine === 'puresite'}
+                className={`engine-switch-btn ${selectedEngine === 'puresite' ? 'is-active-pure' : ''}`}
+                onClick={() => handleEngineSwitch('puresite')}
+              >
+                <span className="switch-status-dot green" />
+                <strong>PureSite Engine</strong>
+                <span className="switch-sub-pill">React 19 &amp; TypeScript</span>
+              </button>
+
+              <button
+                type="button"
+                role="radio"
+                aria-checked={selectedEngine === 'wordpress'}
+                className={`engine-switch-btn ${selectedEngine === 'wordpress' ? 'is-active-wp' : ''}`}
+                onClick={() => handleEngineSwitch('wordpress')}
+              >
+                <span className="switch-status-dot amber" />
+                <strong>Typisches WordPress</strong>
+                <span className="switch-sub-pill">PHP &amp; 38 Plugins</span>
+              </button>
+            </div>
+
+            <button
+              type="button"
+              className="wit-btn wit-btn-small wit-btn-glass-outline lab-race-btn"
+              onClick={runSpeedSimulation}
+              disabled={isSimulating}
+            >
+              <RefreshCw size={14} className={isSimulating ? 'spin-anim' : ''} />
+              <span>
+                {isSimulating ? 'Simuliere Ladevorgang...' : 'Ladezeit-Rennen starten'}
+              </span>
+            </button>
+          </div>
+
+          {isSimulating && (
+            <div className="lab-race-visualizer">
+              <div className="race-track-row">
+                <div className="race-track-label">
+                  <span className="race-name">PureSite (0,38s)</span>
+                  <span className="race-val">{pureSiteProgress}%</span>
+                </div>
+                <div className="race-track-rail">
+                  <div
+                    className="race-track-fill race-fill-puresite"
+                    style={{ width: `${pureSiteProgress}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="race-track-row mt-2">
+                <div className="race-track-label">
+                  <span className="race-name">Klassisches WordPress (3,60s)</span>
+                  <span className="race-val">{wpProgress}%</span>
+                </div>
+                <div className="race-track-rail">
+                  <div
+                    className="race-track-fill race-fill-wordpress"
+                    style={{ width: `${wpProgress}%` }}
+                  />
+                </div>
+              </div>
+
+              {raceWinner === 'puresite' && wpProgress < 100 && (
+                <div className="race-winner-banner">
+                  <CheckCircle2 size={15} className="text-signal-green" />
+                  <span>
+                    PureSite ist bereits vollständig geladen, während WordPress noch Datenbank &amp;
+                    Plugins initialisiert.
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="wit-gauges-grid">
+            <div
+              onMouseMove={handleSpotlightMove}
+              className="wit-gauge-card spotlight-surface"
+            >
+              <div className="gauge-card-head">
+                <span className="gauge-label">Google Lighthouse</span>
+                <span
+                  className={`gauge-status-chip ${selectedEngine === 'puresite' ? 'chip-success' : 'chip-danger'}`}
+                >
+                  {selectedEngine === 'puresite' ? '100 / 100' : '41 / 100'}
+                </span>
+              </div>
+              <div className="gauge-ring-row">
+                <svg className="gauge-radial-svg" width="46" height="46" viewBox="0 0 48 48" aria-hidden="true">
+                  <circle
+                    cx="24"
+                    cy="24"
+                    r="19"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeOpacity="0.14"
+                    strokeWidth="4"
+                  />
+                  <circle
+                    cx="24"
+                    cy="24"
+                    r="19"
+                    fill="none"
+                    stroke={selectedEngine === 'puresite' ? 'var(--pure-mint)' : '#ef4444'}
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeDasharray={ringCircumference}
+                    strokeDashoffset={ringOffset}
+                    transform="rotate(-90 24 24)"
+                    style={{ transition: 'stroke-dashoffset 0.35s ease, stroke 0.25s ease' }}
+                  />
+                </svg>
+                <div className="gauge-huge-value">
+                  <span>{lighthouseScore}</span>
+                  <span className="gauge-unit">Punkte</span>
+                </div>
+              </div>
+              <p className="gauge-desc">
+                {selectedEngine === 'puresite'
+                  ? 'Top-Platzierungen durch saubere Core Web Vitals.'
+                  : 'Abwertung bei mobilen Suchanfragen durch Render-Blocker.'}
+              </p>
+            </div>
+
+            <div
+              onMouseMove={handleSpotlightMove}
+              className="wit-gauge-card spotlight-surface"
+            >
+              <div className="gauge-card-head">
+                <span className="gauge-label">Sichtbarer Aufbau</span>
+                <span
+                  className={`gauge-status-chip ${selectedEngine === 'puresite' ? 'chip-success' : 'chip-danger'}`}
+                >
+                  {selectedEngine === 'puresite' ? 'SOFORT' : 'TRÄGE'}
+                </span>
+              </div>
+              <div className="gauge-huge-value">
+                <span>{(fcpHundredths / 100).toFixed(2)}</span>
+                <span className="gauge-unit">Sek.</span>
+              </div>
+              <p className="gauge-desc">
+                {selectedEngine === 'puresite'
+                  ? 'Statisch vorab kompiliert ohne Datenbank-Wartezeit.'
+                  : 'Jeder Seitenaufruf wartet auf PHP & SQL-Abfragen.'}
+              </p>
+            </div>
+
+            <div
+              onMouseMove={handleSpotlightMove}
+              className="wit-gauge-card spotlight-surface"
+            >
+              <div className="gauge-card-head">
+                <span className="gauge-label">Seiten-Gewicht</span>
+                <span
+                  className={`gauge-status-chip ${selectedEngine === 'puresite' ? 'chip-success' : 'chip-danger'}`}
+                >
+                  {selectedEngine === 'puresite' ? 'SCHLANK' : 'SCHWER'}
+                </span>
+              </div>
+              <div className="gauge-huge-value">
+                <span>
+                  {payloadKb >= 1000 ? (payloadKb / 1000).toFixed(1) : payloadKb}
+                </span>
+                <span className="gauge-unit">{payloadKb >= 1000 ? 'MB' : 'KB'}</span>
+              </div>
+              <p className="gauge-desc">
+                {selectedEngine === 'puresite'
+                  ? 'Nur exakt der Code, den Ihre Website wirklich nutzt.'
+                  : 'Unzählige externe CSS- & Script-Dateien pro Plugin.'}
+              </p>
+            </div>
+
+            <div
+              onMouseMove={handleSpotlightMove}
+              className="wit-gauge-card spotlight-surface"
+            >
+              <div className="gauge-card-head">
+                <span className="gauge-label">DSGVO &amp; Cookies</span>
+                <span
+                  className={`gauge-status-chip ${selectedEngine === 'puresite' ? 'chip-success' : 'chip-danger'}`}
+                >
+                  {selectedEngine === 'puresite' ? 'CLEAN' : 'RISIKO'}
+                </span>
+              </div>
+              <div className="gauge-huge-value">
+                <span>{cookieCount}</span>
+                <span className="gauge-unit">Tracker</span>
+              </div>
+              <p className="gauge-desc">
+                {selectedEngine === 'puresite'
+                  ? '100% DSGVO-konform ohne nervigen Cookie-Zwang.'
+                  : 'Drittanbieter-Skripte erfordern komplexe Consent-Banner.'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. INTERACTIVE TCO BENCHMARK CARD IN LIQUID GLASS */}
+        <div
+          className="tco-benchmark-card lg-glass-panel spotlight-surface"
+          onMouseMove={handleSpotlightMove}
+          data-reveal
+        >
+          <div className="tco-head-row">
+            <div className="tco-title-col">
+              <span className="wit-overline">
+                <Calculator size={13} /> Gesamtkosten-Vergleich (Business-Website inkl. Hosting)
+              </span>
+              <h3>Was kostet Ihre Website wirklich über {horizonYears} {horizonYears === 1 ? 'Jahr' : 'Jahre'}?</h3>
+            </div>
+            <div className="tco-horizon-pills" role="group" aria-label="Betrachtungszeitraum">
+              {([1, 3, 5] as const).map(yr => (
+                <button
+                  key={yr}
+                  type="button"
+                  className={`tco-pill-btn ${horizonYears === yr ? 'active' : ''}`}
+                  onClick={() => setHorizonYears(yr)}
+                >
+                  {yr} {yr === 1 ? 'Jahr' : 'Jahre'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="tco-bars-comparison">
+            <div className="tco-bar-row">
+              <div className="tco-bar-meta">
+                <strong className="text-signal">
+                  PureSite (Business-Paket + Dedicated Hosting inkl. 1h/Monat)
+                </strong>
+                <span className="tco-bar-amount text-signal">
+                  {animPure.toLocaleString('de-AT')} €
+                </span>
+              </div>
+              <div className="tco-rail">
+                <div
+                  className="tco-fill tco-fill-pure"
+                  style={{ width: `${Math.round((pureSiteTotal / agencyTotal) * 100)}%` }}
+                />
+              </div>
+            </div>
+
+            <div className="tco-bar-row">
+              <div className="tco-bar-meta">
+                <span>Klassische WordPress-Agentur (Setup + laufende Plugin-Wartung)</span>
+                <span className="tco-bar-amount tco-amount-muted">
+                  ~{animAgency.toLocaleString('de-AT')} €
+                </span>
+              </div>
+              <div className="tco-rail">
+                <div className="tco-fill tco-fill-agency" style={{ width: '100%' }} />
+              </div>
+            </div>
+          </div>
+
+          <div className="tco-footer-row">
+            <p className="tco-savings-callout">
+              Durch unsere schlanke Architektur sparen Sie über {horizonYears}{' '}
+              {horizonYears === 1 ? 'Jahr' : 'Jahre'} rund{' '}
+              <strong>{animSaved.toLocaleString('de-AT')} €</strong> an Agentur- und Wartungskosten.
+            </p>
+            {onScrollToPricing && (
+              <button type="button" className="wit-btn wit-btn-primary wit-btn-small" onClick={onScrollToPricing}>
+                <span>Eigenes Projekt kalkulieren</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M6 18 18 6M6 6h12v12" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </section>

@@ -1,98 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-  ArrowRight,
-  Play,
-  Zap,
-  Shield,
-  Cpu,
-  Gauge,
-  RefreshCw,
-  CheckCircle2,
-  Sparkles
-} from 'lucide-react';
-import { useAnimatedNumber, handleSpotlightMove } from '../hooks/useMotion';
+import React, { useRef } from 'react';
+import { handleSpotlightMove } from '../hooks/useMotion';
 
 interface HeroProps {
   onScrollToPricing: () => void;
   onExploreDemos: () => void;
 }
 
+const WAVE_LINES = Array.from({ length: 18 }, (_, i) => i);
+
 export const Hero: React.FC<HeroProps> = ({
   onScrollToPricing,
   onExploreDemos
 }) => {
-  const [selectedEngine, setSelectedEngine] = useState<'puresite' | 'wordpress'>('puresite');
-  const [isSimulating, setIsSimulating] = useState(false);
-  const [pureSiteProgress, setPureSiteProgress] = useState(100);
-  const [wpProgress, setWpProgress] = useState(100);
-  const [raceWinner, setRaceWinner] = useState<string | null>(null);
-
-  const pureTimerRef = useRef<number | null>(null);
-  const wpTimerRef = useRef<number | null>(null);
   const heroStageRef = useRef<HTMLElement | null>(null);
-
-  const clearRaceTimers = () => {
-    if (pureTimerRef.current !== null) {
-      window.clearInterval(pureTimerRef.current);
-      pureTimerRef.current = null;
-    }
-    if (wpTimerRef.current !== null) {
-      window.clearInterval(wpTimerRef.current);
-      wpTimerRef.current = null;
-    }
-  };
-
-  useEffect(() => {
-    return () => clearRaceTimers();
-  }, []);
-
-  const handleEngineSwitch = (engine: 'puresite' | 'wordpress') => {
-    clearRaceTimers();
-    setSelectedEngine(engine);
-    setPureSiteProgress(100);
-    setWpProgress(100);
-    setIsSimulating(false);
-    setRaceWinner(null);
-  };
-
-  const runSpeedSimulation = () => {
-    if (isSimulating) return;
-    clearRaceTimers();
-    setIsSimulating(true);
-    setRaceWinner(null);
-    setPureSiteProgress(0);
-    setWpProgress(0);
-
-    // PureSite completes in ~380ms
-    pureTimerRef.current = window.setInterval(() => {
-      setPureSiteProgress(prev => {
-        if (prev >= 100) {
-          if (pureTimerRef.current !== null) {
-            window.clearInterval(pureTimerRef.current);
-            pureTimerRef.current = null;
-          }
-          setRaceWinner(curr => curr ?? 'puresite');
-          return 100;
-        }
-        return prev + 25;
-      });
-    }, 75);
-
-    // WordPress takes ~3600ms
-    wpTimerRef.current = window.setInterval(() => {
-      setWpProgress(prev => {
-        if (prev >= 100) {
-          if (wpTimerRef.current !== null) {
-            window.clearInterval(wpTimerRef.current);
-            wpTimerRef.current = null;
-          }
-          setIsSimulating(false);
-          return 100;
-        }
-        return Math.min(100, prev + 3);
-      });
-    }, 90);
-  };
 
   const handleHeroPointerMove = (e: React.MouseEvent<HTMLElement>) => {
     const el = heroStageRef.current;
@@ -102,435 +22,183 @@ export const Hero: React.FC<HeroProps> = ({
     el.style.setProperty('--hero-y', `${e.clientY - rect.top}px`);
   };
 
-  // Smooth animated instrument readouts
-  const lighthouseScore = useAnimatedNumber(selectedEngine === 'puresite' ? 100 : 41, 420);
-  const fcpHundredths = useAnimatedNumber(selectedEngine === 'puresite' ? 38 : 360, 420);
-  const payloadKb = useAnimatedNumber(selectedEngine === 'puresite' ? 124 : 4800, 420);
-  const cookieCount = useAnimatedNumber(selectedEngine === 'puresite' ? 0 : 14, 360);
-
-  const ringCircumference = 2 * Math.PI * 19;
-  const ringOffset = ringCircumference * (1 - lighthouseScore / 100);
-
   return (
-    <section
-      id="hero"
-      ref={heroStageRef}
-      onMouseMove={handleHeroPointerMove}
-      className="hero-stage"
-      aria-labelledby="hero-title"
-    >
-      {/* Ambient Precision Spotlight Layer (GPU-composited, zero CLS) */}
-      <div className="hero-ambient-spotlight" aria-hidden="true" />
-
-      <div className="hero section-shell">
-        {/* Eyebrow Status Chip */}
-        <div className="eyebrow-container hero-enter-1">
-          <div className="eyebrow" role="status">
-            <span className="eyebrow-pulse-dot" aria-hidden="true"></span>
-            <span className="eyebrow-text">
-              <span className="eyebrow-text-long">
-                Handgeschriebene High-Performance-Websites aus Österreich
-              </span>
-              <span className="eyebrow-text-short">
-                High-Performance Websites · Österreich
-              </span>
-            </span>
+    <>
+      {/* 1. WINDISCH-LAYOUT CENTERED HERO + LIQUID GLASS WAVE ATMOSPHERE */}
+      <section
+        id="hero"
+        ref={heroStageRef}
+        onMouseMove={handleHeroPointerMove}
+        className="wit-hero"
+        aria-labelledby="hero-title"
+      >
+        {/* Diagonal 116° Architectural Line Field + Refractive Light Wave */}
+        <div className="wit-hero-atmosphere" aria-hidden="true">
+          <div className="wit-hero-line-field">
+            <svg
+              className="wit-hero-line-wave"
+              viewBox="0 0 1600 900"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            >
+              {WAVE_LINES.map(idx => {
+                const offset = idx * 96 - 160;
+                const delay = Math.abs(idx - 8.5) * 0.16;
+                return (
+                  <line
+                    key={idx}
+                    x1={offset}
+                    y1={0}
+                    x2={offset + 440}
+                    y2={900}
+                    style={{ animationDelay: `${delay.toFixed(2)}s` }}
+                  />
+                );
+              })}
+            </svg>
           </div>
         </div>
 
-        {/* Hero Title (kept opacity:1 for sub-0.4s LCP & 100/100 Lighthouse) */}
-        <h1 id="hero-title" className="hero-enter-2">
-          Websites, die <span className="display-em hero-shimmer-text">begeistern</span>.
-          <br />
-          Modular. Rasend schnell.
-          <br />
-          <span className="hero-subline-dim">Ohne WordPress-Chaos.</span>
-        </h1>
+        <div className="wit-wrap">
+          <div className="wit-hero-copy">
+            <p className="wit-overline wit-hero-pill hero-enter-1">
+              <span className="eyebrow-pulse-dot" aria-hidden="true" />
+              <span>PureSite Software Studio · Steiermark, Österreich</span>
+            </p>
 
-        {/* Hero Text */}
-        <p className="hero-text hero-enter-3">
-          Gegründet von zwei Softwareentwicklern in der Steiermark. Wir bauen moderne,
-          handgeschriebene High-Performance-Websites ohne überflüssige Plugins, ohne
-          Sicherheitslücken und ohne intransparente Großagentur-Stundensätze. Mit{' '}
-          <strong>100% verbindlichen Festpreisen</strong> ab 1.000 € und messbarer
-          Google-Spitzenleistung.
-        </p>
+            <h1 id="hero-title" className="hero-enter-2">
+              Handgeschriebene Websites
+              <br />
+              <span>mit verbindlichem Festpreis.</span>
+            </h1>
 
-        {/* Hero Actions */}
-        <div className="hero-actions hero-enter-4">
-          <button className="button primary button-shimmer" onClick={onScrollToPricing}>
-            <Sparkles size={16} />
-            <span>Festpreis online kalkulieren</span>
-            <ArrowRight size={15} className="btn-arrow-glide" />
-          </button>
-          <button className="button secondary" onClick={onExploreDemos}>
-            <Play size={14} className="play-icon" />
-            <span>18 Live-Demos testen</span>
-          </button>
-        </div>
+            <p className="wit-hero-intro hero-enter-3">
+              Wir planen, gestalten und entwickeln rasend schnelle Unternehmens-Websites ohne
+              WordPress-Ballast und ohne versteckte Agenturstundensätze – persönlich aus der
+              Steiermark, von der ersten Idee bis zum laufenden Betrieb.
+            </p>
 
-        {/* Trust Chips Bar */}
-        <div className="hero-feature-tags hero-enter-5">
-          <div className="hero-feature-item">
-            <span className="hero-tag-bullet">✓</span>
-            <span>Festpreis ab 1.000 € (Verbindlich vor Beginn)</span>
-          </div>
-          <div className="hero-feature-item">
-            <span className="hero-tag-bullet">✓</span>
-            <span>50/50 Zahlung (50% bei Start, 50% bei Livegang)</span>
-          </div>
-          <div className="hero-feature-item">
-            <span className="hero-tag-bullet">✓</span>
-            <span>0 Cookies nötig &amp; DSGVO-konformes EU-Hosting</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Interactive Performance Speed Lab (Tactile Hardware Rig) */}
-      <div id="speed-lab" className="section-shell speed-lab-container" data-reveal>
-        <div className="speed-lab-chassis">
-          {/* Chassis Top Machine Header */}
-          <div className="lab-machine-header">
-            <div className="lab-header-left">
-              <div className="lab-led-group">
-                <span className="lab-led led-green" aria-hidden="true"></span>
-                <span className="lab-led led-cyan" aria-hidden="true"></span>
-                <span className="lab-led led-amber" aria-hidden="true"></span>
-              </div>
-              <span className="lab-title-mono">PURESITE // PERFORMANCE TELEMETRY LAB</span>
-            </div>
-
-            <div className="lab-header-right">
-              <span className="lab-spec-badge">Lighthouse v12.1 Audit</span>
-              <span className="lab-server-badge">Dedicated EU-Server</span>
-            </div>
-          </div>
-
-          {/* Machine Control Deck: Engine Selector Switch */}
-          <div className="lab-control-deck">
-            <div className="engine-switch-label">
-              <Gauge size={15} className="text-signal" />
-              <span>Vergleichs-Engine wählen:</span>
-            </div>
-
-            <div className="engine-switch-capsule" role="radiogroup" aria-label="Engine-Vergleich">
+            <div className="wit-hero-actions hero-enter-4">
               <button
                 type="button"
-                role="radio"
-                aria-checked={selectedEngine === 'puresite'}
-                className={`engine-switch-btn ${selectedEngine === 'puresite' ? 'is-active-pure' : ''}`}
-                onClick={() => handleEngineSwitch('puresite')}
+                className="wit-btn wit-btn-primary button-shimmer"
+                onClick={onScrollToPricing}
               >
-                <span className="switch-status-dot green"></span>
-                <strong>PureSite Engine</strong>
-                <span className="switch-sub-pill">React 19 &amp; TypeScript</span>
+                <span>Festpreis online kalkulieren</span>
+                <svg
+                  width="19"
+                  height="19"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M6 18 18 6M6 6h12v12" />
+                </svg>
               </button>
 
               <button
                 type="button"
-                role="radio"
-                aria-checked={selectedEngine === 'wordpress'}
-                className={`engine-switch-btn ${selectedEngine === 'wordpress' ? 'is-active-wp' : ''}`}
-                onClick={() => handleEngineSwitch('wordpress')}
+                className="wit-btn wit-btn-glass-outline"
+                onClick={onExploreDemos}
               >
-                <span className="switch-status-dot amber"></span>
-                <strong>Typisches WordPress</strong>
-                <span className="switch-sub-pill">PHP &amp; 38 Plugins</span>
+                <span>18 Live-Demos testen</span>
+                <svg
+                  width="19"
+                  height="19"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4 12h16M13 5l7 7-7 7" />
+                </svg>
               </button>
             </div>
 
-            {/* Live Race Simulation Trigger */}
-            <button
-              type="button"
-              className="button secondary sm-button lab-race-btn"
-              onClick={runSpeedSimulation}
-              disabled={isSimulating}
-              title="Starte eine Live-Simulation des Ladezeit-Unterschieds"
-            >
-              <RefreshCw size={13} className={isSimulating ? 'spin-anim' : ''} />
-              <span>
-                {isSimulating ? 'Simuliere Ladevorgang...' : 'Ladezeit-Rennen starten'}
-              </span>
-            </button>
-          </div>
-
-          {/* Live Racing Simulation Visualizer */}
-          {isSimulating && (
-            <div className="lab-race-visualizer">
-              <div className="race-track-row">
-                <div className="race-track-label">
-                  <span className="race-name">PureSite (0.38s)</span>
-                  <span className="race-val">{pureSiteProgress}%</span>
-                </div>
-                <div className="race-track-rail">
-                  <div
-                    className="race-track-fill race-fill-puresite"
-                    style={{ width: `${pureSiteProgress}%` }}
-                  ></div>
-                </div>
+            {/* Floating Liquid Glass Key-Fact Dock */}
+            <div className="wit-hero-trust-dock lg-glass-card hero-enter-5">
+              <div className="wit-trust-cell">
+                <span className="wit-trust-kicker">Einstieg</span>
+                <strong>Festpreis ab 1.000 €</strong>
               </div>
-
-              <div className="race-track-row mt-2">
-                <div className="race-track-label">
-                  <span className="race-name">Klassisches WordPress (3.60s)</span>
-                  <span className="race-val">{wpProgress}%</span>
-                </div>
-                <div className="race-track-rail">
-                  <div
-                    className="race-track-fill race-fill-wordpress"
-                    style={{ width: `${wpProgress}%` }}
-                  ></div>
-                </div>
+              <div className="wit-trust-cell">
+                <span className="wit-trust-kicker">Sicherheit</span>
+                <strong>50% Start · 50% Livegang</strong>
               </div>
-
-              {raceWinner === 'puresite' && wpProgress < 100 && (
-                <div className="race-winner-banner">
-                  <CheckCircle2 size={15} className="text-signal-green" />
-                  <span>
-                    PureSite ist bereits zu 100% interaktiv, während WordPress noch Datenbank
-                    &amp; Plugins lädt!
-                  </span>
-                </div>
-              )}
+              <div className="wit-trust-cell">
+                <span className="wit-trust-kicker">Performance</span>
+                <strong>100/100 Google Score</strong>
+              </div>
+              <div className="wit-trust-cell">
+                <span className="wit-trust-kicker">Infrastruktur</span>
+                <strong>Dedicated EU-Server</strong>
+              </div>
             </div>
-          )}
-
-          {/* Telemetry Dials & Instrument Gauges */}
-          <div className="lab-gauges-grid">
-            {/* Instrument 1: Google Lighthouse Score with Animated Radial Ring */}
-            <div
-              onMouseMove={handleSpotlightMove}
-              className={`gauge-card spotlight-surface ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}
-            >
-              <div className="gauge-card-head">
-                <span className="gauge-label">Google Lighthouse</span>
-                {selectedEngine === 'puresite' ? (
-                  <span className="gauge-status-chip chip-success">PERFEKT (100%)</span>
-                ) : (
-                  <span className="gauge-status-chip chip-danger">MANGELHAFT (41%)</span>
-                )}
-              </div>
-
-              <div className="gauge-display-row">
-                <div className="gauge-ring-row">
-                  <svg
-                    className="gauge-radial-svg"
-                    width="48"
-                    height="48"
-                    viewBox="0 0 48 48"
-                    aria-hidden="true"
-                  >
-                    <circle
-                      cx="24"
-                      cy="24"
-                      r="19"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeOpacity="0.14"
-                      strokeWidth="4"
-                    />
-                    <circle
-                      cx="24"
-                      cy="24"
-                      r="19"
-                      fill="none"
-                      stroke={selectedEngine === 'puresite' ? 'var(--pure-mint)' : '#ef4444'}
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      strokeDasharray={ringCircumference}
-                      strokeDashoffset={ringOffset}
-                      transform="rotate(-90 24 24)"
-                      style={{ transition: 'stroke-dashoffset 0.45s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.25s' }}
-                    />
-                  </svg>
-                  <div className="gauge-huge-value" style={{ marginBottom: 0 }}>
-                    <span
-                      className={
-                        selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
-                      }
-                    >
-                      {lighthouseScore}
-                    </span>
-                    <span className="gauge-unit">/100</span>
-                  </div>
-                </div>
-
-                <div className="gauge-bar-track mt-2">
-                  <div
-                    className={`gauge-bar-fill ${selectedEngine === 'puresite' ? 'fill-mint' : 'fill-danger'}`}
-                    style={{ width: `${lighthouseScore}%` }}
-                  ></div>
-                </div>
-              </div>
-
-              <p className="gauge-desc">
-                {selectedEngine === 'puresite'
-                  ? 'Alle Core Web Vitals im grünen Bestwert. Höchstes Vertrauen bei Google SEO.'
-                  : 'Träge Ladezeit straft dein Google Ranking ab. 53% der mobilen Besucher springen ab.'}
-              </p>
-            </div>
-
-            {/* Instrument 2: First Contentful Paint */}
-            <div
-              onMouseMove={handleSpotlightMove}
-              className={`gauge-card spotlight-surface ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}
-            >
-              <div className="gauge-card-head">
-                <span className="gauge-label">First Contentful Paint</span>
-                {selectedEngine === 'puresite' ? (
-                  <span className="gauge-status-chip chip-success">&lt; 0.4s (SOFORT)</span>
-                ) : (
-                  <span className="gauge-status-chip chip-danger">3.6s (TRÄGE)</span>
-                )}
-              </div>
-
-              <div className="gauge-display-row">
-                <div className="gauge-huge-value">
-                  <span
-                    className={
-                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
-                    }
-                  >
-                    {(fcpHundredths / 100).toFixed(2)}
-                  </span>
-                  <span className="gauge-unit">sek</span>
-                </div>
-
-                <div className="gauge-micro-metric">
-                  <Zap
-                    size={14}
-                    className={
-                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
-                    }
-                  />
-                  <span>
-                    {selectedEngine === 'puresite'
-                      ? 'Praktisch kein Ladebalken'
-                      : 'Verzögerter Seitenaufbau'}
-                  </span>
-                </div>
-              </div>
-
-              <p className="gauge-desc">
-                {selectedEngine === 'puresite'
-                  ? 'Inhalte erscheinen augenblicklich im Browser. Maximale Konversionsrate.'
-                  : 'Kunden warten sekundenlang auf einen weißen Bildschirm, bevor Inhalte erscheinen.'}
-              </p>
-            </div>
-
-            {/* Instrument 3: Payload Weight & Dependencies */}
-            <div
-              onMouseMove={handleSpotlightMove}
-              className={`gauge-card spotlight-surface ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}
-            >
-              <div className="gauge-card-head">
-                <span className="gauge-label">Code-Gewicht &amp; Ballast</span>
-                {selectedEngine === 'puresite' ? (
-                  <span className="gauge-status-chip chip-success">0 PLUGINS</span>
-                ) : (
-                  <span className="gauge-status-chip chip-danger">38 PLUGINS</span>
-                )}
-              </div>
-
-              <div className="gauge-display-row">
-                <div className="gauge-huge-value">
-                  <span
-                    className={
-                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
-                    }
-                  >
-                    {payloadKb.toLocaleString('de-AT')}
-                  </span>
-                  <span className="gauge-unit">
-                    {selectedEngine === 'puresite' ? 'KB' : 'KB (4.8 MB)'}
-                  </span>
-                </div>
-
-                <div className="gauge-micro-metric">
-                  <Cpu
-                    size={14}
-                    className={
-                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
-                    }
-                  />
-                  <span>
-                    {selectedEngine === 'puresite'
-                      ? 'Reiner TypeScript-Code'
-                      : 'Schweres PHP & Fremdcode'}
-                  </span>
-                </div>
-              </div>
-
-              <p className="gauge-desc">
-                {selectedEngine === 'puresite'
-                  ? 'Kein Sicherheitsrisiko durch veraltete Dritt-Erweiterungen. 100% stabile Architektur.'
-                  : 'Jedes Plugin erhöht das Hack-Risiko und führt bei Updates regelmäßig zu Abstürzen.'}
-              </p>
-            </div>
-
-            {/* Instrument 4: Privacy & DSGVO */}
-            <div
-              onMouseMove={handleSpotlightMove}
-              className={`gauge-card spotlight-surface ${selectedEngine === 'puresite' ? 'glow-mint' : 'glow-warning'}`}
-            >
-              <div className="gauge-card-head">
-                <span className="gauge-label">DSGVO &amp; Tracking-Freiheit</span>
-                {selectedEngine === 'puresite' ? (
-                  <span className="gauge-status-chip chip-success">0 COOKIES</span>
-                ) : (
-                  <span className="gauge-status-chip chip-danger">14 TRACKER</span>
-                )}
-              </div>
-
-              <div className="gauge-display-row">
-                <div className="gauge-huge-value">
-                  <span
-                    className={
-                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
-                    }
-                  >
-                    {cookieCount}
-                  </span>
-                  <span className="gauge-unit">Cookies</span>
-                </div>
-
-                <div className="gauge-micro-metric">
-                  <Shield
-                    size={14}
-                    className={
-                      selectedEngine === 'puresite' ? 'text-signal-green' : 'text-danger'
-                    }
-                  />
-                  <span>
-                    {selectedEngine === 'puresite'
-                      ? 'Kein Cookie-Banner nötig'
-                      : 'Cookie-Banner Zwang'}
-                  </span>
-                </div>
-              </div>
-
-              <p className="gauge-desc">
-                {selectedEngine === 'puresite'
-                  ? '100% DSGVO-konform ohne lästige Zustimmungs-Banner. Besucher gelangen sofort zu deinem Angebot.'
-                  : 'Besucher werden mit Cookie-Bannern genervt und US-Schriftarten übertragen Daten in Drittländer.'}
-              </p>
-            </div>
-          </div>
-
-          {/* Machine Bottom Spec Bar */}
-          <div className="lab-machine-footer">
-            <div className="lab-footer-summary">
-              <strong>Fazit aus der Praxis:</strong> PureSite lädt im Durchschnitt{' '}
-              <strong>9x schneller</strong> als traditionelle Baukästen oder WordPress-Agenturen –
-              bei <strong>0 Wartungsaufwand</strong>.
-            </div>
-            <button className="button primary sm-button" onClick={onScrollToPricing}>
-              <span>Projekt jetzt kalkulieren</span>
-              <ArrowRight size={13} />
-            </button>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* 2. WINDISCH-LAYOUT 3-COLUMN SITUATIONS SECTION ("Wobei brauchen Sie Unterstützung?") */}
+      <section className="wit-section wit-wrap wit-home-situations" aria-labelledby="situations-heading">
+        <div className="wit-section-heading" data-reveal>
+          <div>
+            <p className="wit-overline">Typische Ausgangslagen</p>
+            <h2 id="situations-heading">Wobei brauchen Sie Unterstützung?</h2>
+          </div>
+          <p>
+            Eine Unternehmens-Website soll im Alltag zuverlässig Kunden gewinnen und Arbeit
+            abnehmen. Sie müssen sich nicht selbst durch Baukästen oder Agentur-Floskeln kämpfen.
+          </p>
+        </div>
+
+        <div className="wit-situation-grid" data-reveal>
+          <article
+            className="wit-situation-card lg-glass-card spotlight-surface"
+            onMouseMove={handleSpotlightMove}
+          >
+            <span className="wit-card-index">01</span>
+            <h3>Der aktuelle Auftritt lädt langsam oder wirkt nicht mehr zeitgemäß.</h3>
+            <p>
+              Auf dem Smartphone dauert der Seitenaufbau Sekunden und potenzielle Kunden springen ab.
+              Wir entwickeln Ihre Website handgeschrieben in React &amp; TypeScript – mit unter 0,4
+              Sekunden Ladezeit und klarem Fokus auf Anfragen.
+            </p>
+          </article>
+
+          <article
+            className="wit-situation-card lg-glass-card spotlight-surface"
+            onMouseMove={handleSpotlightMove}
+          >
+            <span className="wit-card-index">02</span>
+            <h3>Agentur-Angebote sind intransparent und kosten plötzlich 8.000 €.</h3>
+            <p>
+              Statt undurchsichtiger Pauschalen stellen Sie sich Ihren Umfang modular zusammen – vom
+              schlanken One-Pager bis zur Unternehmensseite mit Live-Rechner oder Terminbuchung. Den
+              verbindlichen Festpreis sehen Sie vorab online.
+            </p>
+          </article>
+
+          <article
+            className="wit-situation-card lg-glass-card spotlight-surface"
+            onMouseMove={handleSpotlightMove}
+          >
+            <span className="wit-card-index">03</span>
+            <h3>Wer kümmert sich laufend um Sicherheit, Backups und Änderungen?</h3>
+            <p>
+              Keine 40 anfälligen WordPress-Plugins mehr, die Updates zerschießen. Auf unseren
+              dedizierten EU-Servern sind SSL, tägliche Backups sowie 1 bis 3 Stunden monatliche
+              Anpassungen per kurzem WhatsApp-Zuruf direkt inklusive.
+            </p>
+          </article>
+        </div>
+      </section>
+    </>
   );
 };

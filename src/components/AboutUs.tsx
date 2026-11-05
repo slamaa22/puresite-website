@@ -1,210 +1,105 @@
 import React from 'react';
-import { Code2, HeartHandshake, ShieldCheck, Zap } from 'lucide-react';
 import { handleSpotlightMove } from '../hooks/useMotion';
 
-export const AboutUs: React.FC = () => {
+interface AboutUsProps {
+  onOpenContact?: () => void;
+}
+
+export const AboutUs: React.FC<AboutUsProps> = ({ onOpenContact }) => {
   return (
-    <section id="ueber-uns" className="band section-shell" aria-labelledby="about-title">
-      <div className="section-head" data-reveal>
-        <h2 id="about-title">Über uns &amp; Handwerk</h2>
-        <span className="section-head-meta">
-          Gegründet in der Steiermark · Software Engineering
-        </span>
+    <section id="ueber-uns" className="wit-section wit-wrap wit-founder-section" aria-labelledby="about-title">
+      {/* Left: Dual Liquid Glass Portrait Frames (Windisch Founder Layout adapted for PureSite's 2 Co-Founders) */}
+      <div className="wit-founder-portraits" data-reveal>
+        <figure
+          className="wit-founder-photo lg-glass-card spotlight-surface"
+          onMouseMove={handleSpotlightMove}
+        >
+          <picture>
+            <source srcSet="/assets/maximilian-schlacher.webp" type="image/webp" />
+            <img
+              src="/assets/maximilian-schlacher.jpg"
+              alt="Maximilian Schlacher — Co-Founder & Frontend Engineering"
+              width={800}
+              height={1000}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <figcaption className="wit-photo-caption">
+            <strong>Maximilian Schlacher</strong>
+            <span>Frontend &amp; UI/UX · Steiermark</span>
+          </figcaption>
+        </figure>
+
+        <figure
+          className="wit-founder-photo wit-founder-photo--offset lg-glass-card spotlight-surface"
+          onMouseMove={handleSpotlightMove}
+        >
+          <picture>
+            <source srcSet="/assets/loreno-zanaboni.webp" type="image/webp" />
+            <img
+              src="/assets/loreno-zanaboni.jpg"
+              alt="Loreno Zanaboni — Co-Founder & Softwarearchitektur"
+              width={800}
+              height={1000}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <figcaption className="wit-photo-caption">
+            <strong>Loreno Zanaboni</strong>
+            <span>Architektur &amp; Systeme · Steiermark</span>
+          </figcaption>
+        </figure>
       </div>
 
-      <div className="about-intro-deck" data-reveal>
-        <p className="services-lead">
-          Wir sind Maximilian Schlacher und Loreno Zanaboni, Softwareentwickler aus der Steiermark
-          mit fundierter technischer IT-Ausbildung. Wir haben PureSite gegründet, um Betrieben in
-          Österreich handgeschriebene High-Performance-Websites mit echter Preistransparenz und
-          kompromissloser Ladezeit zu liefern – ohne WordPress-Ballast und ohne anonyme
-          Großagentur-Bürokratie.
-        </p>
-      </div>
+      {/* Right: Calm Editorial Founder Copy & Signature (Exact Windisch IT Hierarchy) */}
+      <div className="wit-founder-copy" data-reveal>
+        <p className="wit-overline">Maximilian Schlacher &amp; Loreno Zanaboni</p>
+        <h2 id="about-title">Ihre direkten Ansprechpartner für die Technik dahinter.</h2>
 
-      {/* 2 Equal Founders Grid */}
-      <div className="founders-editorial-grid" data-reveal>
-        {/* Founder 1: Maximilian Schlacher */}
-        <article
-          className="founder-editorial-card spotlight-surface"
-          onMouseMove={handleSpotlightMove}
-        >
-          <div className="founder-frame">
-            <picture>
-              <source srcSet="/assets/maximilian-schlacher.webp" type="image/webp" />
-              <img
-                src="/assets/maximilian-schlacher.jpg"
-                alt="Maximilian Schlacher - Co-Founder & Web Development"
-                className="founder-photo-editorial"
-                width={800}
-                height={1000}
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-            <div className="founder-polaroid-label">
-              <span className="founder-school-tag">PureSite Engineering</span>
-              <span className="founder-status-live">
-                <span className="telemetry-live-dot" aria-hidden="true"></span>
-                Lead Frontend · Graz
-              </span>
-            </div>
-          </div>
-
-          <div className="founder-editorial-body">
-            <div className="founder-headline-row">
-              <h3>Maximilian Schlacher</h3>
-              <span className="founder-badge">Co-Founder</span>
-            </div>
-            <p className="founder-spec-role">Web-Entwicklung &amp; UI/UX Engineering</p>
-            <p className="founder-bio-text">
-              Spezialisiert auf rasend schnelle Frontends, interaktive Rechner und intuitive
-              Benutzerführung, die Besucher zu echten Kundenanfragen konvertiert.
-            </p>
-
-            <div className="founder-skills-row">
-              <span className="skill-chip">React 19</span>
-              <span className="skill-chip">TypeScript</span>
-              <span className="skill-chip">Vite</span>
-              <span className="skill-chip">UI/UX Design</span>
-            </div>
-          </div>
-        </article>
-
-        {/* Founder 2: Loreno Zanaboni */}
-        <article
-          className="founder-editorial-card spotlight-surface"
-          onMouseMove={handleSpotlightMove}
-        >
-          <div className="founder-frame">
-            <picture>
-              <source srcSet="/assets/loreno-zanaboni.webp" type="image/webp" />
-              <img
-                src="/assets/loreno-zanaboni.jpg"
-                alt="Loreno Zanaboni - Co-Founder & Softwarearchitektur"
-                className="founder-photo-editorial"
-                width={800}
-                height={1000}
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-            <div className="founder-polaroid-label">
-              <span className="founder-school-tag">PureSite Engineering</span>
-              <span className="founder-status-live">
-                <span className="telemetry-live-dot" aria-hidden="true"></span>
-                Lead Backend · Steiermark
-              </span>
-            </div>
-          </div>
-
-          <div className="founder-editorial-body">
-            <div className="founder-headline-row">
-              <h3>Loreno Zanaboni</h3>
-              <span className="founder-badge">Co-Founder</span>
-            </div>
-            <p className="founder-spec-role">Softwarearchitektur &amp; Systeme</p>
-            <p className="founder-bio-text">
-              Spezialisiert auf modulare Architekturen, schlanke State-Logik und zukunftssichere
-              Deployments für maximale Stabilität, Sicherheit und Skalierbarkeit.
-            </p>
-
-            <div className="founder-skills-row">
-              <span className="skill-chip">System Design</span>
-              <span className="skill-chip">Jamstack</span>
-              <span className="skill-chip">Dedicated Hosting</span>
-              <span className="skill-chip">State Logic</span>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      {/* Engineering Values Grid */}
-      <div className="about-values-grid" data-reveal>
-        <div
-          className="about-value-card spotlight-surface"
-          onMouseMove={handleSpotlightMove}
-        >
-          <Code2 size={20} className="text-signal" />
-          <h4>Handgeschriebener Quellcode</h4>
-          <p>
-            Jede Zeile Code wird maßgeschneidert entwickelt. Keine 45 Plugins, die nach dem
-            nächsten Update abstürzen.
-          </p>
-        </div>
-
-        <div
-          className="about-value-card spotlight-surface"
-          onMouseMove={handleSpotlightMove}
-        >
-          <Zap size={20} className="text-signal" />
-          <h4>Kompromisslose Performance</h4>
-          <p>
-            Ladezeiten unter 0.4 Sekunden. Bessere Google-Rankings und keine genervten Absprünge
-            mobiler Besucher.
-          </p>
-        </div>
-
-        <div
-          className="about-value-card spotlight-surface"
-          onMouseMove={handleSpotlightMove}
-        >
-          <HeartHandshake size={20} className="text-signal" />
-          <h4>Direkter Draht zu den Entwicklern</h4>
-          <p>
-            Keine Junior-Account-Manager oder Ticket-Warteschlangen. Schnelle Abstimmung direkt mit
-            Maximilian und Loreno.
-          </p>
-        </div>
-
-        <div
-          className="about-value-card spotlight-surface"
-          onMouseMove={handleSpotlightMove}
-        >
-          <ShieldCheck size={20} className="text-signal" />
-          <h4>100% Festpreisgarantie</h4>
-          <p>
-            Verbindliche Modulpreise vor Projektstart. 50/50 Zahlung: Du zahlst die zweite Hälfte
-            erst bei erfolgreichem Livegang.
-          </p>
-        </div>
-      </div>
-
-      {/* Developer Contribution & Engineering Craftsmanship Block */}
-      <div className="contrib-block spotlight-surface" onMouseMove={handleSpotlightMove} data-reveal>
-        <div className="contrib-header">
-          <h3>Echter Quellcode statt WordPress-Baukästen</h3>
-          <span className="contrib-meta">Handwritten in Styria, Austria</span>
-        </div>
-        <p className="contrib-lead">
-          Jede Zeile Code auf PureSite wird von uns handgeschrieben und optimiert. Keine
-          aufgeblähten Fremd-Bibliotheken, keine Sicherheitsrisiken.
+        <p className="wit-lead">
+          Wir sind Maximilian Schlacher und Loreno Zanaboni, Softwareentwickler aus der Steiermark.
+          Wir beraten Unternehmen ohne eigene IT-Abteilung, entwickeln handgeschriebene Websites zum
+          verbindlichen Festpreis und übernehmen auf Wunsch die laufende Betreuung.
         </p>
 
-        <div className="code-metrics-grid">
-          <div className="code-metric-item">
-            <span className="metric-number">100/100</span>
-            <span className="metric-label">Google Lighthouse</span>
-            <span className="metric-desc">Core Web Vitals voll im grünen Bereich</span>
-          </div>
+        <p>
+          Bei uns sprechen Sie direkt mit den beiden Entwicklern – ohne anonyme Account-Manager und
+          ohne Fachchinesisch. Uns ist wichtig, zu verstehen, wie Ihr Betrieb arbeitet, und
+          technische Entscheidungen so klar zu planen, dass Ihre Website über Jahre hinweg schnell,
+          sicher und wartungsfrei läuft.
+        </p>
 
-          <div className="code-metric-item">
-            <span className="metric-number">&lt; 0.4s</span>
-            <span className="metric-label">First Contentful Paint</span>
-            <span className="metric-desc">Startet praktisch ohne Verzögerung</span>
-          </div>
+        <div className="wit-founder-pills">
+          <span className="wit-glass-tag">React 19 &amp; TypeScript</span>
+          <span className="wit-glass-tag">100% Festpreis vor Start</span>
+          <span className="wit-glass-tag">50/50 Zahlungsschutz</span>
+          <span className="wit-glass-tag">Direkt per WhatsApp &amp; Mail</span>
+        </div>
 
-          <div className="code-metric-item">
-            <span className="metric-number">0</span>
-            <span className="metric-label">WordPress-Plugins</span>
-            <span className="metric-desc">Keine Abstürze durch fremde Updates</span>
-          </div>
+        {onOpenContact && (
+          <button type="button" className="wit-text-link wit-founder-cta" onClick={onOpenContact}>
+            <span>Direkt mit Maximilian &amp; Loreno sprechen</span>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 12h16M13 5l7 7-7 7" />
+            </svg>
+          </button>
+        )}
 
-          <div className="code-metric-item">
-            <span className="metric-number">100%</span>
-            <span className="metric-label">DSGVO-Konform</span>
-            <span className="metric-desc">Dedizierte EU-Server ohne Tracker-Zwang</span>
-          </div>
+        <div className="wit-signature">
+          Maximilian Schlacher &amp; Loreno Zanaboni
+          <span>PureSite Software Studio · Steiermark, Österreich</span>
         </div>
       </div>
     </section>

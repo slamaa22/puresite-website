@@ -354,6 +354,19 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
     return `Weiter zu ${step.nextStepName}`;
   }, [currentStepIndex, countInCurrentStep]);
 
+  const mobileNextButtonText = useMemo(() => {
+    if (currentStepIndex === 5) {
+      return 'Projekt anfragen';
+    }
+    if (currentStepIndex === 0) {
+      return countInCurrentStep === 0 ? 'Basispaket wählen' : 'Weiter';
+    }
+    if (currentStepIndex === 4) {
+      return 'Zur Übersicht';
+    }
+    return countInCurrentStep === 0 ? 'Überspringen' : 'Weiter';
+  }, [currentStepIndex, countInCurrentStep]);
+
   const scrollToConfiguratorTop = () => {
     const el = document.getElementById('preise');
     if (el) {
@@ -468,14 +481,18 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   return (
     <section
       id="preise"
-      className="band section-shell fullpage-wizard-section pricing-section"
+      className="wit-section wit-wrap fullpage-wizard-section pricing-section"
       aria-labelledby="calculator-title"
     >
-      <div className="section-head" data-reveal>
-        <h2 id="calculator-title">Interaktiver Projekt- & Festpreis-Konfigurator</h2>
-        <span className="section-head-meta">
-          Schritt {currentStepIndex + 1} von 6 · 100% verbindlicher Fixpreis
-        </span>
+      <div className="wit-section-heading" data-reveal>
+        <div>
+          <p className="wit-overline">Verbindliche Online-Kalkulation</p>
+          <h2 id="calculator-title">Stellen Sie Ihren Festpreis transparent zusammen</h2>
+        </div>
+        <p>
+          Wählen Sie Schritt für Schritt genau die Bausteine, die zu Ihrem Unternehmen passen – ohne
+          versteckte Agenturaufschläge und mit sofortigem PDF-Angebot.
+        </p>
       </div>
 
       <div className="fullpage-wizard-container">
@@ -483,7 +500,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
         <div className="wizard-full-header" data-reveal>
           <div className="header-left-title">
             <p className="services-lead" style={{ margin: 0 }}>
-              Stelle deine Wunsch-Architektur modular zusammen oder nutze unseren{' '}
+              Unsicher bei der Modulwahl? Nutzen Sie unseren{' '}
               <button
                 type="button"
                 className="inline-compass-link"
@@ -492,8 +509,8 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 <Compass size={14} />
                 <span>Projekt-Kompass (3 Klicks)</span>
                 {advisorOpen ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-              </button>
-              . Rechts siehst du live Wirkung & Fixpreis.
+              </button>{' '}
+              oder starten Sie mit einer bewährten Vorlage.
             </p>
           </div>
 
@@ -1623,9 +1640,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                   title="Konfiguration ansehen"
                 >
                   <div className="mobile-dock-price-left">
-                    <span className="mobile-dock-label">
-                      Fixpreis ({potential.overall}% Wirkung):
-                    </span>
+                    <span className="mobile-dock-label">Fixpreis</span>
                     <strong className="mobile-dock-sum">
                       {animatedGross.toLocaleString('de-AT')} €
                     </strong>
@@ -1640,7 +1655,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                   className={`btn-mobile-dock-next ${countInCurrentStep === 0 && currentStepIndex > 0 && currentStepIndex < 5 ? 'skip-mode' : ''}`}
                   onClick={handleNextStep}
                 >
-                  <span>{nextButtonText}</span>
+                  <span>{mobileNextButtonText}</span>
                   <ArrowRight size={15} />
                 </button>
               </div>

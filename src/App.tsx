@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import './App.css';
+import './WindischLiquidGlass.css';
 
 // Critical Above-the-Fold Components (bundled immediately for instant FCP/LCP)
+import { LiquidGlassBackdrop } from './components/LiquidGlassBackdrop';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { StatusBar } from './components/StatusBar';
 import { Footer } from './components/Footer';
 import type { PricingModule } from './types/pricing';
 import { MODULES_DATA } from './data/modulesData';
 import { useScrollReveal, useAnimatedNumber } from './hooks/useMotion';
 import { useProjectConfig } from './hooks/useProjectConfig';
-import { Layers, ArrowRight } from 'lucide-react';
+import { Layers, ArrowUpRight } from 'lucide-react';
 
 // Below-the-Fold Sections (Code-split to keep initial JS payload ultra-lean)
 const WorkIndex = React.lazy(() =>
@@ -55,6 +56,7 @@ export default function App() {
   const [isLegalOpen, setIsLegalOpen] = useState(false);
   const [legalTab, setLegalTab] = useState<'impressum' | 'datenschutz'>('impressum');
   const [showFloatingConfigPill, setShowFloatingConfigPill] = useState(false);
+  const [catalogCategory, setCatalogCategory] = useState<string>('all');
 
   // Global scroll-reveal choreography
   useScrollReveal();
@@ -95,8 +97,8 @@ export default function App() {
       import('./components/WorkIndex');
       import('./components/WhyPureSite');
       import('./components/PricingCalculator');
-      import('./components/AboutUs');
       import('./components/ProcessSection');
+      import('./components/AboutUs');
       import('./components/FAQSection');
     };
 
@@ -115,7 +117,7 @@ export default function App() {
 
     const checkFloatingVisibility = () => {
       const scrollY = window.scrollY;
-      if (scrollY < 460) {
+      if (scrollY < 500) {
         setShowFloatingConfigPill(false);
         return;
       }
@@ -177,16 +179,6 @@ export default function App() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToWhy = () => {
-    const el = document.getElementById('warum-wir');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const scrollToAbout = () => {
-    const el = document.getElementById('ueber-uns');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const handleExploreDemos = () => {
     const el = document.getElementById('demos');
     if (el) {
@@ -199,47 +191,46 @@ export default function App() {
   };
 
   return (
-    <div className="app-root">
-      {/* Precision Header */}
+    <div className="app-root wit-liquid-app">
+      {/* Ambient Spatial Liquid Glass Aurora & Optical Refraction Layer */}
+      <LiquidGlassBackdrop />
+
+      {/* Windisch-Layout Floating Liquid Glass Header */}
       <Navbar
         theme={theme}
         onToggleTheme={toggleTheme}
         onOpenContact={() => setIsInquiryOpen(true)}
         onOpenLegal={handleOpenLegal}
         configuredCount={calculation.itemCount}
+        onSelectCatalogCategory={setCatalogCategory}
       />
 
-      {/* Main Page Sections */}
-      <main>
-        {/* Instant Above-the-fold Hero */}
+      {/* Main Page Choreography (Windisch IT Section Rhythm + PureSite Engine) */}
+      <main id="main">
+        {/* 1. Centered Atmospheric Hero + 3-Column Situations ("Wobei brauchen Sie Unterstützung?") */}
         <Hero
           onScrollToPricing={scrollToPricing}
           onExploreDemos={handleExploreDemos}
         />
 
-        {/* Live System Telemetry Strip */}
-        <StatusBar
-          onScrollToPricing={scrollToPricing}
-          onScrollToWhy={scrollToWhy}
-          onScrollToAbout={scrollToAbout}
-        />
-
         {/* Below-the-fold sections loaded smoothly with React.Suspense */}
         <React.Suspense
-          fallback={<div className="section-shell" style={{ minHeight: '300px' }} />}
+          fallback={<div className="wit-wrap" style={{ minHeight: '300px' }} />}
         >
-          {/* 18 Live-Modules Catalogue */}
+          {/* 2. Windisch-Layout Service List + 18 Interactive Live-Demos */}
           <WorkIndex
             onOpenDemo={handleOpenDemo}
             onScrollToPricing={scrollToPricing}
             selectedConfig={selectedConfig}
             onToggleModule={toggleModule}
+            activeCategoryFilter={catalogCategory}
+            onCategoryFilterChange={setCatalogCategory}
           />
 
-          {/* Why PureSite / Fact-Check & TCO Comparison */}
+          {/* 3. Schematic Architecture Preview + Live Speed-Lab + TCO Calculator */}
           <WhyPureSite onScrollToPricing={scrollToPricing} />
 
-          {/* Fullpage Consultative Modular Pricing Calculator */}
+          {/* 4. Flagship Consultative Modular Festpreis-Konfigurator */}
           <PricingCalculator
             selectedConfig={selectedConfig}
             useTax={useTax}
@@ -264,25 +255,25 @@ export default function App() {
             onToggleTheme={toggleTheme}
           />
 
-          {/* About Us (Lead Architects & Engineering Focus) */}
-          <AboutUs />
+          {/* 5. 4-Column Collaboration Process ("Direkter Draht. Alle Schritte.") */}
+          <ProcessSection onOpenContact={() => setIsInquiryOpen(true)} />
 
-          {/* Project Process Steps */}
-          <ProcessSection />
+          {/* 6. Asymmetric Founders Section (Maximilian Schlacher & Loreno Zanaboni) */}
+          <AboutUs onOpenContact={() => setIsInquiryOpen(true)} />
 
-          {/* FAQ Accordion */}
+          {/* 7. Asymmetric Sticky FAQ + Full-Width Closing Contact Band */}
           <FAQSection onOpenContact={() => setIsInquiryOpen(true)} />
         </React.Suspense>
       </main>
 
-      {/* Studio Footer */}
+      {/* 8. Windisch-Layout 3-Column Studio Footer */}
       <Footer
         theme={theme}
         onOpenLegal={handleOpenLegal}
         onOpenContact={() => setIsInquiryOpen(true)}
       />
 
-      {/* Floating Live Configuration Pill (Desktop & Mobile, portaled to body above all section stacking contexts) */}
+      {/* Floating High-Density Smoked Liquid Glass Configurator Pill (Portaled above all stacking contexts) */}
       {showFloatingConfigPill &&
         !isInquiryOpen &&
         !activeDemoModule &&
@@ -290,17 +281,17 @@ export default function App() {
         createPortal(
           <button
             type="button"
-            className="floating-config-pill"
+            className="floating-config-pill lg-floating-pill"
             onClick={scrollToPricing}
-            title="Zu deiner aktuellen Konfiguration springen"
+            title="Zu Ihrer aktuellen Konfiguration springen"
           >
             <span className="floating-pill-dot" aria-hidden="true" />
             <Layers size={14} className="text-signal" />
             <span className="floating-pill-meta">
-              Zum Konfigurator ·{' '}
+              Zum Kalkulator ·{' '}
               <strong>{animatedFloatingPrice.toLocaleString('de-AT')} €</strong>
             </span>
-            <ArrowRight size={13} className="floating-pill-arrow" />
+            <ArrowUpRight size={14} className="floating-pill-arrow" />
           </button>,
           document.body
         )}

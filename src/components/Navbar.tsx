@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Menu, X, Sun, Moon } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 
 interface NavbarProps {
   theme: 'dark' | 'light';
@@ -7,20 +7,52 @@ interface NavbarProps {
   onOpenContact: () => void;
   onOpenLegal: (tab: 'impressum' | 'datenschutz') => void;
   configuredCount?: number;
+  onSelectCatalogCategory?: (catId: string) => void;
 }
 
-const SECTION_IDS = ['preise', 'demos', 'warum-wir', 'ueber-uns', 'prozess', 'faq'] as const;
+const SECTION_IDS = ['demos', 'warum-wir', 'preise', 'prozess', 'ueber-uns', 'faq'] as const;
+
+const SERVICE_MENU_ITEMS = [
+  {
+    id: 'basis',
+    label: 'Basis-Websites & Corporate Design',
+    sub: 'Ab 1.000 € Festpreis'
+  },
+  {
+    id: 'frontend',
+    label: 'Interaktive Rechner & 60fps UI',
+    sub: 'Live-Kalkulatoren & Motion'
+  },
+  {
+    id: 'tech',
+    label: 'Admin-Dashboard & Terminbuchung',
+    sub: 'Eigenes CMS & Bewerber-Funnel'
+  },
+  {
+    id: 'content',
+    label: 'Copywriting, Google Maps & SEO',
+    sub: 'Regionale Sichtbarkeit'
+  },
+  {
+    id: 'hosting',
+    label: 'Dedicated Hosting & Zuruf-Support',
+    sub: 'Inkl. 1h bis 3h Änderungen/Monat'
+  }
+];
 
 export const Navbar: React.FC<NavbarProps> = ({
   theme,
   onToggleTheme,
-  onOpenContact,
   onOpenLegal,
-  configuredCount = 0
+  configuredCount = 0,
+  onSelectCatalogCategory
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
   const progressBarRef = useRef<HTMLDivElement | null>(null);
+  const servicesDropdownRef = useRef<HTMLDivElement | null>(null);
+  const closeTimerRef = useRef<number | null>(null);
 
   // Zero-rerender GPU scroll progress laser bar
   useEffect(() => {
@@ -64,7 +96,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         }
       },
       {
-        rootMargin: '-28% 0px -55% 0px',
+        rootMargin: '-26% 0px -55% 0px',
         threshold: 0
       }
     );
@@ -77,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
 
     attachSections();
-    const timer = setTimeout(attachSections, 600);
+    const timer = setTimeout(attachSections, 650);
 
     return () => {
       clearTimeout(timer);
@@ -85,26 +117,76 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
   }, []);
 
+  // Close dropdown on outside click or Escape
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setServicesOpen(false);
+        setMobileMenuOpen(false);
+      }
+    };
+    const onPointerDown = (e: PointerEvent) => {
+      if (
+        servicesDropdownRef.current &&
+        e.target instanceof Node &&
+        !servicesDropdownRef.current.contains(e.target)
+      ) {
+        setServicesOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, []);
+
   const scrollTo = (id: string) => {
     setMobileMenuOpen(false);
+    setServicesOpen(false);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
+  const handleSelectCategory = (catId: string) => {
+    if (onSelectCatalogCategory) {
+      onSelectCatalogCategory(catId);
+    }
+    scrollTo('demos');
+  };
+
+  const handleServicesEnter = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      setServicesOpen(true);
+    }
+  };
+
+  const handleServicesLeave = () => {
+    closeTimerRef.current = window.setTimeout(() => {
+      setServicesOpen(false);
+    }, 160);
+  };
+
   return (
-    <header className="site-header">
-      <div className="site-header-bar">
-        {/* Brand */}
+    <header className="site-header wit-glass-header">
+      <div className="wit-header-inner wit-wrap">
+        {/* Windisch-inspired Brand Lockup */}
         <a
           href="#hero"
-          className="brand"
+          className="wit-brand"
           onClick={e => {
             e.preventDefault();
             scrollTo('hero');
           }}
-          aria-label="PureSite Home"
+          aria-label="PureSite — Startseite"
         >
           <div className="brand-logo-icon" aria-hidden="true">
             <picture>
@@ -124,8 +206,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }
                 alt="PureSite Logo"
                 className="brand-logo-img"
-                width={32}
-                height={32}
+                width={38}
+                height={38}
                 fetchPriority="high"
                 decoding="async"
                 onError={e => {
@@ -134,161 +216,389 @@ export const Navbar: React.FC<NavbarProps> = ({
               />
             </picture>
           </div>
-          <span className="brand-title">PureSite</span>
+          <span className="wit-brand-text">
+            pure<span className="wit-brand-light">site</span>
+            <small className="wit-brand-subtitle">SOFTWARE STUDIO</small>
+          </span>
         </a>
 
-        {/* Desktop Navigation Links */}
-        <nav className="site-nav" aria-label="Hauptnavigation">
-          <button
-            className={`nav-item-btn ${activeSection === 'preise' ? 'is-active' : ''}`}
-            onClick={() => scrollTo('preise')}
+        {/* Desktop Navigation (Windisch Layout + Liquid Glass Dropdown) */}
+        <nav className="wit-desktop-nav" aria-label="Hauptnavigation">
+          <div
+            ref={servicesDropdownRef}
+            className="wit-nav-services"
+            data-open={servicesOpen}
+            onMouseEnter={handleServicesEnter}
+            onMouseLeave={handleServicesLeave}
           >
-            <span className="nav-num">01</span> Kalkulator
-          </button>
+            <div className="wit-nav-services-heading">
+              <button
+                type="button"
+                className={`wit-nav-link ${activeSection === 'demos' ? 'is-active' : ''}`}
+                onClick={() => scrollTo('demos')}
+              >
+                Leistungen &amp; Demos
+              </button>
+              <button
+                type="button"
+                className="wit-services-toggle"
+                aria-label={servicesOpen ? 'Leistungen schließen' : 'Leistungen öffnen'}
+                aria-expanded={servicesOpen}
+                onClick={() => setServicesOpen(prev => !prev)}
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="wit-services-dropdown" aria-hidden={!servicesOpen}>
+              <div className="wit-services-dropdown-panel lg-glass-popover">
+                <ul>
+                  {SERVICE_MENU_ITEMS.map(item => (
+                    <li key={item.id}>
+                      <button
+                        type="button"
+                        className="wit-dropdown-item"
+                        onClick={() => handleSelectCategory(item.id)}
+                      >
+                        <span className="wit-dropdown-copy">
+                          <strong>{item.label}</strong>
+                          <small>{item.sub}</small>
+                        </span>
+                        <svg
+                          width="17"
+                          height="17"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M4 12h16M13 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  type="button"
+                  className="wit-services-overview"
+                  onClick={() => handleSelectCategory('all')}
+                >
+                  <span>Alle 18 Module &amp; Live-Demos ansehen</span>
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M4 12h16M13 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
           <button
-            className={`nav-item-btn ${activeSection === 'demos' ? 'is-active' : ''}`}
-            onClick={() => scrollTo('demos')}
-          >
-            <span className="nav-num">02</span> Live-Demos
-          </button>
-          <button
-            className={`nav-item-btn ${activeSection === 'warum-wir' ? 'is-active' : ''}`}
+            type="button"
+            className={`wit-nav-link ${activeSection === 'warum-wir' ? 'is-active' : ''}`}
             onClick={() => scrollTo('warum-wir')}
           >
-            <span className="nav-num">03</span> Vergleich
+            Praxis &amp; Technik
           </button>
+
           <button
-            className={`nav-item-btn ${activeSection === 'ueber-uns' ? 'is-active' : ''}`}
-            onClick={() => scrollTo('ueber-uns')}
+            type="button"
+            className={`wit-nav-link ${activeSection === 'preise' ? 'is-active' : ''}`}
+            onClick={() => scrollTo('preise')}
           >
-            <span className="nav-num">04</span> Über uns
+            Festpreis-Rechner
           </button>
+
           <button
-            className={`nav-item-btn ${activeSection === 'prozess' ? 'is-active' : ''}`}
+            type="button"
+            className={`wit-nav-link ${activeSection === 'prozess' ? 'is-active' : ''}`}
             onClick={() => scrollTo('prozess')}
           >
-            <span className="nav-num">05</span> Ablauf
+            Zusammenarbeit
           </button>
+
           <button
-            className={`nav-item-btn ${activeSection === 'faq' ? 'is-active' : ''}`}
-            onClick={() => scrollTo('faq')}
+            type="button"
+            className={`wit-nav-link ${activeSection === 'ueber-uns' ? 'is-active' : ''}`}
+            onClick={() => scrollTo('ueber-uns')}
           >
-            <span className="nav-num">06</span> FAQ
+            Über uns
           </button>
         </nav>
 
-        <span className="header-spacer" aria-hidden="true"></span>
-
-        {/* Header Utils */}
-        <div className="header-utils">
-          {/* Theme Toggle Button */}
+        {/* Right Controls */}
+        <div className="wit-header-controls">
           <button
-            className="theme-toggle"
+            className="wit-icon-button theme-toggle"
             type="button"
             onClick={onToggleTheme}
             aria-label={
               theme === 'dark'
-                ? 'Light Design: Zu hellem Design wechseln'
-                : 'Dark Design: Zu dunklem Design wechseln'
+                ? 'Helles Liquid-Glass-Design aktivieren'
+                : 'Dunkles Liquid-Glass-Design aktivieren'
             }
-            title={theme === 'dark' ? 'Helles Design aktivieren' : 'Dunkles Design aktivieren'}
+            title={theme === 'dark' ? 'Zu Light Mode wechseln' : 'Zu Dark Mode wechseln'}
           >
-            {theme === 'dark' ? (
-              <>
-                <Sun size={14} className="theme-icon" />
-                <span className="theme-toggle-label">Light</span>
-              </>
-            ) : (
-              <>
-                <Moon size={14} className="theme-icon" />
-                <span className="theme-toggle-label">Dark</span>
-              </>
-            )}
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          {/* Direct CTA with live module counter */}
-          <button className="header-cta-btn" onClick={() => scrollTo('preise')}>
-            <span>Konfigurieren</span>
-            {configuredCount > 0 && (
-              <span className="header-cta-count" title={`${configuredCount} Bausteine aktiv`}>
-                {configuredCount}
-              </span>
-            )}
-            <ArrowRight size={13} />
-          </button>
-
-          {/* Mobile hamburger */}
           <button
-            className="mobile-hamburger-btn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            type="button"
+            className="wit-btn wit-btn-small wit-header-cta"
+            onClick={() => scrollTo('preise')}
+          >
+            <span>
+              Kalkulator
+              {configuredCount > 0 && (
+                <em className="wit-cta-badge" title={`${configuredCount} Module gewählt`}>
+                  {configuredCount}
+                </em>
+              )}
+            </span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 18 18 6M6 6h12v12" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="wit-icon-button wit-menu-toggle"
+            onClick={() => setMobileMenuOpen(prev => !prev)}
             aria-label={mobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileMenuOpen ? (
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            ) : (
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                <path d="M4 8h16M4 16h16" />
+              </svg>
+            )}
           </button>
         </div>
       </div>
 
-      {/* Sub-pixel Precision Scroll Progress Laser */}
+      {/* Sub-pixel Refractive Scroll Progress Laser */}
       <div className="scroll-laser-track" aria-hidden="true">
         <div ref={progressBarRef} className="scroll-laser-fill" />
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Windisch-style Mobile Navigation Drawer in Frosted Liquid Glass */}
       {mobileMenuOpen && (
-        <div className="site-mobile-drawer">
-          <button className="mobile-drawer-link" onClick={() => scrollTo('preise')}>
-            <span className="nav-num">01</span> Modul-Kalkulator (Festpreis)
-          </button>
-          <button className="mobile-drawer-link" onClick={() => scrollTo('demos')}>
-            <span className="nav-num">02</span> 18 Live-Demos testen
-          </button>
-          <button className="mobile-drawer-link" onClick={() => scrollTo('speed-lab')}>
-            <span className="nav-num">03</span> Speed-Lab &amp; Benchmarks
-          </button>
-          <button className="mobile-drawer-link" onClick={() => scrollTo('warum-wir')}>
-            <span className="nav-num">04</span> Vergleich (Kein WordPress)
-          </button>
-          <button className="mobile-drawer-link" onClick={() => scrollTo('ueber-uns')}>
-            <span className="nav-num">05</span> Über uns (Ingenieurswesen)
-          </button>
-          <button className="mobile-drawer-link" onClick={() => scrollTo('prozess')}>
-            <span className="nav-num">06</span> Projekt-Ablauf
-          </button>
-          <button className="mobile-drawer-link" onClick={() => scrollTo('faq')}>
-            <span className="nav-num">07</span> Häufige Fragen
+        <nav className="wit-mobile-nav lg-glass-popover" aria-label="Mobile Navigation">
+          <button
+            type="button"
+            className="wit-mobile-main-link"
+            onClick={() => scrollTo('demos')}
+          >
+            <span>Leistungen &amp; 18 Live-Demos</span>
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 18 18 6M6 6h12v12" />
+            </svg>
           </button>
 
-          <div className="mobile-drawer-actions">
-            <button
-              className="button primary w-100"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                scrollTo('preise');
-              }}
+          <ul className="wit-mobile-sublinks">
+            {SERVICE_MENU_ITEMS.map(item => (
+              <li key={item.id}>
+                <button type="button" onClick={() => handleSelectCategory(item.id)}>
+                  {item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <button
+            type="button"
+            className="wit-mobile-main-link"
+            onClick={() => scrollTo('warum-wir')}
+          >
+            <span>Praxis, Speed-Lab &amp; Vergleich</span>
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
             >
-              Website jetzt konfigurieren →
-            </button>
-            <button
-              className="button secondary w-100 mt-2"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenContact();
-              }}
+              <path d="M6 18 18 6M6 6h12v12" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="wit-mobile-main-link"
+            onClick={() => scrollTo('preise')}
+          >
+            <span>Festpreis-Kalkulator ({configuredCount} aktiv)</span>
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
             >
-              Direkte Anfrage senden
-            </button>
+              <path d="M6 18 18 6M6 6h12v12" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="wit-mobile-main-link"
+            onClick={() => scrollTo('prozess')}
+          >
+            <span>Zusammenarbeit &amp; Ablauf</span>
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 18 18 6M6 6h12v12" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="wit-mobile-main-link"
+            onClick={() => scrollTo('ueber-uns')}
+          >
+            <span>Über uns (Maximilian &amp; Loreno)</span>
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 18 18 6M6 6h12v12" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="wit-mobile-main-link"
+            onClick={() => scrollTo('faq')}
+          >
+            <span>Häufige Fragen</span>
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 18 18 6M6 6h12v12" />
+            </svg>
+          </button>
+
+          <div className="wit-mobile-legal-row">
             <button
-              className="mobile-legal-btn"
+              type="button"
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenLegal('impressum');
               }}
             >
-              Impressum &amp; Datenschutz (DSGVO)
+              Impressum
+            </button>
+            <span>·</span>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenLegal('datenschutz');
+              }}
+            >
+              Datenschutz
             </button>
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );
