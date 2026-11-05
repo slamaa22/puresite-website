@@ -16,17 +16,15 @@ export interface PdfOfferItem {
 export interface PdfOfferOptions {
   calculation: ProjectCalculation;
   items: PdfOfferItem[];
-  useTax: boolean;
+  useTax?: boolean;
   clientName?: string;
   clientCompany?: string;
-  theme?: 'light' | 'dark'; // Defaults to 'light' (White Mode)
+  theme?: 'light' | 'dark';
 }
 
 // Convert image URL to base64 Data URL for robust html2canvas embedding
-async function getLogoDataUrl(theme: 'light' | 'dark' = 'light'): Promise<string> {
-  const logoPath = theme === 'light' 
-    ? '/assets/puresite-logo-dark-stroke.png' 
-    : '/assets/puresite-logo.png';
+async function getLogoDataUrl(): Promise<string> {
+  const logoPath = '/assets/puresite-logo.png';
   try {
     const res = await fetch(logoPath);
     if (!res.ok) throw new Error('Logo fetch failed');
@@ -43,20 +41,16 @@ async function getLogoDataUrl(theme: 'light' | 'dark' = 'light'): Promise<string
 }
 
 // Standard document pagination:
-// Up to 12 items fit comfortably on a single complete page with totals & signatures.
-// For larger projects (>12 items), Page 1 fills naturally (taking 10-12 items),
-// leaving the remaining items for Page 2 alongside totals & signatures without premature breaks.
+// Up to 11 items fit comfortably on a single complete page with studio header, totals & signatures.
+// For larger projects (>11 items), Page 1 fills naturally, leaving the remaining items for Page 2+.
 function chunkItemsForPages(items: PdfOfferItem[]): PdfOfferItem[][] {
-  if (items.length <= 12) {
+  if (items.length <= 11) {
     return [items];
   }
 
   const pages: PdfOfferItem[][] = [];
-  
-  // Multi-page distribution:
-  // Ensure the final page has between 3 and 6 items to accompany the totals and signature blocks nicely.
   const finalPageItemCount = Math.min(6, Math.max(3, items.length % 9 || 4));
-  const page1Count = Math.min(12, items.length - finalPageItemCount);
+  const page1Count = Math.min(11, items.length - finalPageItemCount);
   pages.push(items.slice(0, page1Count));
   let remaining = items.slice(page1Count);
 
@@ -74,13 +68,13 @@ function chunkItemsForPages(items: PdfOfferItem[]): PdfOfferItem[][] {
 }
 
 export async function generatePureSitePdf(options: PdfOfferOptions): Promise<void> {
-  const { calculation, items, useTax, clientName, clientCompany, theme = 'light' } = options;
+  const { calculation, items, clientName, clientCompany } = options;
 
   const quoteId = `PS-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
   const todayStr = new Date().toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric' });
   const validUntilStr = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-  const logoBase64 = await getLogoDataUrl(theme);
+  const logoBase64 = await getLogoDataUrl();
 
   const itemChunks = chunkItemsForPages(items);
   const totalPages = itemChunks.length;
@@ -113,125 +107,133 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
     container.style.height = '1131px';
     container.style.boxSizing = 'border-box';
     container.style.margin = '0';
-    container.style.padding = '22px 26px';
-    container.style.backgroundColor = '#ffffff';
-    container.style.color = '#0f172a';
+    container.style.padding = '20px 24px';
+    container.style.backgroundColor = '#f7faf8';
+    container.style.color = '#091410';
     container.style.fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
     container.style.zIndex = '-9999';
     container.style.overflow = 'hidden';
 
     container.innerHTML = `
-      <div style="height: 100%; box-sizing: border-box; display: flex; flex-direction: column; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px 22px; background: #ffffff; position: relative;">
+      <div style="height: 100%; box-sizing: border-box; display: flex; flex-direction: column; border: 1px solid #d5e3dc; border-radius: 14px; padding: 16px 20px; background: #ffffff; position: relative; box-shadow: 0 2px 12px rgba(7, 18, 14, 0.04);">
         
-        <!-- Header Precision Hairline Strip -->
-        <div style="height: 3px; width: 100%; background: linear-gradient(90deg, #10b981 0%, #059669 40%, #0f172a 100%); border-radius: 3px; margin-bottom: 12px;"></div>
+        <!-- Studio Header Banner (Obsidian Forest x Mint Editorial) -->
+        <div style="background: linear-gradient(135deg, #07120e 0%, #0d211a 100%); border-radius: 10px; padding: 13px 16px; margin-bottom: ${isFirstPage ? '10px' : '8px'}; position: relative; overflow: hidden; border: 1px solid #16362a;">
+          <!-- Top Mint Precision Accent Line -->
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #58fca5 0%, #10b981 55%, #07120e 100%);"></div>
 
-        <!-- Document Header: Brand & Document Meta -->
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: ${isFirstPage ? '11px' : '9px'};">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 5px;">
-              <img src="${logoBase64}" alt="PureSite" style="width: 100%; height: 100%; object-fit: contain;" />
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(88, 252, 165, 0.25); border-radius: 9px; padding: 6px;">
+                <img src="${logoBase64}" alt="PureSite" style="width: 100%; height: 100%; object-fit: contain;" />
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 9px;">
+                  <span style="font-size: 21px; font-weight: 800; font-family: 'Manrope', 'Inter', sans-serif; letter-spacing: -0.03em; color: #ffffff; line-height: 1;">
+                    pure<span style="color: #58fca5;">site</span>
+                  </span>
+                  <span style="font-size: 7.5px; font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: 0.14em; background: rgba(88, 252, 165, 0.12); color: #58fca5; padding: 2.5px 7px; border-radius: 4px; border: 1px solid rgba(88, 252, 165, 0.3); text-transform: uppercase;">
+                    SOFTWARE STUDIO
+                  </span>
+                  <span style="font-size: 7.5px; font-family: 'JetBrains Mono', monospace; font-weight: 600; letter-spacing: 0.06em; background: rgba(255, 255, 255, 0.07); color: #d1fae5; padding: 2.5px 7px; border-radius: 4px; text-transform: uppercase;">
+                    ${isFirstPage ? 'FESTPREIS-ANGEBOT' : `SEITE ${pageNum}/${totalPages}`}
+                  </span>
+                </div>
+                <div style="font-size: 8.5px; color: #9ab3a8; letter-spacing: 0.03em; margin-top: 4px; font-weight: 500;">
+                  High-Performance Webdesign & Individuelle Softwareentwicklung · Graz, Österreich
+                </div>
+                <div style="font-size: 8px; color: #58fca5; font-family: 'JetBrains Mono', monospace; margin-top: 2px; letter-spacing: 0.01em;">
+                  Am Leopoldsgrund 19, 8055 Graz · +43 676 6500468 · maximilian.schlacher@outlook.com
+                </div>
+              </div>
             </div>
-            <div>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 21px; font-weight: 800; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; color: #0f172a;">
-                  PureSite<span style="color: #059669;">.</span>
-                </span>
-                <span style="font-size: 8px; font-family: 'JetBrains Mono', monospace; font-weight: 600; letter-spacing: 0.04em; background: #ecfdf5; color: #047857; padding: 2px 7px; border-radius: 4px; border: 1px solid #a7f3d0; text-transform: uppercase;">
-                  ${isFirstPage ? 'FESTPREIS-ANGEBOT' : `ANGEBOT ${quoteId} (SEITE ${pageNum})`}
-                </span>
-              </div>
-              <div style="font-size: 8.5px; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 1px; font-weight: 500;">
-                Webdesign & High-Performance Softwareentwicklung
-              </div>
-              <div style="font-size: 8.5px; color: #059669; font-family: 'JetBrains Mono', monospace; margin-top: 1px;">
-                puresite.at • maximilian.schlacher@outlook.com
-              </div>
-            </div>
-          </div>
 
-          <div style="text-align: right; font-size: 9px; color: #64748b; line-height: 1.4; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 12px;">
-            <div style="font-size: 11.5px; font-weight: 700; color: #0f172a; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em;">${quoteId}</div>
-            <div style="margin-top: 1px;">Datum: <strong style="color: #1e293b;">${todayStr}</strong></div>
-            <div>Gültig bis: <strong style="color: #047857;">${validUntilStr}</strong></div>
-            <div style="color: #94a3b8; font-size: 8px;">Seite ${pageNum} von ${totalPages}</div>
+            <div style="text-align: right; font-size: 8.5px; color: #b5cbc0; line-height: 1.42; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 6px 11px;">
+              <div style="font-size: 11px; font-weight: 700; color: #ffffff; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.03em;">${quoteId}</div>
+              <div style="margin-top: 1px;">Ausgestellt: <strong style="color: #ffffff;">${todayStr}</strong></div>
+              <div>Gültig bis: <strong style="color: #58fca5;">${validUntilStr}</strong></div>
+              <div style="color: #7d998c; font-size: 7.5px;">Seite ${pageNum} von ${totalPages}</div>
+            </div>
           </div>
         </div>
 
         ${isFirstPage ? `
-          <!-- Client & Subject Banner (Page 1 Only) -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 9px 12px; margin-bottom: 9px; display: flex; justify-content: space-between; align-items: center;">
+          <!-- Client & Architecture Summary Bar (Page 1 Only) -->
+          <div style="background: #f4f8f6; border: 1px solid #d5e3dc; border-radius: 9px; padding: 8px 13px; margin-bottom: 9px; display: flex; justify-content: space-between; align-items: center;">
             <div>
-              <div style="font-size: 7.5px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em;">Projekt & Auftraggeber</div>
-              <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-top: 1px; font-family: 'Outfit', sans-serif;">
-                ${clientCompany || clientName || 'Individuelles Unternehmens-Webprojekt'}
+              <div style="font-size: 7px; color: #4d6b5d; text-transform: uppercase; font-weight: 700; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace;">Projekt-Spezifikation & Auftraggeber</div>
+              <div style="font-size: 13px; font-weight: 800; color: #07120e; margin-top: 1px; font-family: 'Manrope', 'Inter', sans-serif; letter-spacing: -0.01em;">
+                ${clientCompany || clientName || 'Individuelles Digital- & Webprojekt'}
               </div>
-              ${clientName && clientCompany ? `<div style="font-size: 8.5px; color: #475569; margin-top: 1px;">z. H. ${clientName}</div>` : ''}
+              ${clientName && clientCompany ? `<div style="font-size: 8.5px; color: #3d594c; margin-top: 1px;">Ansprechpartner: <strong>${clientName}</strong></div>` : ''}
             </div>
-            <div style="text-align: right;">
-              <span style="font-size: 8.5px; font-weight: 600; color: #047857; background: #ecfdf5; padding: 3px 8px; border-radius: 20px; border: 1px solid #a7f3d0; font-family: 'JetBrains Mono', monospace;">
-                ${calculation.itemCount} Bausteine konfiguriert
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 8px; font-weight: 600; color: #095238; background: #e6f5ed; padding: 3.5px 9px; border-radius: 20px; border: 1px solid #b5dfca; font-family: 'JetBrains Mono', monospace;">
+                ${calculation.itemCount} Leistungsbausteine
+              </span>
+              <span style="font-size: 8px; font-weight: 600; color: #07120e; background: #ffffff; padding: 3.5px 9px; border-radius: 20px; border: 1px solid #cbdcd3; font-family: 'JetBrains Mono', monospace;">
+                ca. ${calculation.totalHours} Std. Engineering
               </span>
             </div>
           </div>
         ` : `
           <!-- Continuation Header Bar on Later Pages -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; margin-bottom: 9px; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px;">
-            <span style="color: #475569;">Fortsetzung der Positionen für: <strong style="color: #0f172a;">${clientCompany || clientName || 'Webprojekt'}</strong></span>
-            <span style="color: #047857; font-family: 'JetBrains Mono', monospace;">Positionen ${startIndex + 1} bis ${runningItemIndex} von ${items.length}</span>
+          <div style="background: #f4f8f6; border: 1px solid #d5e3dc; border-radius: 8px; padding: 6px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px;">
+            <span style="color: #3d594c;">Fortsetzung der Leistungsbausteine für: <strong style="color: #07120e;">${clientCompany || clientName || 'Digital- & Webprojekt'}</strong></span>
+            <span style="color: #095238; font-family: 'JetBrains Mono', monospace; font-weight: 600;">Positionen ${startIndex + 1} bis ${runningItemIndex} von ${items.length}</span>
           </div>
         `}
 
         <!-- Modules Table -->
         <div style="margin-bottom: 8px;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 9px; text-align: left;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 9px; text-align: left; border: 1px solid #d5e3dc; border-radius: 8px; overflow: hidden;">
             <thead>
-              <tr style="background: #f1f5f9; border-bottom: 2px solid #0f172a; color: #334155; font-size: 8px; text-transform: uppercase; letter-spacing: 0.05em;">
-                <th style="padding: 5px 6px; width: 32px; text-align: center;">Pos.</th>
-                <th style="padding: 5px 8px;">Leistungsbaustein & Spezifikation</th>
-                <th style="padding: 5px 8px; width: 100px; text-align: center;">Kategorie</th>
-                <th style="padding: 5px 8px; width: 85px; text-align: center;">Abrechnung</th>
-                <th style="padding: 5px 8px; text-align: right; width: 90px;">Festpreis</th>
+              <tr style="background: #091712; color: #e6f2ec; font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.07em; font-family: 'JetBrains Mono', monospace;">
+                <th style="padding: 6px 6px; width: 32px; text-align: center; color: #58fca5;">Pos.</th>
+                <th style="padding: 6px 8px;">Leistungsbaustein & Technische Spezifikation</th>
+                <th style="padding: 6px 8px; width: 96px; text-align: center;">Kategorie</th>
+                <th style="padding: 6px 8px; width: 82px; text-align: center;">Abrechnung</th>
+                <th style="padding: 6px 10px; text-align: right; width: 90px; color: #58fca5;">Festpreis</th>
               </tr>
             </thead>
             <tbody>
               ${pageItems.map((item, idx) => {
                 const isEven = idx % 2 === 1;
-                const rowBg = isEven ? 'background: #f8fafc;' : 'background: #ffffff;';
+                const rowBg = isEven ? 'background: #f8fbf9;' : 'background: #ffffff;';
                 return `
-                  <tr style="border-bottom: 1px solid #e2e8f0; ${rowBg}">
-                    <td style="padding: 5px 6px; color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 8.5px; text-align: center;">
+                  <tr style="border-bottom: 1px solid #e3ede8; ${rowBg}">
+                    <td style="padding: 5px 6px; color: #527062; font-family: 'JetBrains Mono', monospace; font-size: 8px; text-align: center; font-weight: 600;">
                       ${String(startIndex + idx + 1).padStart(2, '0')}
                     </td>
                     <td style="padding: 5px 8px;">
-                      <div style="font-weight: 600; color: #0f172a; font-size: 10px; display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                      <div style="font-weight: 700; color: #07120e; font-size: 9.5px; font-family: 'Manrope', 'Inter', sans-serif; display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap;">
                         <span>${item.name}</span>
                         ${item.code ? `
-                          <span style="font-family: 'JetBrains Mono', monospace; font-size: 7px; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 3px; padding: 1px 4px; white-space: nowrap; display: inline-block;">
+                          <span style="font-family: 'JetBrains Mono', monospace; font-size: 7px; font-weight: 600; color: #095238; background: #e6f5ed; border: 1px solid #b5dfca; border-radius: 3px; padding: 1px 4px; white-space: nowrap; display: inline-block;">
                             ${item.code}
                           </span>
                         ` : ''}
                         ${item.qtyLabel ? `
-                          <span style="font-size: 7.5px; font-weight: 600; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 3px; padding: 1px 4px; white-space: nowrap; display: inline-block;">
+                          <span style="font-size: 7px; font-weight: 700; color: #07120e; background: #eef5f1; border: 1px solid #cbdcd3; border-radius: 3px; padding: 1px 4px; white-space: nowrap; display: inline-block;">
                             ${item.qtyLabel.trim()}
                           </span>
                         ` : ''}
                       </div>
-                      <div style="font-size: 8px; color: #475569; margin-top: 1px; line-height: 1.3;">
+                      <div style="font-size: 7.8px; color: #466155; margin-top: 1px; line-height: 1.28;">
                         ${item.description}
                       </div>
                     </td>
                     <td style="padding: 5px 8px; text-align: center;">
-                      <span style="font-size: 7.5px; color: #475569; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 3px; padding: 1px 5px; text-transform: uppercase; letter-spacing: 0.02em; white-space: nowrap;">
+                      <span style="font-size: 7px; font-weight: 600; color: #3d594c; background: #eef5f1; border: 1px solid #d5e3dc; border-radius: 4px; padding: 1.5px 5px; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;">
                         ${item.categoryLabel}
                       </span>
                     </td>
                     <td style="padding: 5px 8px; text-align: center;">
-                      <span style="font-size: 8px; color: ${item.billingType === 'Monatlich' ? '#047857' : '#334155'}; font-weight: 600; white-space: nowrap;">
+                      <span style="font-size: 7.8px; color: ${item.billingType === 'Monatlich' ? '#095238' : '#2c4238'}; font-weight: 600; white-space: nowrap;">
                         ${item.billingType}
                       </span>
                     </td>
-                    <td style="padding: 5px 8px; text-align: right; font-weight: 700; color: #0f172a; font-family: 'JetBrains Mono', monospace; font-size: 10px; white-space: nowrap;">
+                    <td style="padding: 5px 10px; text-align: right; font-weight: 700; color: #07120e; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; white-space: nowrap;">
                       ${item.priceFormatted}
                     </td>
                   </tr>
@@ -243,105 +245,100 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
 
         ${!isLastPage ? `
           <!-- Continuation hint for next page -->
-          <div style="margin-top: 10px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 8px 14px; text-align: center; color: #047857; font-size: 8.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            <span>Fortsetzung der Positionen sowie Gesamtkalkulation & Zahlungsplan auf Seite ${pageNum + 1} von ${totalPages} ➔</span>
+          <div style="margin-top: 8px; background: #f4f8f6; border: 1px dashed #b5dfca; border-radius: 8px; padding: 8px 14px; text-align: center; color: #095238; font-size: 8.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span>Fortsetzung der Leistungsbausteine sowie Gesamtkalkulation & Zahlungsplan auf Seite ${pageNum + 1} von ${totalPages} →</span>
           </div>
         ` : ''}
 
         ${isLastPage ? `
           <!-- Totals & Milestones Grid (Final Page Only) -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; margin-bottom: 8px;">
+          <div style="display: grid; grid-template-columns: 1fr 1.08fr; gap: 10px; margin-top: 2px; margin-bottom: 7px;">
             <!-- Left Box: 50/50 Milestones -->
-            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="background: #f4f8f6; border: 1px solid #d5e3dc; border-radius: 9px; padding: 10px 12px; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
-                <div style="font-size: 9.5px; font-weight: 700; color: #15803d; margin-bottom: 2px; display: flex; align-items: center; gap: 5px;">
-                  <span>🛡️</span> 50 / 50 Meilenstein-Zahlungsplan
+                <div style="font-size: 9px; font-weight: 800; color: #07120e; font-family: 'Manrope', 'Inter', sans-serif; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.03em;">
+                  <span style="display: inline-flex; width: 14px; height: 14px; border-radius: 4px; background: #095238; color: #58fca5; align-items: center; justify-content: center; font-size: 8px; font-family: 'JetBrains Mono', monospace;">50</span>
+                  <span>50 / 50 Meilenstein-Zahlungsplan</span>
                 </div>
-                <div style="font-size: 8px; color: #166534; line-height: 1.3; margin-bottom: 6px;">
-                  Transparente Abrechnung ohne Vorab-Risiko für den Auftraggeber:
+                <div style="font-size: 7.8px; color: #466155; line-height: 1.3; margin-bottom: 6px;">
+                  Faire, projektgebundene Abrechnung ohne Vorab-Risiko für den Auftraggeber:
                 </div>
               </div>
-              <div style="display: flex; flex-direction: column; gap: 4px;">
-                <div style="display: flex; justify-content: space-between; font-size: 9px; padding-bottom: 3px; border-bottom: 1px dashed #bbf7d0;">
-                  <span style="color: #4b5563;">1. Anzahlung bei Start (50%):</span>
-                  <strong style="color: #0f172a; font-family: 'JetBrains Mono', monospace;">${calculation.downPayment50.toLocaleString('de-AT')} €</strong>
+              <div style="display: flex; flex-direction: column; gap: 4px; background: #ffffff; border: 1px solid #dfeae4; border-radius: 6px; padding: 6px 9px;">
+                <div style="display: flex; justify-content: space-between; font-size: 8.5px; padding-bottom: 3px; border-bottom: 1px dashed #d5e3dc;">
+                  <span style="color: #3d594c;">1. Anzahlung bei Projektstart (50%):</span>
+                  <strong style="color: #07120e; font-family: 'JetBrains Mono', monospace;">${calculation.downPayment50.toLocaleString('de-AT')} €</strong>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 9px;">
-                  <span style="color: #4b5563;">2. Endzahlung bei Livegang & Abnahme (50%):</span>
-                  <strong style="color: #0f172a; font-family: 'JetBrains Mono', monospace;">${calculation.finalPayment50.toLocaleString('de-AT')} €</strong>
+                <div style="display: flex; justify-content: space-between; font-size: 8.5px;">
+                  <span style="color: #3d594c;">2. Endzahlung bei Livegang & Abnahme (50%):</span>
+                  <strong style="color: #07120e; font-family: 'JetBrains Mono', monospace;">${calculation.finalPayment50.toLocaleString('de-AT')} €</strong>
                 </div>
               </div>
             </div>
 
-            <!-- Right Box: Price Calculation -->
-            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; justify-content: center;">
-              <div style="display: flex; justify-content: space-between; font-size: 9px; color: #475569; margin-bottom: 2px;">
-                <span>Projektpreis (Netto):</span>
-                <strong style="color: #0f172a; font-family: 'JetBrains Mono', monospace;">${calculation.oneTimeNet.toLocaleString('de-AT')} €</strong>
+            <!-- Right Box: Studio Fixed-Price Summary -->
+            <div style="background: linear-gradient(135deg, #07120e 0%, #0d211a 100%); border: 1px solid #16362a; border-radius: 9px; padding: 10px 14px; display: flex; flex-direction: column; justify-content: center; color: #ffffff;">
+              <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #b5cbc0; margin-bottom: 2px;">
+                <span>Projektpreis (Einmalige Entwicklung):</span>
+                <strong style="color: #ffffff; font-family: 'JetBrains Mono', monospace;">${calculation.oneTimeNet.toLocaleString('de-AT')} €</strong>
               </div>
 
-              ${useTax ? `
-                <div style="display: flex; justify-content: space-between; font-size: 9px; color: #475569; margin-bottom: 2px;">
-                  <span>+ 20% Umsatzsteuer:</span>
-                  <strong style="color: #0f172a; font-family: 'JetBrains Mono', monospace;">${(calculation.oneTimeGross - calculation.oneTimeNet).toLocaleString('de-AT')} €</strong>
-                </div>
-              ` : `
-                <div style="font-size: 7.5px; color: #64748b; font-style: italic; margin-bottom: 2px;">
-                  USt.-frei gem. § 6 Abs. 1 Z 27 UStG (Kleinunternehmer)
-                </div>
-              `}
+              <div style="display: flex; justify-content: space-between; font-size: 7.5px; color: #8da89b; margin-bottom: 3px;">
+                <span>Umsatzsteuer (Kleinunternehmer gem. § 6 Abs. 1 Z 27 UStG):</span>
+                <span style="font-family: 'JetBrains Mono', monospace; color: #b5cbc0;">0 € (USt.-frei)</span>
+              </div>
 
-              <div style="height: 1.5px; background: #0f172a; margin: 3px 0;"></div>
+              <div style="height: 1px; background: rgba(88, 252, 165, 0.28); margin: 3px 0 4px 0;"></div>
 
-              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1px;">
-                <span style="font-size: 10.5px; font-weight: 700; color: #0f172a;">Gesamtbetrag (Fixpreis):</span>
-                <span style="font-size: 15.5px; font-weight: 800; color: #0f172a; font-family: 'JetBrains Mono', monospace;">${calculation.oneTimeGross.toLocaleString('de-AT')} €</span>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <span style="font-size: 10px; font-weight: 800; color: #ffffff; font-family: 'Manrope', 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.03em;">Verbindlicher Festpreis:</span>
+                <span style="font-size: 15px; font-weight: 800; color: #58fca5; font-family: 'JetBrains Mono', monospace;">${calculation.oneTimeGross.toLocaleString('de-AT')} €</span>
               </div>
 
               ${calculation.mrrNet > 0 ? `
-                <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #047857; margin-top: 2px; font-family: 'JetBrains Mono', monospace;">
-                  <span>Laufendes Hosting & Wartung:</span>
-                  <strong>${calculation.mrrNet.toLocaleString('de-AT')} € / Monat</strong>
+                <div style="display: flex; justify-content: space-between; font-size: 8px; color: #d1fae5; margin-top: 3px; padding-top: 3px; border-top: 1px dashed rgba(255, 255, 255, 0.14); font-family: 'JetBrains Mono', monospace;">
+                  <span>Laufendes Hosting & Betreuung:</span>
+                  <strong style="color: #58fca5;">${calculation.mrrNet.toLocaleString('de-AT')} € / Monat</strong>
                 </div>
               ` : ''}
 
               ${calculation.savingsTotal > 0 ? `
-                <div style="font-size: 7.5px; color: #16a34a; margin-top: 1px; text-align: right; font-weight: 600;">
-                  💰 Ersparnis ggü. üblichen Agenturpreisen: ca. ${calculation.savingsTotal.toLocaleString('de-AT')} €
+                <div style="font-size: 7.2px; color: #9ab3a8; margin-top: 2px; text-align: right;">
+                  Kalkulierter Preisvorteil ggü. Agenturmarkt: <strong style="color: #58fca5;">ca. ${calculation.savingsTotal.toLocaleString('de-AT')} €</strong>
                 </div>
               ` : ''}
             </div>
           </div>
 
-          <!-- Quality Guarantee & Disclaimer Banner -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 10px; margin-bottom: 6px;">
-            <div style="font-size: 7.5px; color: #475569; line-height: 1.35;">
-              📋 <strong>Verbindliche Festpreisgarantie:</strong> Dieses Dokument ist eine offizielle Projekt- und Festpreiskalkulation. Alle genannten Beträge sind garantierte Fixpreise für den definierten Leistungsumfang ohne versteckte Zusatzkosten. Volle Nutzungs- und Quellcode-Rechte gehen nach Begleichung der Endzahlung an den Auftraggeber über. Gültig für 30 Tage ab Ausstellungsdatum.
+          <!-- Quality Guarantee & Legal Notice Banner -->
+          <div style="background: #f8fbf9; border: 1px solid #d5e3dc; border-radius: 7px; padding: 6px 10px; margin-bottom: 6px;">
+            <div style="font-size: 7.3px; color: #3d594c; line-height: 1.35;">
+              <strong style="color: #07120e;">Verbindliche Festpreisgarantie & Urheberrecht:</strong> Alle angeführten Beträge sind garantierte Fixpreise für den oben definierten Leistungsumfang ohne versteckte Zusatzkosten (umsatzsteuerbefreit gemäß § 6 Abs. 1 Z 27 UStG). Nach vollständiger Begleichung der Endzahlung gehen sämtliche Nutzungs- und Quellcode-Rechte zu 100 % an den Auftraggeber über. Dieses Angebot ist 30 Tage ab Ausstellungsdatum gültig.
             </div>
           </div>
 
           <!-- Acceptance & Signature Block -->
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 6px; border-top: 1px dashed #cbd5e1; margin-bottom: 4px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 5px; border-top: 1px dashed #cbdcd3; margin-bottom: 4px;">
             <div>
-              <div style="font-size: 7.5px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Auftragserteilung & Freigabe:</div>
-              <div style="margin-top: 22px; border-top: 1px solid #94a3b8; width: 210px; font-size: 7px; color: #64748b; padding-top: 2px;">
-                Datum, Firmenstempel & Unterschrift Auftraggeber
+              <div style="font-size: 7.2px; color: #4d6b5d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;">Auftragserteilung & Freigabe</div>
+              <div style="margin-top: 20px; border-top: 1px solid #8da89b; width: 220px; font-size: 7px; color: #4d6b5d; padding-top: 2px;">
+                Ort, Datum & Unterschrift Auftraggeber
               </div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 7.5px; color: #047857; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">PureSite Webdesign & Softwareentwicklung</div>
-              <div style="margin-top: 22px; border-top: 1px solid #047857; width: 220px; font-size: 7px; color: #475569; padding-top: 2px;">
-                Maximilian Schlacher & Loreno Zanaboni • Steiermark
+              <div style="font-size: 7.2px; color: #095238; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;">PureSite Software Studio · Graz</div>
+              <div style="margin-top: 20px; border-top: 1px solid #095238; width: 245px; font-size: 7px; color: #3d594c; padding-top: 2px;">
+                Maximilian Schlacher & Loreno Zanaboni · 8055 Graz
               </div>
             </div>
           </div>
         ` : ''}
 
         <!-- Page Bottom Bar (Always pinned to bottom edge via margin-top: auto) -->
-        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 6px; font-size: 7.5px; color: #64748b;">
-          <span>PureSite Webdesign & Softwareentwicklung • puresite.at</span>
-          <span style="color: #1e293b; font-weight: 600;">Seite ${pageNum} von ${totalPages}</span>
-          <span>Steiermark, Österreich • 100% Festpreis</span>
+        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #dfeae4; padding-top: 5px; font-size: 7.2px; color: #527062; font-family: 'JetBrains Mono', monospace;">
+          <span>PureSite Software Studio · Am Leopoldsgrund 19, 8055 Graz</span>
+          <span style="color: #07120e; font-weight: 700;">Seite ${pageNum} von ${totalPages}</span>
+          <span>+43 676 6500468 · puresite.at</span>
         </div>
 
       </div>
@@ -354,14 +351,14 @@ export async function generatePureSitePdf(options: PdfOfferOptions): Promise<voi
         pdf.addPage('a4', 'portrait');
       }
 
-      // Fill full bleed canvas with crisp white background
-      pdf.setFillColor(255, 255, 255);
+      // Fill full bleed canvas with crisp pearl-sage paper background
+      pdf.setFillColor(247, 250, 248);
       pdf.rect(0, 0, 210, 297, 'F');
 
       const canvas = await html2canvas(container, {
         scale: 2,
         useCORS: true,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#f7faf8',
         logging: false,
         windowWidth: 800,
         windowHeight: 1131
