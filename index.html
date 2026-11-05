@@ -9,19 +9,28 @@
   <meta name="description" content="PureSite entwickelt moderne, handgeschriebene High-Performance-Websites mit 100% verbindlichen Festpreisen ab 1.000 €. Ladezeit unter 0.4 Sekunden, 0 WordPress-Chaos, 100% DSGVO-konform." />
   <meta name="keywords" content="Webdesign Österreich, Website erstellen lassen Steiermark, High Performance Webdesign, React Webagentur, Festpreis Website, Schnelle Website" />
   <meta name="author" content="Maximilian Schlacher & Loreno Zanaboni" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <meta name="theme-color" content="#07080b" />
+  <link rel="canonical" href="https://puresite.at/" />
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://puresite.at/" />
-  <meta property="og:title" content="PureSite — High-Performance Websites & Webentwicklung" />
-  <meta property="og:description" content="Moderne handgeschriebene Websites mit 100% Festpreisgarantie. 0.4s Ladezeit, keine WordPress-Wartungsfallen." />
-  <meta property="og:image" content="/assets/og-image.jpg" />
+  <meta property="og:site_name" content="PureSite Software Studio" />
+  <meta property="og:locale" content="de_AT" />
+  <meta property="og:title" content="PureSite — High-Performance Websites & Webentwicklung mit Festpreis" />
+  <meta property="og:description" content="Moderne handgeschriebene Websites mit 100% Festpreisgarantie. 0.4s Ladezeit, 0 WordPress-Wartungsfallen, 100% DSGVO-rein." />
+  <meta property="og:image" content="https://puresite.at/assets/og-image.jpg" />
+  <meta property="og:image:secure_url" content="https://puresite.at/assets/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="PureSite — High-Performance Webentwicklung" />
-  <meta name="twitter:description" content="Moderne Websites ohne WordPress-Chaos mit Festpreis ab 1.000 €." />
+  <meta name="twitter:title" content="PureSite — High-Performance Websites mit Festpreis ab 1.000 €" />
+  <meta name="twitter:description" content="0.4s Ladezeit, keine WordPress-Plugins, 100% verbindliche Festpreise aus der Steiermark." />
+  <meta name="twitter:image" content="https://puresite.at/assets/og-image.jpg" />
 
   <!-- Google Fonts Preconnect & Non-Blocking Asynchronous Stylesheet -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,9 +41,112 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" />
   </noscript>
 
+  <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="/favicon-192x192.png" />
+
+  <!-- Schema.org Rich Structured Data for Google (Rich Snippets & FAQs) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://puresite.at/#website",
+        "url": "https://puresite.at/",
+        "name": "PureSite",
+        "description": "High-Performance Websites & Webentwicklung mit verbindlichem Festpreis",
+        "inLanguage": "de-AT"
+      },
+      {
+        "@type": ["ProfessionalService", "Organization"],
+        "@id": "https://puresite.at/#organization",
+        "name": "PureSite Software Studio",
+        "url": "https://puresite.at/",
+        "logo": "https://puresite.at/favicon.svg",
+        "image": "https://puresite.at/assets/og-image.jpg",
+        "description": "Handgeschriebene High-Performance-Websites mit 100% verbindlichen Festpreisen ab 1.000 €. Ladezeit unter 0.4 Sekunden, ohne WordPress-Ballast und 100% DSGVO-konform.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kaindorf",
+          "addressRegion": "Steiermark",
+          "addressCountry": "AT"
+        },
+        "priceRange": "€€",
+        "areaServed": [
+          { "@type": "Country", "name": "Österreich" },
+          { "@type": "Country", "name": "Deutschland" },
+          { "@type": "Country", "name": "Schweiz" }
+        ],
+        "founder": [
+          {
+            "@type": "Person",
+            "name": "Maximilian Schlacher"
+          },
+          {
+            "@type": "Person",
+            "name": "Loreno Zanaboni"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://puresite.at/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Ist das Erstgespräch wirklich kostenlos und unverbindlich?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. Das Erstgespräch ist zu 100% kostenlos und unverbindlich – telefonisch, per Video-Meeting oder direkt über Ihre vorab zusammengestellte Konfiguration. Bezahlte Arbeiten beginnen erst, wenn Umfang und Festpreis gemeinsam fixiert sind."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Warum entwickelt PureSite handgeschrieben statt mit WordPress?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "WordPress ist durch dutzende Drittanbieter-Plugins oft träge, wartungsintensiv und anfällig für Sicherheitslücken nach Updates. Unsere modernen React- & TypeScript-Websites laden in unter 0,4 Sekunden, benötigen keine anfälligen Plugins und laufen DSGVO-sauber ohne Cookie-Tracking-Zwang."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie funktioniert die 50/50 Zahlung und Festpreisgarantie?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Jedes Modul hat einen klaren, vorab sichtbaren Festpreis ohne Nachverrechnung nach Stunden. 50% des einmaligen Projektpreises werden bei Projektstart fällig, die zweiten 50% erst nach Ihrer finalen Freigabe beim Livegang auf Ihrer Domain."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Kann ich Texte und Bilder später selbst ändern oder ändern lassen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Beides ist möglich: Mit dem Admin-Dashboard bearbeiten Sie Inhalte jederzeit selbst ohne laufende CMS-Abokosten. Alternativ ist in unserem Standard-Hosting bereits 1 Stunde und im Sorglos-Paket Pro volle 3 Stunden Änderungs-Support pro Monat per kurzem WhatsApp- oder E-Mail-Zuruf inklusive."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie schnell geht unsere neue Website online?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ein kompakter One-Pager ('Digitaler Start') ist in der Regel binnen 5 bis 8 Werktagen startklar. Eine mehrseitige Unternehmens-Website inklusive Spezialmodulen wie Preisrechner oder Online-Terminbuchung dauert typischerweise 2 bis 3 Wochen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Kann ich mit einem kleinen Umfang starten und später erweitern?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja, jederzeit. Dank unserer modularen Architektur können Sie schlank beginnen und später nahtlos weitere Unterseiten, Mehrsprachigkeit, einen Bewerber-Funnel oder interaktive Tools ergänzen."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
