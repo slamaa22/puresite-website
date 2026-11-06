@@ -342,61 +342,217 @@ const DemoB02Business: React.FC = () => {
 // B-03: Corporate Design System & UI Kit Demo
 const DemoB03Premium: React.FC = () => {
   const [accent, setAccent] = useState<'cyan' | 'purple' | 'emerald'>('cyan');
+  const [clickedBtn, setClickedBtn] = useState<string | null>(null);
+
+  const palettes = {
+    cyan: {
+      key: 'cyan',
+      label: 'Pure Cyan (#00f2fe)',
+      name: 'Pure Cyan',
+      hex: '#00f2fe',
+      textColor: '#07090e',
+      glow: 'rgba(0, 242, 254, 0.55)',
+      softBg: 'rgba(0, 242, 254, 0.12)',
+      border: 'rgba(0, 242, 254, 0.35)',
+      code: 'const theme = { brand: "#00f2fe", contrast: "AAA", radius: "12px" };'
+    },
+    purple: {
+      key: 'purple',
+      label: 'Royal Violet (#8b5cf6)',
+      name: 'Royal Violet',
+      hex: '#8b5cf6',
+      textColor: '#ffffff',
+      glow: 'rgba(139, 92, 246, 0.55)',
+      softBg: 'rgba(139, 92, 246, 0.16)',
+      border: 'rgba(139, 92, 246, 0.45)',
+      code: 'const theme = { brand: "#8b5cf6", contrast: "AAA", radius: "12px" };'
+    },
+    emerald: {
+      key: 'emerald',
+      label: 'Alpine Emerald (#10b981)',
+      name: 'Alpine Emerald',
+      hex: '#10b981',
+      textColor: '#07090e',
+      glow: 'rgba(16, 185, 129, 0.55)',
+      softBg: 'rgba(16, 185, 129, 0.12)',
+      border: 'rgba(16, 185, 129, 0.35)',
+      code: 'const theme = { brand: "#10b981", contrast: "AAA", radius: "12px" };'
+    }
+  };
+
+  const current = palettes[accent];
+
+  const handleButtonClick = (name: string) => {
+    setClickedBtn(name);
+    setTimeout(() => setClickedBtn(null), 1800);
+  };
 
   return (
     <div className="demo-box">
       <div className="demo-control-bar">
         <span className="demo-label">UI-Kit Akzentfarbe wechseln:</span>
         <div className="demo-button-group">
-          <button className={`demo-tab-btn ${accent === 'cyan' ? 'active' : ''}`} onClick={() => setAccent('cyan')}>
-            Pure Cyan (#00f2fe)
-          </button>
-          <button className={`demo-tab-btn ${accent === 'purple' ? 'active' : ''}`} onClick={() => setAccent('purple')}>
-            Royal Violet (#8b5cf6)
-          </button>
-          <button className={`demo-tab-btn ${accent === 'emerald' ? 'active' : ''}`} onClick={() => setAccent('emerald')}>
-            Alpine Emerald (#10b981)
-          </button>
+          {(['cyan', 'purple', 'emerald'] as const).map((key) => {
+            const p = palettes[key];
+            const isActive = accent === key;
+            return (
+              <button
+                key={key}
+                type="button"
+                className={`demo-tab-btn ${isActive ? 'active' : ''}`}
+                style={isActive ? {
+                  backgroundColor: p.hex,
+                  borderColor: p.hex,
+                  color: p.textColor,
+                  boxShadow: `0 0 16px ${p.glow}`,
+                  fontWeight: 700
+                } : {}}
+                onClick={() => setAccent(key)}
+              >
+                <span
+                  style={{
+                    display: 'inline-block',
+                    width: 9,
+                    height: 9,
+                    borderRadius: '50%',
+                    backgroundColor: p.hex,
+                    marginRight: 6,
+                    verticalAlign: 'middle',
+                    boxShadow: `0 0 6px ${p.hex}`
+                  }}
+                />
+                {p.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <div className={`ui-kit-showcase accent-${accent}`}>
+      <div 
+        className={`ui-kit-showcase accent-${accent}`}
+        style={{
+          '--ui-accent': current.hex,
+          '--ui-accent-glow': current.glow,
+          '--ui-accent-bg': current.softBg,
+          '--ui-accent-border': current.border,
+          '--ui-text-on-accent': current.textColor,
+          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+        } as React.CSSProperties}
+      >
         <div className="lighthouse-score-row">
-          <div className="score-badge green">
-            <span className="score-num">100</span>
-            <span className="score-label">Performance</span>
-          </div>
-          <div className="score-badge green">
-            <span className="score-num">100</span>
-            <span className="score-label">Accessibility</span>
-          </div>
-          <div className="score-badge green">
-            <span className="score-num">100</span>
-            <span className="score-label">Best Practices</span>
-          </div>
-          <div className="score-badge green">
-            <span className="score-num">100</span>
-            <span className="score-label">SEO Audit</span>
-          </div>
+          {[
+            { num: '100', label: 'Performance' },
+            { num: '100', label: 'Accessibility' },
+            { num: '100', label: 'Best Practices' },
+            { num: '100', label: 'SEO Audit' }
+          ].map((item, idx) => (
+            <div 
+              key={idx} 
+              className="score-badge"
+              style={{
+                backgroundColor: current.softBg,
+                borderColor: current.border,
+                boxShadow: `0 0 16px ${current.softBg}`,
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <span className="score-num" style={{ color: current.hex, textShadow: `0 0 12px ${current.glow}`, transition: 'color 0.3s ease' }}>
+                {item.num}
+              </span>
+              <span className="score-label">{item.label}</span>
+            </div>
+          ))}
         </div>
 
         <div className="component-samples-grid">
-          <div className="sample-card">
-            <h5>Button Komponenten</h5>
+          <div className="sample-card" style={{ borderColor: current.border, transition: 'border-color 0.3s ease' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h5 style={{ margin: 0 }}>Button Komponenten</h5>
+              {clickedBtn && (
+                <span style={{ fontSize: '0.72rem', color: current.hex, fontWeight: 600 }}>
+                  ✓ {clickedBtn} geklickt
+                </span>
+              )}
+            </div>
             <div className="sample-actions">
-              <button className="ui-btn-primary">Primary Action</button>
-              <button className="ui-btn-glow">Glow Highlight</button>
-              <button className="ui-btn-outline">Outline Token</button>
+              <button 
+                type="button"
+                className="ui-btn-primary"
+                style={{
+                  backgroundColor: current.hex,
+                  color: current.textColor,
+                  boxShadow: `0 0 16px ${current.glow}`,
+                  borderColor: 'transparent',
+                  transition: 'all 0.3s ease'
+                }}
+                onClick={() => handleButtonClick('Primary Action')}
+              >
+                Primary Action
+              </button>
+              <button 
+                type="button"
+                className="ui-btn-glow"
+                style={{
+                  backgroundColor: current.hex,
+                  color: current.textColor,
+                  boxShadow: `0 0 24px ${current.glow}, 0 0 8px ${current.hex}`,
+                  borderColor: 'transparent',
+                  transition: 'all 0.3s ease'
+                }}
+                onClick={() => handleButtonClick('Glow Highlight')}
+              >
+                Glow Highlight
+              </button>
+              <button 
+                type="button"
+                className="ui-btn-outline"
+                style={{
+                  borderColor: current.hex,
+                  color: current.hex,
+                  backgroundColor: current.softBg,
+                  transition: 'all 0.3s ease'
+                }}
+                onClick={() => handleButtonClick('Outline Token')}
+              >
+                Outline Token
+              </button>
             </div>
           </div>
-          <div className="sample-card">
-            <h5>Typografie & Token Hierarchie</h5>
+
+          <div className="sample-card" style={{ borderColor: current.border, transition: 'border-color 0.3s ease' }}>
+            <h5 style={{ marginBottom: '1rem' }}>Typografie & Token Hierarchie</h5>
             <div className="typo-samples">
-              <span className="typo-h1">H1 Display Headline</span>
-              <span className="typo-body">Body Text: Inter 400 mit optimiertem Zeilenabstand & Kontrast</span>
-              <span className="typo-code">CODE: const pureSite = true;</span>
+              <span className="typo-h1">
+                H1 Display Headline <span style={{ color: current.hex, fontSize: '0.9em', transition: 'color 0.3s ease' }}>({current.name})</span>
+              </span>
+              <span className="typo-body">Body Text: Inter 400 mit optimiertem Zeilenabstand &amp; Kontrast</span>
+              <span className="typo-code" style={{ color: current.hex, transition: 'color 0.3s ease' }}>
+                CODE: {current.code}
+              </span>
             </div>
           </div>
+        </div>
+
+        <div 
+          className="ui-kit-token-bar"
+          style={{
+            marginTop: '1.25rem',
+            padding: '0.65rem 1rem',
+            borderRadius: 'var(--radius-sm)',
+            backgroundColor: current.softBg,
+            border: `1px solid ${current.border}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontSize: '0.78rem',
+            transition: 'all 0.3s ease'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: current.hex, boxShadow: `0 0 6px ${current.hex}` }} />
+            <span>Aktives Design-Token: <strong>--brand-accent: {current.hex}</strong></span>
+          </div>
+          <span style={{ color: 'var(--text-secondary)' }}>Atomic Design &bull; Live reaktiv</span>
         </div>
       </div>
       <div className="demo-hint-box">
@@ -648,7 +804,7 @@ const DemoF02Animations: React.FC = () => {
 
 // F-03: Mehrsprachigkeit i18n
 const DemoF03I18n: React.FC = () => {
-  const [lang, setLang] = useState<'de' | 'en' | 'st'>('de');
+  const [lang, setLang] = useState<'de' | 'en' | 'it'>('de');
 
   const content = {
     de: {
@@ -665,12 +821,12 @@ const DemoF03I18n: React.FC = () => {
       badge: 'Styria, Austria',
       cta: 'Request a Proposal'
     },
-    st: {
-      url: '/at-st/leistungan',
-      title: 'Gscheite Webseitn, de wos funkzionian',
-      subtitle: 'Koa lahma WordPress-Krampf, sundan gschmeidige Software aus Kaindorf.',
-      badge: 'Aus da Heimat',
-      cta: 'Glei zamredn'
+    it: {
+      url: '/it/servizi',
+      title: 'Sviluppo Web su Misura',
+      subtitle: 'Creiamo siti web ultraveloci per aziende e brand visionari.',
+      badge: 'Stiria, Austria',
+      cta: 'Richiedi un preventivo'
     }
   };
 
@@ -687,8 +843,8 @@ const DemoF03I18n: React.FC = () => {
           <button className={`demo-tab-btn ${lang === 'en' ? 'active' : ''}`} onClick={() => setLang('en')}>
             🇬🇧 English (EN)
           </button>
-          <button className={`demo-tab-btn ${lang === 'st' ? 'active' : ''}`} onClick={() => setLang('st')}>
-            🏔️ Steirisch (Dialekt)
+          <button className={`demo-tab-btn ${lang === 'it' ? 'active' : ''}`} onClick={() => setLang('it')}>
+            🇮🇹 Italiano (IT)
           </button>
         </div>
       </div>
@@ -710,7 +866,7 @@ const DemoF03I18n: React.FC = () => {
         </div>
       </div>
       <div className="demo-hint-box">
-        🌍 <strong>Internationale Reichweite:</strong> Saubere URL-Struktur (`/de`, `/en`), SEO Hreflang-Tags und automatische Erkennung der Kundensprache im Browser.
+        🌍 <strong>Internationale Reichweite:</strong> Saubere URL-Struktur (`/de`, `/en`, `/it`), SEO Hreflang-Tags und automatische Erkennung der Kundensprache im Browser.
       </div>
     </div>
   );

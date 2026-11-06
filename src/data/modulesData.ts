@@ -193,7 +193,7 @@ export const MODULES_DATA: PricingModule[] = [
     effectiveHourlyRate: 51.4,
     demoId: 'demo-f03',
     demoTitle: 'i18n Sprachwechsler & Route Simulator',
-    demoShortDesc: 'Schalte per Klick zwischen Deutsch, Englisch und Steirisch um und sieh die Live-Lokalisierung.',
+    demoShortDesc: 'Schalte per Klick zwischen Deutsch, Englisch und Italienisch um und sieh die Live-Lokalisierung.',
     iconName: 'Globe',
     impactTag: 'Internationale Google-Indexierung (Hreflang)',
     socialProof: 'Perfekt für Tourismus, Export & internationale B2B-Kunden',

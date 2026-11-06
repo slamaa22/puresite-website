@@ -3439,6 +3439,8 @@
   padding: 1.25rem;
   background: var(--bg-tertiary);
   border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  transition: border-color var(--transition-normal);
 }
 
 .sample-card h5 {
@@ -3460,6 +3462,13 @@
   font-weight: 600;
   font-size: 0.82rem;
   white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform var(--transition-fast), filter var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.ui-btn-primary:active {
+  transform: scale(0.96);
 }
 
 .ui-btn-glow {
@@ -3471,6 +3480,13 @@
   font-size: 0.82rem;
   box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
   white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform var(--transition-fast), filter var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.ui-btn-glow:active {
+  transform: scale(0.96);
 }
 
 .ui-btn-outline {
@@ -3479,6 +3495,12 @@
   border: 1px solid var(--border-medium);
   font-size: 0.82rem;
   white-space: nowrap;
+  cursor: pointer;
+  transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.ui-btn-outline:active {
+  transform: scale(0.96);
 }
 
 .typo-samples {
