@@ -63,7 +63,7 @@ export const Hero: React.FC<HeroProps> = ({
           <div className="wit-hero-copy">
             <p className="wit-overline wit-hero-pill hero-enter-1">
               <span className="eyebrow-pulse-dot" aria-hidden="true" />
-              <span>PureSite Software Studio · Steiermark, Österreich</span>
+              <span>PureSite · Webdesign &amp; Software Studio Graz, Steiermark</span>
             </p>
 
             <h1 id="hero-title" className="hero-enter-2">
@@ -73,9 +73,9 @@ export const Hero: React.FC<HeroProps> = ({
             </h1>
 
             <p className="wit-hero-intro hero-enter-3">
-              Wir planen, gestalten und entwickeln rasend schnelle Unternehmens-Websites ohne
-              WordPress-Ballast und ohne versteckte Agenturstundensätze – persönlich aus der
-              Steiermark, von der ersten Idee bis zum laufenden Betrieb.
+              Wir planen, gestalten und entwickeln rasend schnelle Websites für Unternehmen in Graz,
+              der Steiermark und ganz Österreich – ohne WordPress-Ballast, mit verbindlichem Festpreis
+              und persönlicher Betreuung von der ersten Idee bis zum Livegang.
             </p>
 
             <div className="wit-hero-actions hero-enter-4">
@@ -149,12 +149,13 @@ export const Hero: React.FC<HeroProps> = ({
       <section className="wit-section wit-wrap wit-home-situations" aria-labelledby="situations-heading">
         <div className="wit-section-heading" data-reveal>
           <div>
-            <p className="wit-overline">Typische Ausgangslagen</p>
+            <p className="wit-overline">Neue Website oder Relaunch</p>
             <h2 id="situations-heading">Wobei brauchen Sie Unterstützung?</h2>
           </div>
           <p>
-            Eine Unternehmens-Website soll im Alltag zuverlässig Kunden gewinnen und Arbeit
-            abnehmen. Sie müssen sich nicht selbst durch Baukästen oder Agentur-Floskeln kämpfen.
+            Ob moderne Firmen-Homepage oder kompletter Website-Relaunch: Ihr Webauftritt soll in Graz
+            und überregional zuverlässig Kunden gewinnen und Ihnen Arbeit abnehmen. Ohne Agentur-Floskeln
+            oder langwierige Baukästen.
           </p>
         </div>
 
@@ -167,8 +168,8 @@ export const Hero: React.FC<HeroProps> = ({
             <h3>Der aktuelle Auftritt lädt langsam oder wirkt nicht mehr zeitgemäß.</h3>
             <p>
               Auf dem Smartphone dauert der Seitenaufbau Sekunden und potenzielle Kunden springen ab.
-              Wir entwickeln Ihre Website handgeschrieben in React &amp; TypeScript – mit unter 0,4
-              Sekunden Ladezeit und klarem Fokus auf Anfragen.
+              Als Webdesign-Studio in Graz entwickeln wir Ihre Website handgeschrieben in React &amp;
+              TypeScript – mit unter 0,4 Sekunden Ladezeit und klarem Fokus auf Anfragen.
             </p>
           </article>
 

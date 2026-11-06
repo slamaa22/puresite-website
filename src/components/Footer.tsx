@@ -76,9 +76,9 @@ export const Footer: React.FC<FooterProps> = ({
             </span>
           </a>
           <p>
-            Websites, die im Alltag Kunden gewinnen.
+            Webdesign &amp; Webentwicklung für Graz, die Steiermark &amp; ganz Österreich.
             <br />
-            Aus der Steiermark. Für Ihr Unternehmen.
+            Websites, die im Alltag neue Kunden gewinnen.
           </p>
         </div>
 
@@ -150,7 +150,7 @@ export const Footer: React.FC<FooterProps> = ({
       </div>
 
       <div className="wit-wrap wit-footer-bottom">
-        <small>© 2026 PureSite Software Studio</small>
+        <small>© 2026 PureSite Software Studio · Webdesign Graz &amp; Steiermark · Am Leopoldsgrund 19, 8055 Graz</small>
         <div>
           <button type="button" onClick={() => onOpenLegal('impressum')}>
             Impressum

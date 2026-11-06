@@ -55,13 +55,14 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onOpenContact }) => {
 
       {/* Right: Calm Editorial Founder Copy & Signature (Exact Windisch IT Hierarchy) */}
       <div className="wit-founder-copy" data-reveal>
-        <p className="wit-overline">Maximilian Schlacher &amp; Loreno Zanaboni</p>
-        <h2 id="about-title">Ihre direkten Ansprechpartner für die Technik dahinter.</h2>
+        <p className="wit-overline">Webdesign &amp; Software-Studio Graz · Maximilian &amp; Loreno</p>
+        <h2 id="about-title">Ihre direkten Ansprechpartner für Webdesign &amp; Technik in der Steiermark.</h2>
 
         <p className="wit-lead">
-          Wir sind Maximilian Schlacher und Loreno Zanaboni, Softwareentwickler aus der Steiermark.
-          Wir beraten Unternehmen ohne eigene IT-Abteilung, entwickeln handgeschriebene Websites zum
-          verbindlichen Festpreis und übernehmen auf Wunsch die laufende Betreuung.
+          Wir sind Maximilian Schlacher und Loreno Zanaboni, Softwareentwickler und Webdesigner aus Graz.
+          Wir beraten Betriebe, Praxen und KMU in Graz, der Steiermark und ganz Österreich ohne eigene
+          IT-Abteilung, entwickeln handgeschriebene Websites zum verbindlichen Festpreis und übernehmen
+          auf Wunsch die laufende Betreuung.
         </p>
 
         <p>

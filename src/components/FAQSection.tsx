@@ -9,6 +9,14 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenContact }) => {
 
   const faqs = [
     {
+      q: 'Für welche Unternehmen in Graz und der Steiermark eignet sich PureSite?',
+      a: 'Wir entwickeln moderne Websites und Relaunches vor allem für lokale Betriebe, Handwerksunternehmen, Kanzleien, Praxen und KMU in Graz, der Steiermark und ganz Österreich. Wenn Sie eine schnelle, professionelle Website ohne WordPress-Wartungsaufwand suchen, bei der Sie direkt mit den Entwicklern sprechen und vorab einen festen Preis kennen, sind Sie bei uns genau richtig.'
+    },
+    {
+      q: 'Ist bei PureSite professionelle Suchmaschinenoptimierung (SEO) inklusive?',
+      a: 'Ja. Jede PureSite-Website wird von Grund auf für Google optimiert: Semantische HTML5-Architektur, Google-Rich-Snippets (Schema.org), OpenGraph-Vorschauen und blitzschnelle Ladezeiten (Core Web Vitals 100/100). Zusätzlich bieten wir mit unseren Modulen gezielte lokale SEO-Optimierung für Google Maps und regionale Suchbegriffe (wie "Webdesign Graz" oder "Handwerker Steiermark").'
+    },
+    {
       q: 'Ist das Erstgespräch wirklich kostenlos und unverbindlich?',
       a: 'Ja. Das Erstgespräch ist zu 100% kostenlos und unverbindlich – telefonisch, per Video-Meeting oder direkt über Ihre vorab zusammengestellte Konfiguration. Bezahlte Arbeiten beginnen erst, wenn Umfang und Festpreis gemeinsam fixiert sind.'
     },
