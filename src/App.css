@@ -3802,13 +3802,14 @@
   color: var(--text-secondary);
 }
 
-/* Before / After Slider */
+/* Before / After Slider (F-05 Mini-Branding & Logo) */
 .before-after-container {
   display: flex;
   height: 200px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border-medium);
+  background: #181d24;
 }
 
 .brand-side {
@@ -3819,30 +3820,66 @@
   padding: 1.25rem;
   transition: width 0.1s ease;
   overflow: hidden;
+  text-align: center;
 }
 
 .old-brand {
-  background: #2a2d36;
+  background: #252b35;
 }
 
-.new-brand {
-  background: #0d121d;
-  border-left: 2px solid var(--accent-cyan);
-}
-
-.brand-label {
+.old-brand .brand-label {
   font-size: 0.72rem;
   font-weight: 700;
   margin-bottom: 0.85rem;
   text-transform: uppercase;
   white-space: nowrap;
+  color: #94a3b8 !important;
+  letter-spacing: 0.05em;
+}
+
+.old-logo-mock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .pixelated-text {
-  font-family: monospace;
-  font-size: 1.1rem;
-  opacity: 0.5;
-  filter: blur(1px);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #e2e8f0 !important;
+  opacity: 0.9;
+  filter: blur(0.75px);
+  letter-spacing: -0.01em;
+}
+
+.old-brand small {
+  color: #fca5a5 !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.new-brand {
+  background: linear-gradient(135deg, #07120e 0%, #0d211a 100%);
+  border-left: 2px solid var(--pure-mint, #58fca5);
+}
+
+.new-brand .brand-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #58fca5 !important;
+  letter-spacing: 0.05em;
+}
+
+.new-logo-mock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .vector-logo-mark {
@@ -3852,8 +3889,19 @@
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: 1.4rem;
-  color: #fff;
+  color: #ffffff !important;
   letter-spacing: 0.05em;
+}
+
+.vector-logo-mark svg,
+.new-brand .text-cyan {
+  color: #58fca5 !important;
+}
+
+.new-brand small {
+  color: #86efac !important;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 /* CMS Split View */
@@ -4140,6 +4188,11 @@
   gap: 0.5rem;
   font-size: 0.78rem;
   margin-bottom: 1.25rem;
+  color: #e8eaed !important;
+}
+
+.serp-brand-header svg {
+  color: var(--pure-mint, #58fca5) !important;
 }
 
 .serp-listing {
@@ -4164,7 +4217,7 @@
 
 .serp-info h4 {
   font-size: 1.05rem;
-  color: #8ab4f8;
+  color: #8ab4f8 !important;
   margin-bottom: 0.35rem;
 }
 
@@ -4173,9 +4226,18 @@
   margin-right: 0.4rem;
 }
 
+.serp-info .review-count {
+  color: #bdc1c6 !important;
+}
+
 .serp-details {
   font-size: 0.8rem;
   margin: 0.4rem 0;
+  color: #e8eaed !important;
+}
+
+.serp-listing.unoptimized .serp-details {
+  color: #9aa0a6 !important;
 }
 
 .serp-chips {
@@ -4190,7 +4252,7 @@
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius-full);
   background: #3c4043;
-  color: #e8eaed;
+  color: #e8eaed !important;
 }
 
 /* Analytics Dashboard */
