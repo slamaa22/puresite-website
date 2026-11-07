@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://puresite.at/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://puresite.at/assets/og-image.jpg</image:loc>
+      <image:title>PureSite — High-Performance Webentwicklung &amp; Webdesign Graz</image:title>
+      <image:caption>Handgeschriebene Websites mit Festpreis ab 1.000 € in Graz und der Steiermark</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://puresite.at/assets/puresite-logo-dark-stroke.png</image:loc>
+      <image:title>PureSite Software Studio Logo</image:title>
+      <image:caption>Offizielles Logo von PureSite Software Studio</image:caption>
+    </image:image>
   </url>
 </urlset>
