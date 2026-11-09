@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de" data-theme="dark">
+<html lang="de" data-theme="light">
 
 <head>
   <meta charset="UTF-8" />
@@ -11,8 +11,15 @@
   <meta name="author" content="Maximilian Schlacher & Loreno Zanaboni" />
   <meta name="application-name" content="PureSite Software Studio" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-  <meta name="theme-color" content="#07080b" />
+  <meta name="theme-color" content="#f5f7f4" />
   <link rel="canonical" href="https://puresite.at/" />
+
+  <script>
+    try {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('puresite-theme', 'light');
+    } catch (e) {}
+  </script>
 
   <!-- Bing & Yahoo Webmaster Verification -->
   <meta name="msvalidate.01" content="B77B2080267F29FB97869CC9CF19162C" />

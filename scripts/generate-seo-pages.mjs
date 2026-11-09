@@ -582,23 +582,6 @@ const SHARED_STYLES = `
     flex-shrink: 0;
     white-space: nowrap;
   }
-  .theme-toggle-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 999px;
-    border: 1px solid var(--border-subtle);
-    background: var(--bg-tertiary);
-    color: var(--text-pure);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.18s ease;
-  }
-  .theme-toggle-btn:hover {
-    border-color: var(--wit-accent);
-    color: var(--wit-accent);
-  }
   .wit-cta-btn {
     display: inline-flex;
     align-items: center;
@@ -1121,35 +1104,18 @@ const SHARED_STYLES = `
 const THEME_INIT_SCRIPT = `
   (function() {
     try {
-      var saved = localStorage.getItem('puresite-theme');
-      if (saved === 'light' || saved === 'dark') {
-        document.documentElement.setAttribute('data-theme', saved);
-      }
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('puresite-theme', 'light');
     } catch (e) {}
   })();
 `;
 
 const THEME_TOGGLE_SCRIPT = `
   (function() {
-    var btn = document.getElementById('theme-toggle');
     var logo = document.getElementById('brand-logo-img');
     var footerLogo = document.getElementById('footer-logo-img');
-    function syncIcons() {
-      var t = document.documentElement.getAttribute('data-theme') || 'dark';
-      var src = t === 'light' ? '/assets/puresite-logo-dark-stroke.png' : '/assets/puresite-logo.png';
-      if (logo) logo.src = src;
-      if (footerLogo) footerLogo.src = src;
-    }
-    syncIcons();
-    if (btn) {
-      btn.addEventListener('click', function() {
-        var cur = document.documentElement.getAttribute('data-theme') || 'dark';
-        var next = cur === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        try { localStorage.setItem('puresite-theme', next); } catch (e) {}
-        syncIcons();
-      });
-    }
+    if (logo) logo.src = '/assets/puresite-logo-dark-stroke.png';
+    if (footerLogo) footerLogo.src = '/assets/puresite-logo-dark-stroke.png';
   })();
 `;
 
@@ -1158,7 +1124,7 @@ function renderHeaderHtml() {
   <header class="wit-glass-header">
     <div class="wit-header-inner">
       <a href="https://puresite.at/" class="wit-brand" aria-label="PureSite — Startseite">
-        <img id="brand-logo-img" src="/assets/puresite-logo.png" alt="PureSite Logo" width="36" height="36" />
+        <img id="brand-logo-img" src="/assets/puresite-logo-dark-stroke.png" alt="PureSite Logo" width="36" height="36" />
         <span class="wit-brand-text">
           pure<span class="wit-brand-light">site</span>
           <small class="wit-brand-subtitle">SOFTWARE STUDIO</small>
@@ -1175,9 +1141,6 @@ function renderHeaderHtml() {
       </nav>
 
       <div class="wit-header-controls">
-        <button id="theme-toggle" type="button" class="theme-toggle-btn" title="Design-Modus wechseln (Hell/Dunkel)" aria-label="Design-Modus wechseln">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        </button>
         <a href="https://puresite.at/#preise" class="wit-cta-btn">
           <span>Kalkulator</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
@@ -1194,7 +1157,7 @@ function renderFooterHtml() {
       <div class="footer-grid">
         <div class="footer-col">
           <a href="https://puresite.at/" class="wit-brand" style="margin-bottom:0.85rem;">
-            <img id="footer-logo-img" src="/assets/puresite-logo.png" alt="PureSite Logo" width="32" height="32" />
+            <img id="footer-logo-img" src="/assets/puresite-logo-dark-stroke.png" alt="PureSite Logo" width="32" height="32" />
             <span class="wit-brand-text">pure<span class="wit-brand-light">site</span></span>
           </a>
           <p style="color:var(--text-secondary); font-size:0.9rem; margin:0.6rem 0 0; max-width:36ch;">
@@ -1302,7 +1265,7 @@ function renderArticleHtml(article) {
   });
 
   return `<!doctype html>
-<html lang="de-AT" data-theme="dark">
+<html lang="de-AT" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -1545,7 +1508,7 @@ function renderArticleHtml(article) {
 function renderHubHtml() {
   const canonicalUrl = 'https://puresite.at/ratgeber/';
   return `<!doctype html>
-<html lang="de-AT" data-theme="dark">
+<html lang="de-AT" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

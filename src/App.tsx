@@ -50,10 +50,7 @@ const LegalModal = React.lazy(() =>
 );
 
 export default function App() {
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem('puresite-theme');
-    return saved === 'light' || saved === 'dark' ? saved : 'dark';
-  });
+  const theme: 'dark' | 'light' = 'light';
 
   const [activeDemoModule, setActiveDemoModule] = useState<PricingModule | null>(null);
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
@@ -89,11 +86,11 @@ export default function App() {
 
   const animatedFloatingPrice = useAnimatedNumber(calculation.oneTimeGross);
 
-  // Sync theme with document
+  // Whitemode as default on document
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('puresite-theme', theme);
-  }, [theme]);
+    document.documentElement.setAttribute('data-theme', 'light');
+    localStorage.setItem('puresite-theme', 'light');
+  }, []);
 
   // Lock background page scroll while any modal dialog is open
   const isAnyModalOpen = Boolean(activeDemoModule || isInquiryOpen || isLegalOpen);
@@ -174,10 +171,6 @@ export default function App() {
     }
   }, []);
 
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
-  };
-
   const handleOpenDemo = (mod: PricingModule) => {
     trackEvent('demo_opened', { code: mod.code, name: mod.name });
     setActiveDemoModule(mod);
@@ -225,7 +218,6 @@ export default function App() {
       {/* Windisch-Layout Floating Liquid Glass Header */}
       <Navbar
         theme={theme}
-        onToggleTheme={toggleTheme}
         onOpenContact={() => handleOpenInquiry('navbar')}
         onOpenLegal={handleOpenLegal}
         configuredCount={calculation.itemCount}
@@ -279,7 +271,6 @@ export default function App() {
             getShareableUrl={getShareableUrl}
             onOpenDemo={handleOpenDemo}
             onRequestQuote={handleRequestQuote}
-            onToggleTheme={toggleTheme}
           />
 
           {/* 5. 4-Column Collaboration Process ("Direkter Draht. Alle Schritte.") */}
@@ -335,7 +326,6 @@ export default function App() {
               onClose={() => setActiveDemoModule(null)}
               isSelected={!!selectedConfig[activeDemoModule.code]?.selected}
               currentTheme={theme}
-              onToggleTheme={toggleTheme}
               onSelectModule={code => {
                 toggleModule(code);
               }}

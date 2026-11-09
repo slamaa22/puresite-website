@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sun, Moon } from 'lucide-react';
 
 interface NavbarProps {
-  theme: 'dark' | 'light';
-  onToggleTheme: () => void;
+  theme?: 'dark' | 'light';
   onOpenContact: () => void;
   onOpenLegal: (tab: 'impressum' | 'datenschutz') => void;
   configuredCount?: number;
@@ -41,8 +39,7 @@ const SERVICE_MENU_ITEMS = [
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({
-  theme,
-  onToggleTheme,
+  theme = 'light',
   onOpenLegal,
   configuredCount = 0,
   onSelectCatalogCategory
@@ -361,20 +358,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right Controls */}
         <div className="wit-header-controls">
-          <button
-            className="wit-icon-button theme-toggle"
-            type="button"
-            onClick={onToggleTheme}
-            aria-label={
-              theme === 'dark'
-                ? 'Helles Liquid-Glass-Design aktivieren'
-                : 'Dunkles Liquid-Glass-Design aktivieren'
-            }
-            title={theme === 'dark' ? 'Zu Light Mode wechseln' : 'Zu Dark Mode wechseln'}
-          >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-
           <button
             type="button"
             className="wit-btn wit-btn-small wit-header-cta"
