@@ -501,12 +501,13 @@ body {
 
 .wit-header-inner {
   width: 100%;
-  padding-inline: clamp(16px, 2.2vw, 28px);
+  padding-inline: clamp(14px, 2vw, 26px);
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: clamp(10px, 1.4vw, 20px);
+  flex-wrap: nowrap;
 }
 
 .wit-brand {
@@ -515,6 +516,8 @@ body {
   gap: 12px;
   color: var(--text-pure);
   text-decoration: none;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .wit-brand-text {
@@ -543,17 +546,21 @@ body {
 .wit-desktop-nav {
   display: flex;
   align-items: center;
-  gap: clamp(16px, 2vw, 30px);
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: clamp(4px, 0.9vw, 18px);
   margin-left: auto;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 .wit-nav-link {
   position: relative;
-  padding: 8px 12px;
+  padding: 7px 10px;
   border-radius: 999px;
-  font-size: 0.88rem;
+  font-size: clamp(0.81rem, 0.88vw, 0.88rem);
   font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
   color: var(--text-secondary);
   transition: color 0.18s ease, background-color 0.18s ease;
 }
@@ -702,6 +709,8 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .wit-icon-button,
