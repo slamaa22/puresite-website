@@ -31,6 +31,9 @@ const AboutUs = React.lazy(() =>
 const ProcessSection = React.lazy(() =>
   import('./components/ProcessSection').then(m => ({ default: m.ProcessSection }))
 );
+const SeoArticlesSection = React.lazy(() =>
+  import('./components/SeoArticlesSection').then(m => ({ default: m.SeoArticlesSection }))
+);
 const FAQSection = React.lazy(() =>
   import('./components/FAQSection').then(m => ({ default: m.FAQSection }))
 );
@@ -285,7 +288,10 @@ export default function App() {
           {/* 6. Asymmetric Founders Section (Maximilian Schlacher & Loreno Zanaboni) */}
           <AboutUs onOpenContact={() => handleOpenInquiry('about')} />
 
-          {/* 7. Asymmetric Sticky FAQ + Full-Width Closing Contact Band */}
+          {/* 7. Local SEO Ratgeber & Knowledge Hub (Website kaufen Graz, Website Agentur Graz, etc.) */}
+          <SeoArticlesSection onOpenInquiry={() => handleOpenInquiry('seo_articles')} />
+
+          {/* 8. Asymmetric Sticky FAQ + Full-Width Closing Contact Band */}
           <FAQSection onOpenContact={() => handleOpenInquiry('faq')} />
         </React.Suspense>
       </main>

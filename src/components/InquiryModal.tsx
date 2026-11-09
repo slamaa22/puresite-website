@@ -87,19 +87,19 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   );
   const whatsappUrl = `https://wa.me/436766500468?text=${whatsappText}`;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const payload = {
+    const payload: Record<string, string> = {
+      _gotcha: '',
       _subject: `Neues PureSite Angebot: ${company ? `${company} (${name})` : name}`,
-      _replyto: email,
       name: name,
-      firma: company || 'Keine Angabe',
       email: email,
-      telefon: phone || 'Keine Angabe',
-      projektstart: timeline,
-      nachricht: notes || 'Keine zusätzlichen Wünsche',
+      company: company || 'Keine Angabe',
+      phone: phone || 'Keine Angabe',
+      timeline: timeline,
+      message: notes || 'Keine zusätzlichen Wünsche',
       module: selectedDetails.join(' | '),
       preis_netto: calculation ? `${calculation.oneTimeNet.toLocaleString('de-AT')} €` : '',
       gesamtpreis: calculation ? `${calculation.oneTimeGross.toLocaleString('de-AT')} €` : '',
@@ -109,19 +109,44 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
         calculation && calculation.mrrNet > 0 ? `${calculation.mrrNet} €/Monat` : 'Keine'
     };
 
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4000);
-      await fetch('https://shipmyform.com/f/frm_ANVyMRKN6yaTy7wWSmnd', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        },
-        body: JSON.stringify(payload),
-        signal: controller.signal
+    const buildFormData = () => {
+      const fd = new FormData();
+      Object.entries(payload).forEach(([key, value]) => {
+        fd.append(key, value);
       });
-      clearTimeout(timeoutId);
+      return fd;
+    };
+
+    const customEndpoint =
+      (import.meta.env.VITE_SHIPMYFORM_ENDPOINT as string | undefined) ||
+      'https://shipmyform.com/f/frm_ANVyMRKN6yaTy7wWSmnd';
+    const instantEndpoint = 'https://shipmyform.com/to/maximilian.schlacher@outlook.com';
+
+    const postToShipMyForm = async (url: string) => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4500);
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json'
+          },
+          body: buildFormData(),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        return res.ok;
+      } catch {
+        clearTimeout(timeoutId);
+        return false;
+      }
+    };
+
+    try {
+      let delivered = await postToShipMyForm(customEndpoint);
+      if (!delivered) {
+        delivered = await postToShipMyForm(instantEndpoint);
+      }
     } catch (err) {
       console.warn('ShipMyForm submission notice:', err);
     }
@@ -278,11 +303,21 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
               </div>
             )}
 
+            <input
+              type="text"
+              name="_gotcha"
+              tabIndex={-1}
+              autoComplete="off"
+              style={{ position: 'absolute', left: '-9999px' }}
+              aria-hidden="true"
+            />
+
             <div className="form-grid-two">
               <div className="form-group">
                 <label>Dein Name *</label>
                 <input
                   type="text"
+                  name="name"
                   required
                   placeholder="z.B. Markus Huber"
                   value={name}
@@ -295,6 +330,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                 <label>Firma / Unternehmen</label>
                 <input
                   type="text"
+                  name="company"
                   placeholder="z.B. Huber Holzbau GmbH"
                   value={company}
                   onChange={e => setCompany(e.target.value)}
@@ -308,6 +344,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                 <label>E-Mail-Adresse (für dein Angebot) *</label>
                 <input
                   type="email"
+                  name="email"
                   required
                   placeholder="name@unternehmen.at"
                   value={email}
@@ -320,6 +357,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                 <label>Telefonnummer (für Rückfragen)</label>
                 <input
                   type="tel"
+                  name="phone"
                   placeholder="+43 664 ..."
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
@@ -331,6 +369,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
             <div className="form-group">
               <label>Gewünschter Projektstart</label>
               <select
+                name="timeline"
                 value={timeline}
                 onChange={e => setTimeline(e.target.value)}
                 className="demo-input"
@@ -347,6 +386,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
             <div className="form-group">
               <label>Zusätzliche Wünsche oder bestehende Domain (optional)</label>
               <textarea
+                name="message"
                 rows={3}
                 placeholder="Gibt es bereits ein Firmenlogo, Texte oder eine bestehende Website?"
                 value={notes}

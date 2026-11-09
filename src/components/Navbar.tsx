@@ -10,7 +10,7 @@ interface NavbarProps {
   onSelectCatalogCategory?: (catId: string) => void;
 }
 
-const SECTION_IDS = ['demos', 'warum-wir', 'preise', 'prozess', 'ueber-uns', 'faq'] as const;
+const SECTION_IDS = ['demos', 'warum-wir', 'preise', 'prozess', 'ueber-uns', 'ratgeber', 'faq'] as const;
 
 const SERVICE_MENU_ITEMS = [
   {
@@ -348,6 +348,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => scrollTo('ueber-uns')}
           >
             Über uns
+          </button>
+
+          <button
+            type="button"
+            className={`wit-nav-link ${activeSection === 'ratgeber' ? 'is-active' : ''}`}
+            onClick={() => scrollTo('ratgeber')}
+          >
+            Ratgeber
           </button>
         </nav>
 

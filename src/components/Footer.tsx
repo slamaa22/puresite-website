@@ -111,6 +111,11 @@ export const Footer: React.FC<FooterProps> = ({
                 Dedicated Hosting (inkl. 1h–3h Support)
               </button>
             </li>
+            <li>
+              <button type="button" onClick={() => scrollToSection('ratgeber')}>
+                Ratgeber: Website kaufen &amp; Agentur Graz
+              </button>
+            </li>
           </ul>
         </div>
 
