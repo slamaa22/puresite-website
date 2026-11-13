@@ -67,7 +67,7 @@ export const Hero: React.FC<HeroProps> = ({
             </p>
 
             <h1 id="hero-title" className="hero-enter-2">
-              Handgeschriebene Websites
+              Maßgeschneiderte Websites
               <br />
               <span>mit verbindlichem Festpreis.</span>
             </h1>
@@ -168,7 +168,7 @@ export const Hero: React.FC<HeroProps> = ({
             <h3>Der aktuelle Auftritt lädt langsam oder wirkt nicht mehr zeitgemäß.</h3>
             <p>
               Auf dem Smartphone dauert der Seitenaufbau Sekunden und potenzielle Kunden springen ab.
-              Als Webdesign-Studio in Graz entwickeln wir Ihre Website handgeschrieben in React &amp;
+              Als Webdesign-Studio in Graz entwickeln wir Ihre Website individuell in React &amp;
               TypeScript – mit unter 0,4 Sekunden Ladezeit und klarem Fokus auf Anfragen.
             </p>
           </article>

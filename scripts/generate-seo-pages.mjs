@@ -823,7 +823,7 @@ function renderFooterHtml() {
             <span class="wit-brand-text">pure<span class="wit-brand-light">site</span></span>
           </a>
           <p style="color:var(--text-secondary); font-size:0.88rem; margin:0.6rem 0 0; max-width:34ch;">
-            Webdesign &amp; Softwareentwicklung für Graz, die Steiermark &amp; ganz Österreich. Handgeschriebene Websites zum garantierten Festpreis.
+            Webdesign &amp; Softwareentwicklung für Graz, die Steiermark &amp; ganz Österreich. Maßgeschneiderte Websites zum garantierten Festpreis.
           </p>
         </div>
 
@@ -1375,7 +1375,7 @@ function renderSitemapXml() {
     <image:image>
       <image:loc>https://puresite.at/assets/og-image.jpg</image:loc>
       <image:title>PureSite — High-Performance Webentwicklung &amp; Webdesign Graz</image:title>
-      <image:caption>Handgeschriebene Websites mit Festpreis ab 1.000 € in Graz und der Steiermark</image:caption>
+      <image:caption>Maßgeschneiderte Websites mit Festpreis ab 1.000 € in Graz und der Steiermark</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://puresite.at/assets/puresite-logo-dark-stroke.png</image:loc>

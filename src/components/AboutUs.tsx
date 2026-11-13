@@ -61,7 +61,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onOpenContact }) => {
         <p className="wit-lead">
           Wir sind Maximilian Schlacher und Loreno Zanaboni, Softwareentwickler und Webdesigner aus Graz.
           Wir beraten Betriebe, Praxen und KMU in Graz, der Steiermark und ganz Österreich ohne eigene
-          IT-Abteilung, entwickeln handgeschriebene Websites zum verbindlichen Festpreis und übernehmen
+          IT-Abteilung, entwickeln maßgeschneiderte Websites zum verbindlichen Festpreis und übernehmen
           auf Wunsch die laufende Betreuung.
         </p>
 

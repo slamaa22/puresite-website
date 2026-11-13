@@ -24,7 +24,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onOpenContact })
     {
       num: '03',
       duration: 'Woche 1 – 2',
-      title: 'Handgeschrieben Umsetzen.',
+      title: 'Modern Entwickeln.',
       desc: 'Wir entwickeln Ihre Website sauber in React 19 & TypeScript, binden gewünschte Rechner oder Buchungstools ein und optimieren alle Core Web Vitals auf 98–100 Punkte.'
     },
     {

@@ -21,7 +21,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenContact }) => {
       a: 'Ja. Das Erstgespräch ist zu 100% kostenlos und unverbindlich – telefonisch, per Video-Meeting oder direkt über Ihre vorab zusammengestellte Konfiguration. Bezahlte Arbeiten beginnen erst, wenn Umfang und Festpreis gemeinsam fixiert sind.'
     },
     {
-      q: 'Warum entwickelt PureSite handgeschrieben statt mit WordPress?',
+      q: 'Warum entwickelt PureSite mit modernem Web-Code statt WordPress?',
       a: 'WordPress ist durch dutzende Drittanbieter-Plugins oft träge, wartungsintensiv und anfällig für Sicherheitslücken nach Updates. Unsere modernen React- & TypeScript-Websites laden in unter 0,4 Sekunden, benötigen keine anfälligen Plugins und laufen DSGVO-sauber ohne Cookie-Tracking-Zwang.'
     },
     {
