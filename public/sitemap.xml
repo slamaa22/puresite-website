@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://puresite.at/</loc>
-    <lastmod>2026-11-09</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -19,31 +19,79 @@
   </url>
   <url>
     <loc>https://puresite.at/ratgeber/</loc>
-    <lastmod>2026-11-09</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://puresite.at/ratgeber/website-kaufen-graz/</loc>
-    <lastmod>2026-11-09</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://puresite.at/ratgeber/website-agentur-graz/</loc>
-    <lastmod>2026-11-09</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://puresite.at/ratgeber/homepage-erstellen-lassen-graz-kosten/</loc>
-    <lastmod>2026-11-09</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://puresite.at/ratgeber/wordpress-alternative-graz-relaunch/</loc>
-    <lastmod>2026-11-09</lastmod>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://puresite.at/ratgeber/website-fuer-handwerker-steiermark/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://puresite.at/ratgeber/website-fuer-aerzte-kanzleien-graz/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://puresite.at/ratgeber/website-foerderung-steiermark-oesterreich/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://puresite.at/ratgeber/wix-jimdo-baukasten-vs-programmierte-website/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://puresite.at/ratgeber/dsgvo-website-ohne-cookie-banner-oesterreich/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://puresite.at/ratgeber/webdesign-graz-umgebung-leibnitz-weiz/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://puresite.at/ratgeber/google-maps-ranking-verbessern-graz/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://puresite.at/ratgeber/website-preisrechner-online-terminbuchung/</loc>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
