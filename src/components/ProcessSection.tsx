@@ -40,16 +40,16 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onOpenContact })
   return (
     <section
       id="prozess"
-      className="wit-section wit-wrap wit-process-section"
+      className="ps-section ps-wrap ps-process-section"
       aria-labelledby="process-title"
     >
-      <div className="wit-section-heading" data-reveal>
+      <div className="ps-section-heading" data-reveal>
         <div>
-          <p className="wit-overline">So arbeiten wir zusammen</p>
+          <p className="ps-overline">So arbeiten wir zusammen</p>
           <h2 id="process-title">Direkter Draht. Alle Schritte.</h2>
         </div>
         {onOpenContact && (
-          <button type="button" className="wit-text-link" onClick={onOpenContact}>
+          <button type="button" className="ps-text-link" onClick={onOpenContact}>
             <span>Unverbindliches Erstgespräch anfragen</span>
             <svg
               width="20"
@@ -73,7 +73,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onOpenContact })
         <div className="process-signal-fill" style={{ width: `${progressPct}%` }} />
       </div>
 
-      <ol className="wit-process-grid" data-reveal>
+      <ol className="ps-process-grid" data-reveal>
         {steps.map((st, idx) => {
           const isReached = idx <= activeIdx;
           const isCurrent = idx === activeIdx;
@@ -81,14 +81,14 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onOpenContact })
           return (
             <li
               key={st.num}
-              className={`wit-process-card lg-glass-card spotlight-surface ${isReached ? 'is-reached' : ''} ${isCurrent ? 'is-current-step' : ''}`}
+              className={`ps-process-card lg-glass-card spotlight-surface ${isReached ? 'is-reached' : ''} ${isCurrent ? 'is-current-step' : ''}`}
               onMouseEnter={() => setActiveIdx(idx)}
               onClick={() => setActiveIdx(idx)}
               onMouseMove={handleSpotlightMove}
             >
-              <div className="wit-process-meta">
-                <span className="wit-card-index">{st.num}</span>
-                <span className="wit-process-duration">{st.duration}</span>
+              <div className="ps-process-meta">
+                <span className="ps-card-index">{st.num}</span>
+                <span className="ps-process-duration">{st.duration}</span>
               </div>
               <h3>{st.title}</h3>
               <p>{st.desc}</p>

@@ -110,18 +110,18 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
   return (
     <section
       id="warum-wir"
-      className="wit-projects-preview"
+      className="ps-projects-preview"
       aria-labelledby="why-title"
     >
-      <div className="wit-wrap wit-section">
-        {/* Windisch-style 2-Column Section Heading */}
-        <div className="wit-section-heading" data-reveal>
+      <div className="ps-wrap ps-section">
+        {/* PureSite 2-Column Section Heading */}
+        <div className="ps-section-heading" data-reveal>
           <div>
-            <p className="wit-overline">Praxis, Architektur &amp; Vergleich</p>
+            <p className="ps-overline">Praxis, Architektur &amp; Vergleich</p>
             <h2 id="why-title">So sehen unsere Lösungen in der Praxis aus</h2>
           </div>
           {onScrollToPricing && (
-            <button type="button" className="wit-text-link" onClick={onScrollToPricing}>
+            <button type="button" className="ps-text-link" onClick={onScrollToPricing}>
               <span>Eigenen Umfang kalkulieren</span>
               <svg
                 width="20"
@@ -140,34 +140,34 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
           )}
         </div>
 
-        {/* 1. WINDISCH-STYLE 3-COLUMN SCHEMATIC ARCHITECTURE TEASERS IN LIQUID GLASS */}
-        <div className="wit-project-teaser-grid" data-reveal>
+        {/* 1. PURESITE 3-COLUMN SCHEMATIC ARCHITECTURE TEASERS IN LIQUID GLASS */}
+        <div className="ps-project-teaser-grid" data-reveal>
           {/* Card 1: High-Speed Jamstack Architecture */}
-          <article className="wit-project-teaser">
+          <article className="ps-project-teaser">
             <figure
-              className="wit-project-diagram lg-glass-card spotlight-surface"
+              className="ps-project-diagram lg-glass-card spotlight-surface"
               onMouseMove={handleSpotlightMove}
             >
               <figcaption>Schematische Architektur · Ladezeit &lt; 0,4s</figcaption>
-              <div className="wit-diagram-canvas">
-                <div className="wit-diagram-hub">
+              <div className="ps-diagram-canvas">
+                <div className="ps-diagram-hub">
                   <Zap size={22} />
                   <span>React 19 Frontend (124 KB)</span>
                 </div>
-                <div className="wit-diagram-bridge" aria-hidden="true" />
-                <div className="wit-diagram-branches-two">
-                  <div className="wit-diagram-node">
+                <div className="ps-diagram-bridge" aria-hidden="true" />
+                <div className="ps-diagram-branches-two">
+                  <div className="ps-diagram-node">
                     <Gauge size={20} />
                     <span>100/100 Google Score</span>
                   </div>
-                  <div className="wit-diagram-node">
+                  <div className="ps-diagram-node">
                     <Shield size={20} />
                     <span>0 SQL / 0 Plugin-Lücken</span>
                   </div>
                 </div>
               </div>
             </figure>
-            <div className="wit-project-teaser-copy">
+            <div className="ps-project-teaser-copy">
               <h3>Radikale Ladezeit statt WordPress-Trägheit</h3>
               <p>
                 Keine überladenen Themes und keine 40 Plugins. Ihre Website startet auf Mobilgeräten
@@ -177,35 +177,35 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
           </article>
 
           {/* Card 2: Modular Interactive Components */}
-          <article className="wit-project-teaser">
+          <article className="ps-project-teaser">
             <figure
-              className="wit-project-diagram lg-glass-card spotlight-surface"
+              className="ps-project-diagram lg-glass-card spotlight-surface"
               onMouseMove={handleSpotlightMove}
             >
               <figcaption>Schematische Darstellung · Modul-System</figcaption>
-              <div className="wit-diagram-canvas">
-                <div className="wit-diagram-hub">
+              <div className="ps-diagram-canvas">
+                <div className="ps-diagram-hub">
                   <Layers size={22} />
                   <span>Basis-Website (ab 1.000 €)</span>
                 </div>
-                <div className="wit-diagram-bridge" aria-hidden="true" />
-                <div className="wit-diagram-branches-three">
-                  <div className="wit-diagram-node">
+                <div className="ps-diagram-bridge" aria-hidden="true" />
+                <div className="ps-diagram-branches-three">
+                  <div className="ps-diagram-node">
                     <Calculator size={19} />
                     <span>Live-Rechner</span>
                   </div>
-                  <div className="wit-diagram-node">
+                  <div className="ps-diagram-node">
                     <Calendar size={19} />
                     <span>Terminbuchung</span>
                   </div>
-                  <div className="wit-diagram-node">
+                  <div className="ps-diagram-node">
                     <Layers size={19} />
                     <span>Admin-CMS</span>
                   </div>
                 </div>
               </div>
             </figure>
-            <div className="wit-project-teaser-copy">
+            <div className="ps-project-teaser-copy">
               <h3>Modulares Baukasten-Prinzip ohne Abo-Falle</h3>
               <p>
                 Sie bezahlen ausschließlich die Funktionen, die Ihr Betrieb wirklich nutzt – mit
@@ -215,31 +215,31 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
           </article>
 
           {/* Card 3: Dedicated EU Server & Concierge Support */}
-          <article className="wit-project-teaser">
+          <article className="ps-project-teaser">
             <figure
-              className="wit-project-diagram lg-glass-card spotlight-surface"
+              className="ps-project-diagram lg-glass-card spotlight-surface"
               onMouseMove={handleSpotlightMove}
             >
               <figcaption>Schematische Darstellung · Betrieb &amp; Pflege</figcaption>
-              <div className="wit-diagram-canvas">
-                <div className="wit-diagram-hub">
+              <div className="ps-diagram-canvas">
+                <div className="ps-diagram-hub">
                   <Server size={22} />
                   <span>Dedicated EU-Server</span>
                 </div>
-                <div className="wit-diagram-bridge" aria-hidden="true" />
-                <div className="wit-diagram-branches-two">
-                  <div className="wit-diagram-node">
+                <div className="ps-diagram-bridge" aria-hidden="true" />
+                <div className="ps-diagram-branches-two">
+                  <div className="ps-diagram-node">
                     <Shield size={20} />
                     <span>SSL &amp; 30d Backups</span>
                   </div>
-                  <div className="wit-diagram-node">
+                  <div className="ps-diagram-node">
                     <MessageSquare size={20} />
                     <span>1h – 3h Zuruf / Monat</span>
                   </div>
                 </div>
               </div>
             </figure>
-            <div className="wit-project-teaser-copy">
+            <div className="ps-project-teaser-copy">
               <h3>Dedicated Hosting &amp; WhatsApp-Zuruf</h3>
               <p>
                 Tägliche Offsite-Backups, Monitoring sowie 1 Stunde (Basis) bzw. 3 Stunden (Pro)
@@ -250,7 +250,7 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
         </div>
 
         {/* 2. INTERACTIVE LIQUID GLASS SPEED-LAB */}
-        <div id="speed-lab" className="wit-speed-lab lg-glass-panel" data-reveal>
+        <div id="speed-lab" className="ps-speed-lab lg-glass-panel" data-reveal>
           <div className="lab-control-deck">
             <div className="engine-switch-label">
               <Gauge size={16} className="text-signal" />
@@ -285,7 +285,7 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
 
             <button
               type="button"
-              className="wit-btn wit-btn-small wit-btn-glass-outline lab-race-btn"
+              className="ps-btn ps-btn-small ps-btn-glass-outline lab-race-btn"
               onClick={runSpeedSimulation}
               disabled={isSimulating}
             >
@@ -336,10 +336,10 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
             </div>
           )}
 
-          <div className="wit-gauges-grid">
+          <div className="ps-gauges-grid">
             <div
               onMouseMove={handleSpotlightMove}
-              className="wit-gauge-card spotlight-surface"
+              className="ps-gauge-card spotlight-surface"
             >
               <div className="gauge-card-head">
                 <span className="gauge-label">Google Lighthouse</span>
@@ -388,7 +388,7 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
 
             <div
               onMouseMove={handleSpotlightMove}
-              className="wit-gauge-card spotlight-surface"
+              className="ps-gauge-card spotlight-surface"
             >
               <div className="gauge-card-head">
                 <span className="gauge-label">Sichtbarer Aufbau</span>
@@ -411,7 +411,7 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
 
             <div
               onMouseMove={handleSpotlightMove}
-              className="wit-gauge-card spotlight-surface"
+              className="ps-gauge-card spotlight-surface"
             >
               <div className="gauge-card-head">
                 <span className="gauge-label">Seiten-Gewicht</span>
@@ -436,7 +436,7 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
 
             <div
               onMouseMove={handleSpotlightMove}
-              className="wit-gauge-card spotlight-surface"
+              className="ps-gauge-card spotlight-surface"
             >
               <div className="gauge-card-head">
                 <span className="gauge-label">DSGVO &amp; Cookies</span>
@@ -467,7 +467,7 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
         >
           <div className="tco-head-row">
             <div className="tco-title-col">
-              <span className="wit-overline">
+              <span className="ps-overline">
                 <Calculator size={13} /> Gesamtkosten-Vergleich (Business-Website inkl. Hosting)
               </span>
               <h3>Was kostet Ihre Website wirklich über {horizonYears} {horizonYears === 1 ? 'Jahr' : 'Jahre'}?</h3>
@@ -524,7 +524,7 @@ export const WhyPureSite: React.FC<WhyPureSiteProps> = ({ onScrollToPricing }) =
               <strong>{animSaved.toLocaleString('de-AT')} €</strong> an Agentur- und Wartungskosten.
             </p>
             {onScrollToPricing && (
-              <button type="button" className="wit-btn wit-btn-primary wit-btn-small" onClick={onScrollToPricing}>
+              <button type="button" className="ps-btn ps-btn-primary ps-btn-small" onClick={onScrollToPricing}>
                 <span>Eigenes Projekt kalkulieren</span>
                 <svg
                   width="16"

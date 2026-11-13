@@ -7,11 +7,11 @@ interface AboutUsProps {
 
 export const AboutUs: React.FC<AboutUsProps> = ({ onOpenContact }) => {
   return (
-    <section id="ueber-uns" className="wit-section wit-wrap wit-founder-section" aria-labelledby="about-title">
-      {/* Left: Dual Liquid Glass Portrait Frames (Windisch Founder Layout adapted for PureSite's 2 Co-Founders) */}
-      <div className="wit-founder-portraits" data-reveal>
+    <section id="ueber-uns" className="ps-section ps-wrap ps-founder-section" aria-labelledby="about-title">
+      {/* Left: Dual Liquid Glass Portrait Frames (PureSite Founder Layout for 2 Co-Founders) */}
+      <div className="ps-founder-portraits" data-reveal>
         <figure
-          className="wit-founder-photo lg-glass-card spotlight-surface"
+          className="ps-founder-photo lg-glass-card spotlight-surface"
           onMouseMove={handleSpotlightMove}
         >
           <picture>
@@ -25,14 +25,14 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onOpenContact }) => {
               decoding="async"
             />
           </picture>
-          <figcaption className="wit-photo-caption">
+          <figcaption className="ps-photo-caption">
             <strong>Maximilian Schlacher</strong>
             <span>Frontend &amp; UI/UX · Steiermark</span>
           </figcaption>
         </figure>
 
         <figure
-          className="wit-founder-photo wit-founder-photo--offset lg-glass-card spotlight-surface"
+          className="ps-founder-photo ps-founder-photo--offset lg-glass-card spotlight-surface"
           onMouseMove={handleSpotlightMove}
         >
           <picture>
@@ -46,19 +46,19 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onOpenContact }) => {
               decoding="async"
             />
           </picture>
-          <figcaption className="wit-photo-caption">
+          <figcaption className="ps-photo-caption">
             <strong>Loreno Zanaboni</strong>
             <span>Architektur &amp; Systeme · Steiermark</span>
           </figcaption>
         </figure>
       </div>
 
-      {/* Right: Calm Editorial Founder Copy & Signature (Exact Windisch IT Hierarchy) */}
-      <div className="wit-founder-copy" data-reveal>
-        <p className="wit-overline">Webdesign &amp; Software-Studio Graz · Maximilian &amp; Loreno</p>
+      {/* Right: Calm Editorial Founder Copy & Signature (PureSite Editorial Hierarchy) */}
+      <div className="ps-founder-copy" data-reveal>
+        <p className="ps-overline">Webdesign &amp; Software-Studio Graz · Maximilian &amp; Loreno</p>
         <h2 id="about-title">Ihre direkten Ansprechpartner für Webdesign &amp; Technik in der Steiermark.</h2>
 
-        <p className="wit-lead">
+        <p className="ps-lead">
           Wir sind Maximilian Schlacher und Loreno Zanaboni, Softwareentwickler und Webdesigner aus Graz.
           Wir beraten Betriebe, Praxen und KMU in Graz, der Steiermark und ganz Österreich ohne eigene
           IT-Abteilung, entwickeln maßgeschneiderte Websites zum verbindlichen Festpreis und übernehmen
@@ -72,15 +72,15 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onOpenContact }) => {
           sicher und wartungsfrei läuft.
         </p>
 
-        <div className="wit-founder-pills">
-          <span className="wit-glass-tag">React 19 &amp; TypeScript</span>
-          <span className="wit-glass-tag">100% Festpreis vor Start</span>
-          <span className="wit-glass-tag">50/50 Zahlungsschutz</span>
-          <span className="wit-glass-tag">Direkt per WhatsApp &amp; Mail</span>
+        <div className="ps-founder-pills">
+          <span className="ps-glass-tag">React 19 &amp; TypeScript</span>
+          <span className="ps-glass-tag">100% Festpreis vor Start</span>
+          <span className="ps-glass-tag">50/50 Zahlungsschutz</span>
+          <span className="ps-glass-tag">Direkt per WhatsApp &amp; Mail</span>
         </div>
 
         {onOpenContact && (
-          <button type="button" className="wit-text-link wit-founder-cta" onClick={onOpenContact}>
+          <button type="button" className="ps-text-link ps-founder-cta" onClick={onOpenContact}>
             <span>Direkt mit Maximilian &amp; Loreno sprechen</span>
             <svg
               width="20"
@@ -98,7 +98,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onOpenContact }) => {
           </button>
         )}
 
-        <div className="wit-signature">
+        <div className="ps-signature">
           Maximilian Schlacher &amp; Loreno Zanaboni
           <span>PureSite Software Studio · Steiermark, Österreich</span>
         </div>

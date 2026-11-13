@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import './App.css';
-import './WindischLiquidGlass.css';
+import './PureSiteLiquidGlass.css';
 
 // Critical Above-the-Fold Components (bundled immediately for instant FCP/LCP)
 import { LiquidGlassBackdrop } from './components/LiquidGlassBackdrop';
@@ -211,11 +211,11 @@ export default function App() {
   };
 
   return (
-    <div className="app-root wit-liquid-app">
+    <div className="app-root ps-liquid-app">
       {/* Ambient Spatial Liquid Glass Aurora & Optical Refraction Layer */}
       <LiquidGlassBackdrop />
 
-      {/* Windisch-Layout Floating Liquid Glass Header */}
+      {/* PureSite Floating Liquid Glass Header */}
       <Navbar
         theme={theme}
         onOpenContact={() => handleOpenInquiry('navbar')}
@@ -224,7 +224,7 @@ export default function App() {
         onSelectCatalogCategory={setCatalogCategory}
       />
 
-      {/* Main Page Choreography (Windisch IT Section Rhythm + PureSite Engine) */}
+      {/* Main Page Choreography (PureSite Section Rhythm + Module Engine) */}
       <main id="main">
         {/* 1. Centered Atmospheric Hero + 3-Column Situations ("Wobei brauchen Sie Unterstützung?") */}
         <Hero
@@ -234,9 +234,9 @@ export default function App() {
 
         {/* Below-the-fold sections loaded smoothly with React.Suspense */}
         <React.Suspense
-          fallback={<div className="wit-wrap" style={{ minHeight: '300px' }} />}
+          fallback={<div className="ps-wrap" style={{ minHeight: '300px' }} />}
         >
-          {/* 2. Windisch-Layout Service List + 18 Interactive Live-Demos */}
+          {/* 2. PureSite Service List + 18 Interactive Live-Demos */}
           <WorkIndex
             onOpenDemo={handleOpenDemo}
             onScrollToPricing={scrollToPricing}
@@ -287,7 +287,7 @@ export default function App() {
         </React.Suspense>
       </main>
 
-      {/* 8. Windisch-Layout 3-Column Studio Footer */}
+      {/* 8. PureSite 3-Column Studio Footer */}
       <Footer
         theme={theme}
         onOpenLegal={handleOpenLegal}

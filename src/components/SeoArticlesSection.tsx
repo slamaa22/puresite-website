@@ -61,18 +61,18 @@ export const SeoArticlesSection: React.FC<SeoArticlesSectionProps> = () => {
   return (
     <section
       id="ratgeber"
-      className="wit-section wit-wrap"
+      className="ps-section ps-wrap"
       aria-labelledby="ratgeber-heading"
       style={{ paddingTop: '4rem', paddingBottom: '4rem' }}
     >
-      <div className="wit-section-head" data-reveal>
-        <p className="wit-overline">
+      <div className="ps-section-head" data-reveal>
+        <p className="ps-overline">
           Ratgeber &amp; Praxiswissen ({SEO_ARTICLES.length} Guides) · Graz &amp; Steiermark
         </p>
         <h2 id="ratgeber-heading">
           Website kaufen, Branchen-Guides &amp; Local SEO für steirische Betriebe.
         </h2>
-        <p className="wit-lead">
+        <p className="ps-lead">
           Ausgewählte Entscheidungshilfen direkt auf einen Blick: Alle weiteren Themen zu{' '}
           <strong>Förderungen</strong>, <strong>Preisen</strong>, <strong>DSGVO</strong> und{' '}
           <strong>Google Maps Ranking</strong> findest du gesammelt in unserem Ratgeber-Hub.
@@ -103,10 +103,10 @@ export const SeoArticlesSection: React.FC<SeoArticlesSectionProps> = () => {
                 padding: '0.45rem 0.95rem',
                 borderRadius: '999px',
                 border: isActive
-                  ? '1px solid var(--wit-accent)'
+                  ? '1px solid var(--ps-accent)'
                   : '1px solid var(--border-subtle)',
-                background: isActive ? 'var(--wit-accent)' : 'var(--bg-card)',
-                color: isActive ? 'var(--wit-accent-ink)' : 'var(--text-secondary)',
+                background: isActive ? 'var(--ps-accent)' : 'var(--bg-card)',
+                color: isActive ? 'var(--ps-accent-ink)' : 'var(--text-secondary)',
                 fontSize: '0.82rem',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -176,8 +176,8 @@ export const SeoArticlesSection: React.FC<SeoArticlesSectionProps> = () => {
                     letterSpacing: '0.06em',
                     padding: '0.28rem 0.68rem',
                     borderRadius: '999px',
-                    background: 'var(--wit-soft-tint)',
-                    color: 'var(--wit-accent)',
+                    background: 'var(--ps-soft-tint)',
+                    color: 'var(--ps-accent)',
                     border: '1px solid var(--border-subtle)'
                   }}
                 >
@@ -251,7 +251,7 @@ export const SeoArticlesSection: React.FC<SeoArticlesSectionProps> = () => {
                   >
                     <CheckCircle2
                       size={14}
-                      style={{ color: 'var(--wit-accent)', flexShrink: 0, marginTop: '2px' }}
+                      style={{ color: 'var(--ps-accent)', flexShrink: 0, marginTop: '2px' }}
                     />
                     <span>{point}</span>
                   </li>
@@ -300,7 +300,7 @@ export const SeoArticlesSection: React.FC<SeoArticlesSectionProps> = () => {
           marginTop: '2rem',
           padding: '1.25rem 1.5rem',
           borderRadius: '18px',
-          background: 'var(--wit-soft-tint)',
+          background: 'var(--ps-soft-tint)',
           border: '1px solid var(--border-subtle)',
           display: 'flex',
           alignItems: 'center',

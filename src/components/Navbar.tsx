@@ -173,12 +173,12 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="site-header wit-glass-header">
-      <div className="wit-header-inner wit-wrap">
-        {/* Windisch-inspired Brand Lockup */}
+    <header className="site-header ps-glass-header">
+      <div className="ps-header-inner ps-wrap">
+        {/* PureSite Brand Lockup */}
         <a
           href="#hero"
-          className="wit-brand"
+          className="ps-brand"
           onClick={e => {
             e.preventDefault();
             scrollTo('hero');
@@ -213,32 +213,32 @@ export const Navbar: React.FC<NavbarProps> = ({
               />
             </picture>
           </div>
-          <span className="wit-brand-text">
-            pure<span className="wit-brand-light">site</span>
-            <small className="wit-brand-subtitle">SOFTWARE STUDIO</small>
+          <span className="ps-brand-text">
+            pure<span className="ps-brand-light">site</span>
+            <small className="ps-brand-subtitle">SOFTWARE STUDIO</small>
           </span>
         </a>
 
-        {/* Desktop Navigation (Windisch Layout + Liquid Glass Dropdown) */}
-        <nav className="wit-desktop-nav" aria-label="Hauptnavigation">
+        {/* Desktop Navigation (PureSite Header + Liquid Glass Dropdown) */}
+        <nav className="ps-desktop-nav" aria-label="Hauptnavigation">
           <div
             ref={servicesDropdownRef}
-            className="wit-nav-services"
+            className="ps-nav-services"
             data-open={servicesOpen}
             onMouseEnter={handleServicesEnter}
             onMouseLeave={handleServicesLeave}
           >
-            <div className="wit-nav-services-heading">
+            <div className="ps-nav-services-heading">
               <button
                 type="button"
-                className={`wit-nav-link ${activeSection === 'demos' ? 'is-active' : ''}`}
+                className={`ps-nav-link ${activeSection === 'demos' ? 'is-active' : ''}`}
                 onClick={() => scrollTo('demos')}
               >
                 Leistungen &amp; Demos
               </button>
               <button
                 type="button"
-                className="wit-services-toggle"
+                className="ps-services-toggle"
                 aria-label={servicesOpen ? 'Leistungen schließen' : 'Leistungen öffnen'}
                 aria-expanded={servicesOpen}
                 onClick={() => setServicesOpen(prev => !prev)}
@@ -259,17 +259,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             </div>
 
-            <div className="wit-services-dropdown" aria-hidden={!servicesOpen}>
-              <div className="wit-services-dropdown-panel lg-glass-popover">
+            <div className="ps-services-dropdown" aria-hidden={!servicesOpen}>
+              <div className="ps-services-dropdown-panel lg-glass-popover">
                 <ul>
                   {SERVICE_MENU_ITEMS.map(item => (
                     <li key={item.id}>
                       <button
                         type="button"
-                        className="wit-dropdown-item"
+                        className="ps-dropdown-item"
                         onClick={() => handleSelectCategory(item.id)}
                       >
-                        <span className="wit-dropdown-copy">
+                        <span className="ps-dropdown-copy">
                           <strong>{item.label}</strong>
                           <small>{item.sub}</small>
                         </span>
@@ -293,7 +293,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   type="button"
-                  className="wit-services-overview"
+                  className="ps-services-overview"
                   onClick={() => handleSelectCategory('all')}
                 >
                   <span>Alle 18 Module &amp; Live-Demos ansehen</span>
@@ -317,7 +317,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className={`wit-nav-link ${activeSection === 'warum-wir' ? 'is-active' : ''}`}
+            className={`ps-nav-link ${activeSection === 'warum-wir' ? 'is-active' : ''}`}
             onClick={() => scrollTo('warum-wir')}
           >
             Praxis &amp; Technik
@@ -325,7 +325,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className={`wit-nav-link ${activeSection === 'preise' ? 'is-active' : ''}`}
+            className={`ps-nav-link ${activeSection === 'preise' ? 'is-active' : ''}`}
             onClick={() => scrollTo('preise')}
           >
             Festpreis-Rechner
@@ -333,7 +333,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className={`wit-nav-link ${activeSection === 'prozess' ? 'is-active' : ''}`}
+            className={`ps-nav-link ${activeSection === 'prozess' ? 'is-active' : ''}`}
             onClick={() => scrollTo('prozess')}
           >
             Zusammenarbeit
@@ -341,7 +341,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className={`wit-nav-link ${activeSection === 'ueber-uns' ? 'is-active' : ''}`}
+            className={`ps-nav-link ${activeSection === 'ueber-uns' ? 'is-active' : ''}`}
             onClick={() => scrollTo('ueber-uns')}
           >
             Über uns
@@ -349,7 +349,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className={`wit-nav-link ${activeSection === 'ratgeber' ? 'is-active' : ''}`}
+            className={`ps-nav-link ${activeSection === 'ratgeber' ? 'is-active' : ''}`}
             onClick={() => scrollTo('ratgeber')}
           >
             Ratgeber
@@ -357,16 +357,16 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         {/* Right Controls */}
-        <div className="wit-header-controls">
+        <div className="ps-header-controls">
           <button
             type="button"
-            className="wit-btn wit-btn-small wit-header-cta"
+            className="ps-btn ps-btn-small ps-header-cta"
             onClick={() => scrollTo('preise')}
           >
             <span>
               Kalkulator
               {configuredCount > 0 && (
-                <em className="wit-cta-badge" title={`${configuredCount} Module gewählt`}>
+                <em className="ps-cta-badge" title={`${configuredCount} Module gewählt`}>
                   {configuredCount}
                 </em>
               )}
@@ -388,7 +388,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className="wit-icon-button wit-menu-toggle"
+            className="ps-icon-button ps-menu-toggle"
             onClick={() => setMobileMenuOpen(prev => !prev)}
             aria-label={mobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
             aria-expanded={mobileMenuOpen}
@@ -429,12 +429,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div ref={progressBarRef} className="scroll-laser-fill" />
       </div>
 
-      {/* Windisch-style Mobile Navigation Drawer in Frosted Liquid Glass */}
+      {/* PureSite Mobile Navigation Drawer in Frosted Liquid Glass */}
       {mobileMenuOpen && (
-        <nav className="wit-mobile-nav lg-glass-popover" aria-label="Mobile Navigation">
+        <nav className="ps-mobile-nav lg-glass-popover" aria-label="Mobile Navigation">
           <button
             type="button"
-            className="wit-mobile-main-link"
+            className="ps-mobile-main-link"
             onClick={() => scrollTo('demos')}
           >
             <span>Leistungen &amp; 18 Live-Demos</span>
@@ -453,7 +453,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </svg>
           </button>
 
-          <ul className="wit-mobile-sublinks">
+          <ul className="ps-mobile-sublinks">
             {SERVICE_MENU_ITEMS.map(item => (
               <li key={item.id}>
                 <button type="button" onClick={() => handleSelectCategory(item.id)}>
@@ -465,7 +465,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className="wit-mobile-main-link"
+            className="ps-mobile-main-link"
             onClick={() => scrollTo('warum-wir')}
           >
             <span>Praxis, Speed-Lab &amp; Vergleich</span>
@@ -486,7 +486,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className="wit-mobile-main-link"
+            className="ps-mobile-main-link"
             onClick={() => scrollTo('preise')}
           >
             <span>Festpreis-Kalkulator ({configuredCount} aktiv)</span>
@@ -507,7 +507,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className="wit-mobile-main-link"
+            className="ps-mobile-main-link"
             onClick={() => scrollTo('prozess')}
           >
             <span>Zusammenarbeit &amp; Ablauf</span>
@@ -528,7 +528,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className="wit-mobile-main-link"
+            className="ps-mobile-main-link"
             onClick={() => scrollTo('ueber-uns')}
           >
             <span>Über uns (Maximilian &amp; Loreno)</span>
@@ -549,7 +549,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             type="button"
-            className="wit-mobile-main-link"
+            className="ps-mobile-main-link"
             onClick={() => scrollTo('faq')}
           >
             <span>Häufige Fragen</span>
@@ -568,7 +568,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </svg>
           </button>
 
-          <div className="wit-mobile-legal-row">
+          <div className="ps-mobile-legal-row">
             <button
               type="button"
               onClick={() => {

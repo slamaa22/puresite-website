@@ -33,10 +33,10 @@
     --bg-tertiary: rgba(255, 255, 255, 0.04);
 
     --pure-mint: #58fca5;
-    --wit-accent: #58fca5;
-    --wit-accent-ink: #06130e;
-    --wit-soft-tint: rgba(88, 252, 165, 0.095);
-    --wit-soft-border: rgba(88, 252, 165, 0.28);
+    --ps-accent: #58fca5;
+    --ps-accent-ink: #06130e;
+    --ps-soft-tint: rgba(88, 252, 165, 0.095);
+    --ps-soft-border: rgba(88, 252, 165, 0.28);
 
     --text-pure: #eef4f1;
     --text-secondary: #b5c6c0;
@@ -67,10 +67,10 @@
     --bg-tertiary: rgba(23, 107, 97, 0.055);
 
     --pure-mint: #146c60;
-    --wit-accent: #176b61;
-    --wit-accent-ink: #ffffff;
-    --wit-soft-tint: rgba(23, 107, 97, 0.085);
-    --wit-soft-border: rgba(23, 107, 97, 0.25);
+    --ps-accent: #176b61;
+    --ps-accent-ink: #ffffff;
+    --ps-soft-tint: rgba(23, 107, 97, 0.085);
+    --ps-soft-border: rgba(23, 107, 97, 0.25);
 
     --text-pure: #182628;
     --text-secondary: #435458;
@@ -112,9 +112,9 @@
     pointer-events: none;
     z-index: 0;
     background:
-      radial-gradient(circle at 16% 12%, var(--wit-soft-tint), transparent 42%),
+      radial-gradient(circle at 16% 12%, var(--ps-soft-tint), transparent 42%),
       radial-gradient(circle at 84% 18%, rgba(94, 234, 212, 0.07), transparent 46%),
-      radial-gradient(circle at 50% 85%, var(--wit-soft-tint), transparent 50%);
+      radial-gradient(circle at 50% 85%, var(--ps-soft-tint), transparent 50%);
   }
   .ambient-grid {
     position: fixed;
@@ -131,7 +131,7 @@
 
   .page-shell { position: relative; z-index: 1; }
 
-  .wit-glass-header {
+  .ps-glass-header {
     position: sticky;
     top: 12px;
     z-index: 1000;
@@ -144,7 +144,7 @@
     border: 1px solid var(--border-medium);
     box-shadow: var(--specular-rim), var(--card-shadow);
   }
-  .wit-header-inner {
+  .ps-header-inner {
     height: 68px;
     padding-inline: clamp(14px, 2vw, 26px);
     display: flex;
@@ -153,7 +153,7 @@
     gap: 14px;
     flex-wrap: nowrap;
   }
-  .wit-brand {
+  .ps-brand {
     display: inline-flex;
     align-items: center;
     gap: 11px;
@@ -162,13 +162,13 @@
     flex-shrink: 0;
     white-space: nowrap;
   }
-  .wit-brand img {
+  .ps-brand img {
     width: 36px;
     height: 36px;
     border-radius: 9px;
     object-fit: contain;
   }
-  .wit-brand-text {
+  .ps-brand-text {
     font-family: var(--font-heading);
     font-size: 1.28rem;
     font-weight: 800;
@@ -176,8 +176,8 @@
     line-height: 1;
     color: var(--text-pure);
   }
-  .wit-brand-light { font-weight: 400; color: var(--wit-accent); }
-  .wit-brand-subtitle {
+  .ps-brand-light { font-weight: 400; color: var(--ps-accent); }
+  .ps-brand-subtitle {
     display: block;
     margin-top: 3px;
     font-size: 0.58rem;
@@ -185,7 +185,7 @@
     letter-spacing: 0.19em;
     color: var(--text-muted);
   }
-  .wit-desktop-nav {
+  .ps-desktop-nav {
     display: flex;
     align-items: center;
     gap: clamp(4px, 0.9vw, 14px);
@@ -194,7 +194,7 @@
     white-space: nowrap;
     flex-wrap: nowrap;
   }
-  .wit-nav-link {
+  .ps-nav-link {
     padding: 7px 11px;
     border-radius: 999px;
     font-size: 0.85rem;
@@ -204,26 +204,26 @@
     transition: all 0.18s ease;
     white-space: nowrap;
   }
-  .wit-nav-link:hover,
-  .wit-nav-link.is-active {
-    color: var(--wit-accent);
-    background: var(--wit-soft-tint);
+  .ps-nav-link:hover,
+  .ps-nav-link.is-active {
+    color: var(--ps-accent);
+    background: var(--ps-soft-tint);
   }
-  .wit-header-controls {
+  .ps-header-controls {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
     white-space: nowrap;
   }
-  .wit-cta-btn {
+  .ps-cta-btn {
     display: inline-flex;
     align-items: center;
     gap: 7px;
     padding: 9px 16px;
     border-radius: 999px;
-    background: var(--wit-accent);
-    color: var(--wit-accent-ink) !important;
+    background: var(--ps-accent);
+    color: var(--ps-accent-ink) !important;
     font-weight: 700;
     font-size: 0.85rem;
     text-decoration: none !important;
@@ -231,9 +231,9 @@
     transition: transform 0.18s ease, box-shadow 0.18s ease;
     white-space: nowrap;
   }
-  .wit-cta-btn:hover { transform: translateY(-1px); }
+  .ps-cta-btn:hover { transform: translateY(-1px); }
 
-  .wit-wrap {
+  .ps-wrap {
     width: min(1200px, calc(100% - 32px));
     margin: 0 auto;
   }
@@ -268,7 +268,7 @@
     text-decoration: none;
     font-weight: 600;
   }
-  .breadcrumb-bar a:hover { color: var(--wit-accent); }
+  .breadcrumb-bar a:hover { color: var(--ps-accent); }
 
   .meta-pills {
     display: flex;
@@ -283,9 +283,9 @@
     gap: 6px;
     padding: 5px 13px;
     border-radius: 999px;
-    background: var(--wit-soft-tint);
-    border: 1px solid var(--wit-soft-border);
-    color: var(--wit-accent);
+    background: var(--ps-soft-tint);
+    border: 1px solid var(--ps-soft-border);
+    color: var(--ps-accent);
     font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -340,7 +340,7 @@
     font-family: var(--font-heading);
     font-size: 1.12rem;
     font-weight: 800;
-    color: var(--wit-accent);
+    color: var(--ps-accent);
     line-height: 1.2;
   }
   .metric-box span { font-size: 0.78rem; color: var(--text-muted); }
@@ -356,8 +356,8 @@
   .takeaways-card {
     padding: 1.65rem 1.85rem;
     border-radius: 24px;
-    background: var(--wit-soft-tint);
-    border: 1px solid var(--wit-soft-border);
+    background: var(--ps-soft-tint);
+    border: 1px solid var(--ps-soft-border);
     box-shadow: var(--specular-rim);
     margin-bottom: 1.75rem;
   }
@@ -368,7 +368,7 @@
     font-family: var(--font-heading);
     font-size: 1.02rem;
     font-weight: 800;
-    color: var(--wit-accent);
+    color: var(--ps-accent);
     margin-bottom: 1rem;
   }
   .check-list {
@@ -390,9 +390,9 @@
     width: 20px;
     height: 20px;
     border-radius: 999px;
-    background: var(--wit-soft-tint);
-    border: 1px solid var(--wit-soft-border);
-    color: var(--wit-accent);
+    background: var(--ps-soft-tint);
+    border: 1px solid var(--ps-soft-border);
+    color: var(--ps-accent);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -418,9 +418,9 @@
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--wit-accent);
-    background: var(--wit-soft-tint);
-    border: 1px solid var(--wit-soft-border);
+    color: var(--ps-accent);
+    background: var(--ps-soft-tint);
+    border: 1px solid var(--ps-soft-border);
     padding: 3px 10px;
     border-radius: 999px;
     margin-bottom: 0.75rem;
@@ -448,7 +448,7 @@
     border-radius: 16px;
     background: var(--bg-tertiary);
     border: 1px solid var(--border-subtle);
-    border-left: 4px solid var(--wit-accent);
+    border-left: 4px solid var(--ps-accent);
   }
   .highlight-callout strong {
     display: block;
@@ -481,7 +481,7 @@
     overflow: hidden;
     transition: border-color 0.2s ease;
   }
-  details.faq-item[open] { border-color: var(--wit-soft-border); }
+  details.faq-item[open] { border-color: var(--ps-soft-border); }
   details.faq-item summary {
     list-style: none;
     cursor: pointer;
@@ -501,7 +501,7 @@
     border-radius: 999px;
     background: var(--bg-tertiary);
     border: 1px solid var(--border-subtle);
-    color: var(--wit-accent);
+    color: var(--ps-accent);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -511,7 +511,7 @@
   }
   details.faq-item[open] .faq-toggle-pill {
     transform: rotate(45deg);
-    background: var(--wit-soft-tint);
+    background: var(--ps-soft-tint);
   }
   .faq-answer {
     padding: 0 1.35rem 1.25rem 1.35rem;
@@ -544,7 +544,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--wit-accent);
+    color: var(--ps-accent);
     margin: 0 0 0.75rem 0;
   }
   .toc-list {
@@ -569,13 +569,13 @@
     line-height: 1.38;
   }
   .toc-link:hover {
-    background: var(--wit-soft-tint);
-    color: var(--wit-accent);
+    background: var(--ps-soft-tint);
+    color: var(--ps-accent);
   }
   .toc-num {
     font-family: var(--font-mono);
     font-size: 0.74rem;
-    color: var(--wit-accent);
+    color: var(--ps-accent);
     margin-top: 1px;
   }
 
@@ -583,8 +583,8 @@
     margin: 0.85rem 0 1rem;
     padding: 0.95rem 1.1rem;
     border-radius: 14px;
-    background: var(--wit-soft-tint);
-    border: 1px solid var(--wit-soft-border);
+    background: var(--ps-soft-tint);
+    border: 1px solid var(--ps-soft-border);
   }
   .price-highlight-box strong {
     display: block;
@@ -601,9 +601,9 @@
     padding: clamp(1.75rem, 3.5vw, 2.6rem);
     border-radius: 26px;
     background:
-      radial-gradient(120% 180% at 10% 0%, var(--wit-soft-tint) 0%, transparent 60%),
+      radial-gradient(120% 180% at 10% 0%, var(--ps-soft-tint) 0%, transparent 60%),
       var(--card-surface);
-    border: 1px solid var(--wit-soft-border);
+    border: 1px solid var(--ps-soft-border);
     box-shadow: var(--specular-rim), var(--card-shadow);
     display: flex;
     flex-direction: column;
@@ -649,7 +649,7 @@
   }
   .related-card:hover {
     transform: translateY(-3px);
-    border-color: var(--wit-soft-border);
+    border-color: var(--ps-soft-border);
   }
 
   .all-guides-pills {
@@ -678,9 +678,9 @@
   }
   .guide-chip-link:hover,
   .guide-chip-link.is-current {
-    border-color: var(--wit-soft-border);
-    color: var(--wit-accent);
-    background: var(--wit-soft-tint);
+    border-color: var(--ps-soft-border);
+    color: var(--ps-accent);
+    background: var(--ps-soft-tint);
   }
 
   .filter-bar {
@@ -703,12 +703,12 @@
   }
   .filter-btn.is-active,
   .filter-btn:hover {
-    background: var(--wit-accent);
-    color: var(--wit-accent-ink);
-    border-color: var(--wit-accent);
+    background: var(--ps-accent);
+    color: var(--ps-accent-ink);
+    border-color: var(--ps-accent);
   }
 
-  .wit-site-footer {
+  .ps-site-footer {
     margin-top: 4.5rem;
     padding: 3.5rem 0 2.5rem;
     border-top: 1px solid var(--border-subtle);
@@ -726,7 +726,7 @@
     font-size: 0.74rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--wit-accent);
+    color: var(--ps-accent);
     margin: 0 0 1rem 0;
   }
   .footer-col ul {
@@ -743,7 +743,7 @@
     font-size: 0.86rem;
     transition: color 0.18s ease;
   }
-  .footer-col a:hover { color: var(--wit-accent); }
+  .footer-col a:hover { color: var(--ps-accent); }
   .footer-bottom {
     padding-top: 1.5rem;
     display: flex;
@@ -756,7 +756,7 @@
   }
 
   @media (max-width: 1024px) {
-    .wit-desktop-nav { display: none; }
+    .ps-desktop-nav { display: none; }
     .editorial-grid { grid-template-columns: 1fr; }
     .sticky-sidebar { position: static; }
     .metrics-strip { grid-template-columns: repeat(2, 1fr); }
@@ -774,27 +774,27 @@
 
   <div class="page-shell">
     
-  <header class="wit-glass-header">
-    <div class="wit-header-inner">
-      <a href="https://puresite.at/" class="wit-brand" aria-label="PureSite — Startseite">
+  <header class="ps-glass-header">
+    <div class="ps-header-inner">
+      <a href="https://puresite.at/" class="ps-brand" aria-label="PureSite — Startseite">
         <img src="/assets/puresite-logo-dark-stroke.png" alt="PureSite Logo" width="36" height="36" />
-        <span class="wit-brand-text">
-          pure<span class="wit-brand-light">site</span>
-          <small class="wit-brand-subtitle">SOFTWARE STUDIO</small>
+        <span class="ps-brand-text">
+          pure<span class="ps-brand-light">site</span>
+          <small class="ps-brand-subtitle">SOFTWARE STUDIO</small>
         </span>
       </a>
 
-      <nav class="wit-desktop-nav" aria-label="Hauptnavigation">
-        <a href="https://puresite.at/#demos" class="wit-nav-link">Leistungen &amp; Demos</a>
-        <a href="https://puresite.at/#warum-wir" class="wit-nav-link">Praxis &amp; Technik</a>
-        <a href="https://puresite.at/#preise" class="wit-nav-link">Festpreis-Rechner</a>
-        <a href="https://puresite.at/#prozess" class="wit-nav-link">Zusammenarbeit</a>
-        <a href="https://puresite.at/#ueber-uns" class="wit-nav-link">Über uns</a>
-        <a href="/ratgeber/" class="wit-nav-link is-active">Ratgeber</a>
+      <nav class="ps-desktop-nav" aria-label="Hauptnavigation">
+        <a href="https://puresite.at/#demos" class="ps-nav-link">Leistungen &amp; Demos</a>
+        <a href="https://puresite.at/#warum-wir" class="ps-nav-link">Praxis &amp; Technik</a>
+        <a href="https://puresite.at/#preise" class="ps-nav-link">Festpreis-Rechner</a>
+        <a href="https://puresite.at/#prozess" class="ps-nav-link">Zusammenarbeit</a>
+        <a href="https://puresite.at/#ueber-uns" class="ps-nav-link">Über uns</a>
+        <a href="/ratgeber/" class="ps-nav-link is-active">Ratgeber</a>
       </nav>
 
-      <div class="wit-header-controls">
-        <a href="https://puresite.at/#preise" class="wit-cta-btn">
+      <div class="ps-header-controls">
+        <a href="https://puresite.at/#preise" class="ps-cta-btn">
           <span>Kalkulator</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
         </a>
@@ -802,7 +802,7 @@
     </div>
   </header>
 
-    <main class="wit-wrap">
+    <main class="ps-wrap">
       <section class="article-hero">
         <nav class="breadcrumb-bar" aria-label="Breadcrumb">
           <a href="https://puresite.at/">PureSite Graz</a>
@@ -865,7 +865,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/website-kaufen-graz/" class="wit-cta-btn">
+            <a href="/ratgeber/website-kaufen-graz/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -888,7 +888,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/website-agentur-graz/" class="wit-cta-btn">
+            <a href="/ratgeber/website-agentur-graz/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -911,7 +911,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/homepage-erstellen-lassen-graz-kosten/" class="wit-cta-btn">
+            <a href="/ratgeber/homepage-erstellen-lassen-graz-kosten/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -934,7 +934,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/wordpress-alternative-graz-relaunch/" class="wit-cta-btn">
+            <a href="/ratgeber/wordpress-alternative-graz-relaunch/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -957,7 +957,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/website-fuer-handwerker-steiermark/" class="wit-cta-btn">
+            <a href="/ratgeber/website-fuer-handwerker-steiermark/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -980,7 +980,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/website-fuer-aerzte-kanzleien-graz/" class="wit-cta-btn">
+            <a href="/ratgeber/website-fuer-aerzte-kanzleien-graz/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -1003,7 +1003,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/website-foerderung-steiermark-oesterreich/" class="wit-cta-btn">
+            <a href="/ratgeber/website-foerderung-steiermark-oesterreich/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -1026,7 +1026,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/wix-jimdo-baukasten-vs-programmierte-website/" class="wit-cta-btn">
+            <a href="/ratgeber/wix-jimdo-baukasten-vs-programmierte-website/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -1049,7 +1049,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/dsgvo-website-ohne-cookie-banner-oesterreich/" class="wit-cta-btn">
+            <a href="/ratgeber/dsgvo-website-ohne-cookie-banner-oesterreich/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -1072,7 +1072,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/webdesign-graz-umgebung-leibnitz-weiz/" class="wit-cta-btn">
+            <a href="/ratgeber/webdesign-graz-umgebung-leibnitz-weiz/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -1095,7 +1095,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/google-maps-ranking-verbessern-graz/" class="wit-cta-btn">
+            <a href="/ratgeber/google-maps-ranking-verbessern-graz/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -1118,7 +1118,7 @@
             </ul>
           </div>
           <div style="padding-top:0.9rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <a href="/ratgeber/website-preisrechner-online-terminbuchung/" class="wit-cta-btn">
+            <a href="/ratgeber/website-preisrechner-online-terminbuchung/" class="ps-cta-btn">
               <span>Artikel lesen</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
             </a>
@@ -1134,7 +1134,7 @@
         </div>
         <p>Stelle dir deine benötigten Module transparent zusammen, sieh sofort deinen verbindlichen Festpreis und lade dir dein Angebot direkt als PDF herunter.</p>
         <div>
-          <a href="https://puresite.at/#preise" class="wit-cta-btn" style="padding:12px 22px; font-size:0.94rem;">
+          <a href="https://puresite.at/#preise" class="ps-cta-btn" style="padding:12px 22px; font-size:0.94rem;">
             <span>Direkt zum Festpreis-Rechner (ab 1.000 €)</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6h12v12"/></svg>
           </a>
@@ -1143,13 +1143,13 @@
     </main>
 
     
-  <footer class="wit-site-footer">
-    <div class="wit-wrap">
+  <footer class="ps-site-footer">
+    <div class="ps-wrap">
       <div class="footer-grid">
         <div class="footer-col">
-          <a href="https://puresite.at/" class="wit-brand" style="margin-bottom:0.85rem;">
+          <a href="https://puresite.at/" class="ps-brand" style="margin-bottom:0.85rem;">
             <img src="/assets/puresite-logo-dark-stroke.png" alt="PureSite Logo" width="32" height="32" />
-            <span class="wit-brand-text">pure<span class="wit-brand-light">site</span></span>
+            <span class="ps-brand-text">pure<span class="ps-brand-light">site</span></span>
           </a>
           <p style="color:var(--text-secondary); font-size:0.88rem; margin:0.6rem 0 0; max-width:34ch;">
             Webdesign &amp; Softwareentwicklung für Graz, die Steiermark &amp; ganz Österreich. Maßgeschneiderte Websites zum garantierten Festpreis.
@@ -1196,7 +1196,7 @@
 
       <div class="footer-bottom">
         <span>© 2026 PureSite Software Studio · Webdesign Graz &amp; Steiermark · Am Leopoldsgrund 19, 8055 Graz</span>
-        <a href="https://puresite.at/" style="color:var(--wit-accent); text-decoration:none; font-weight:700;">← Zurück zur Hauptseite puresite.at</a>
+        <a href="https://puresite.at/" style="color:var(--ps-accent); text-decoration:none; font-weight:700;">← Zurück zur Hauptseite puresite.at</a>
       </div>
     </div>
   </footer>

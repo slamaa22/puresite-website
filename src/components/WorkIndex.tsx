@@ -45,14 +45,14 @@ export const WorkIndex: React.FC<WorkIndexProps> = ({
       : MODULES_DATA.filter(m => m.category === selectedCat);
 
   return (
-    <section id="demos" className="wit-section wit-wrap wit-home-services" aria-labelledby="demos-catalog-title">
-      {/* Windisch-style 2-Column Section Heading */}
-      <div className="wit-section-heading" data-reveal>
+    <section id="demos" className="ps-section ps-wrap ps-home-services" aria-labelledby="demos-catalog-title">
+      {/* PureSite 2-Column Section Heading */}
+      <div className="ps-section-heading" data-reveal>
         <div>
-          <p className="wit-overline">Leistungen &amp; 18 Live-Module</p>
+          <p className="ps-overline">Leistungen &amp; 18 Live-Module</p>
           <h2 id="demos-catalog-title">Wobei wir Sie konkret unterstützen</h2>
         </div>
-        <button type="button" className="wit-text-link" onClick={onScrollToPricing}>
+        <button type="button" className="ps-text-link" onClick={onScrollToPricing}>
           <span>Alle Bausteine im Kalkulator kombinieren</span>
           <svg
             width="20"
@@ -71,12 +71,12 @@ export const WorkIndex: React.FC<WorkIndexProps> = ({
       </div>
 
       {/* Liquid Glass Category Capsule Bar */}
-      <div className="wit-filter-capsule-bar" data-reveal>
+      <div className="ps-filter-capsule-bar" data-reveal>
         {categories.map(cat => (
           <button
             key={cat.id}
             type="button"
-            className={`wit-filter-pill ${selectedCat === cat.id ? 'is-active' : ''}`}
+            className={`ps-filter-pill ${selectedCat === cat.id ? 'is-active' : ''}`}
             onClick={() => handleCatSelect(cat.id)}
           >
             {cat.label}
@@ -84,8 +84,8 @@ export const WorkIndex: React.FC<WorkIndexProps> = ({
         ))}
       </div>
 
-      {/* Windisch-style Service Rows in Sculpted Liquid Glass */}
-      <div key={selectedCat} className="wit-service-list lg-glass-panel work-index-anim" data-reveal>
+      {/* PureSite Service Rows in Sculpted Liquid Glass */}
+      <div key={selectedCat} className="ps-service-list lg-glass-panel work-index-anim" data-reveal>
         {filteredModules.map(mod => {
           const hasInteractiveDemo = Boolean(mod.demoId);
           const isSelected = !!selectedConfig?.[mod.code]?.selected;
@@ -93,34 +93,34 @@ export const WorkIndex: React.FC<WorkIndexProps> = ({
           return (
             <div
               key={mod.code}
-              className={`wit-service-row ${isSelected ? 'is-selected-row' : ''}`}
+              className={`ps-service-row ${isSelected ? 'is-selected-row' : ''}`}
             >
               {/* Col 1: Code + Title + Impact Pill */}
-              <div className="wit-service-title-col">
-                <div className="wit-service-code-line">
-                  <span className={`wit-code-pill ${isSelected ? 'is-active' : ''}`}>
+              <div className="ps-service-title-col">
+                <div className="ps-service-code-line">
+                  <span className={`ps-code-pill ${isSelected ? 'is-active' : ''}`}>
                     {mod.code}
                   </span>
                   {mod.impactTag && (
-                    <span className="wit-impact-chip">{mod.impactTag}</span>
+                    <span className="ps-impact-chip">{mod.impactTag}</span>
                   )}
                 </div>
                 <h3
                   onClick={() => (hasInteractiveDemo ? onOpenDemo(mod) : onScrollToPricing())}
-                  className="wit-service-name"
+                  className="ps-service-name"
                 >
                   {mod.name}
                 </h3>
               </div>
 
               {/* Col 2: Calm Editorial Description */}
-              <div className="wit-service-desc-col">
+              <div className="ps-service-desc-col">
                 <p>{mod.description}</p>
               </div>
 
-              {/* Col 3: Transparent Price + Live Demo + Direct Select + Windisch Rotating Arrow */}
-              <div className="wit-service-meta-col">
-                <div className="wit-service-price-box">
+              {/* Col 3: Transparent Price + Live Demo + Direct Select + PureSite Rotating Arrow */}
+              <div className="ps-service-meta-col">
+                <div className="ps-service-price-box">
                   <strong>
                     {mod.fixedPrice
                       ? `${mod.fixedPrice.toLocaleString('de-AT')} €`
@@ -137,11 +137,11 @@ export const WorkIndex: React.FC<WorkIndexProps> = ({
                   </span>
                 </div>
 
-                <div className="wit-service-actions">
+                <div className="ps-service-actions">
                   {hasInteractiveDemo && (
                     <button
                       type="button"
-                      className="wit-mini-glass-btn"
+                      className="ps-mini-glass-btn"
                       onClick={() => onOpenDemo(mod)}
                       title="Interaktive Vorschau im Browser öffnen"
                     >
@@ -153,7 +153,7 @@ export const WorkIndex: React.FC<WorkIndexProps> = ({
                   {onToggleModule && (
                     <button
                       type="button"
-                      className={`wit-mini-glass-btn ${isSelected ? 'is-selected' : ''}`}
+                      className={`ps-mini-glass-btn ${isSelected ? 'is-selected' : ''}`}
                       onClick={() => onToggleModule(mod.code)}
                       title={
                         isSelected
@@ -168,7 +168,7 @@ export const WorkIndex: React.FC<WorkIndexProps> = ({
 
                   <button
                     type="button"
-                    className="wit-service-arrow"
+                    className="ps-service-arrow"
                     onClick={() => (hasInteractiveDemo ? onOpenDemo(mod) : onScrollToPricing())}
                     aria-label={`${mod.name} ansehen`}
                     title={hasInteractiveDemo ? 'Interaktive Demo starten' : 'Zum Kalkulator'}

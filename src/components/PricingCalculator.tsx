@@ -503,12 +503,12 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
   return (
     <section
       id="preise"
-      className="wit-section wit-wrap fullpage-wizard-section pricing-section"
+      className="ps-section ps-wrap fullpage-wizard-section pricing-section"
       aria-labelledby="calculator-title"
     >
-      <div className="wit-section-heading" data-reveal>
+      <div className="ps-section-heading" data-reveal>
         <div>
-          <p className="wit-overline">Verbindliche Online-Kalkulation</p>
+          <p className="ps-overline">Verbindliche Online-Kalkulation</p>
           <h2 id="calculator-title">Stellen Sie Ihren Festpreis transparent zusammen</h2>
         </div>
         <p>

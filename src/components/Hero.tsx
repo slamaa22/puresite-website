@@ -24,19 +24,19 @@ export const Hero: React.FC<HeroProps> = ({
 
   return (
     <>
-      {/* 1. WINDISCH-LAYOUT CENTERED HERO + LIQUID GLASS WAVE ATMOSPHERE */}
+      {/* 1. PURESITE CENTERED HERO + LIQUID GLASS WAVE ATMOSPHERE */}
       <section
         id="hero"
         ref={heroStageRef}
         onMouseMove={handleHeroPointerMove}
-        className="wit-hero"
+        className="ps-hero"
         aria-labelledby="hero-title"
       >
         {/* Diagonal 116° Architectural Line Field + Refractive Light Wave */}
-        <div className="wit-hero-atmosphere" aria-hidden="true">
-          <div className="wit-hero-line-field">
+        <div className="ps-hero-atmosphere" aria-hidden="true">
+          <div className="ps-hero-line-field">
             <svg
-              className="wit-hero-line-wave"
+              className="ps-hero-line-wave"
               viewBox="0 0 1600 900"
               preserveAspectRatio="xMidYMid slice"
               focusable="false"
@@ -59,9 +59,9 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        <div className="wit-wrap">
-          <div className="wit-hero-copy">
-            <p className="wit-overline wit-hero-pill hero-enter-1">
+        <div className="ps-wrap">
+          <div className="ps-hero-copy">
+            <p className="ps-overline ps-hero-pill hero-enter-1">
               <span className="eyebrow-pulse-dot" aria-hidden="true" />
               <span>PureSite · Webdesign &amp; Software Studio Graz, Steiermark</span>
             </p>
@@ -72,16 +72,16 @@ export const Hero: React.FC<HeroProps> = ({
               <span>mit verbindlichem Festpreis.</span>
             </h1>
 
-            <p className="wit-hero-intro hero-enter-3">
+            <p className="ps-hero-intro hero-enter-3">
               Wir planen, gestalten und entwickeln rasend schnelle Websites für Unternehmen in Graz,
               der Steiermark und ganz Österreich – ohne WordPress-Ballast, mit verbindlichem Festpreis
               und persönlicher Betreuung von der ersten Idee bis zum Livegang.
             </p>
 
-            <div className="wit-hero-actions hero-enter-4">
+            <div className="ps-hero-actions hero-enter-4">
               <button
                 type="button"
-                className="wit-btn wit-btn-primary button-shimmer"
+                className="ps-btn ps-btn-primary button-shimmer"
                 onClick={onScrollToPricing}
               >
                 <span>Festpreis online kalkulieren</span>
@@ -102,7 +102,7 @@ export const Hero: React.FC<HeroProps> = ({
 
               <button
                 type="button"
-                className="wit-btn wit-btn-glass-outline"
+                className="ps-btn ps-btn-glass-outline"
                 onClick={onExploreDemos}
               >
                 <span>18 Live-Demos testen</span>
@@ -123,21 +123,21 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Floating Liquid Glass Key-Fact Dock */}
-            <div className="wit-hero-trust-dock lg-glass-card hero-enter-5">
-              <div className="wit-trust-cell">
-                <span className="wit-trust-kicker">Einstieg</span>
+            <div className="ps-hero-trust-dock lg-glass-card hero-enter-5">
+              <div className="ps-trust-cell">
+                <span className="ps-trust-kicker">Einstieg</span>
                 <strong>Festpreis ab 1.000 €</strong>
               </div>
-              <div className="wit-trust-cell">
-                <span className="wit-trust-kicker">Sicherheit</span>
+              <div className="ps-trust-cell">
+                <span className="ps-trust-kicker">Sicherheit</span>
                 <strong>50% Start · 50% Livegang</strong>
               </div>
-              <div className="wit-trust-cell">
-                <span className="wit-trust-kicker">Performance</span>
+              <div className="ps-trust-cell">
+                <span className="ps-trust-kicker">Performance</span>
                 <strong>100/100 Google Score</strong>
               </div>
-              <div className="wit-trust-cell">
-                <span className="wit-trust-kicker">Infrastruktur</span>
+              <div className="ps-trust-cell">
+                <span className="ps-trust-kicker">Infrastruktur</span>
                 <strong>Dedicated EU-Server</strong>
               </div>
             </div>
@@ -145,11 +145,11 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
       </section>
 
-      {/* 2. WINDISCH-LAYOUT 3-COLUMN SITUATIONS SECTION ("Wobei brauchen Sie Unterstützung?") */}
-      <section className="wit-section wit-wrap wit-home-situations" aria-labelledby="situations-heading">
-        <div className="wit-section-heading" data-reveal>
+      {/* 2. PURESITE 3-COLUMN SITUATIONS SECTION ("Wobei brauchen Sie Unterstützung?") */}
+      <section className="ps-section ps-wrap ps-home-situations" aria-labelledby="situations-heading">
+        <div className="ps-section-heading" data-reveal>
           <div>
-            <p className="wit-overline">Neue Website oder Relaunch</p>
+            <p className="ps-overline">Neue Website oder Relaunch</p>
             <h2 id="situations-heading">Wobei brauchen Sie Unterstützung?</h2>
           </div>
           <p>
@@ -159,12 +159,12 @@ export const Hero: React.FC<HeroProps> = ({
           </p>
         </div>
 
-        <div className="wit-situation-grid" data-reveal>
+        <div className="ps-situation-grid" data-reveal>
           <article
-            className="wit-situation-card lg-glass-card spotlight-surface"
+            className="ps-situation-card lg-glass-card spotlight-surface"
             onMouseMove={handleSpotlightMove}
           >
-            <span className="wit-card-index">01</span>
+            <span className="ps-card-index">01</span>
             <h3>Der aktuelle Auftritt lädt langsam oder wirkt nicht mehr zeitgemäß.</h3>
             <p>
               Auf dem Smartphone dauert der Seitenaufbau Sekunden und potenzielle Kunden springen ab.
@@ -174,10 +174,10 @@ export const Hero: React.FC<HeroProps> = ({
           </article>
 
           <article
-            className="wit-situation-card lg-glass-card spotlight-surface"
+            className="ps-situation-card lg-glass-card spotlight-surface"
             onMouseMove={handleSpotlightMove}
           >
-            <span className="wit-card-index">02</span>
+            <span className="ps-card-index">02</span>
             <h3>Agentur-Angebote sind intransparent und kosten plötzlich 8.000 €.</h3>
             <p>
               Statt undurchsichtiger Pauschalen stellen Sie sich Ihren Umfang modular zusammen – vom
@@ -187,10 +187,10 @@ export const Hero: React.FC<HeroProps> = ({
           </article>
 
           <article
-            className="wit-situation-card lg-glass-card spotlight-surface"
+            className="ps-situation-card lg-glass-card spotlight-surface"
             onMouseMove={handleSpotlightMove}
           >
-            <span className="wit-card-index">03</span>
+            <span className="ps-card-index">03</span>
             <h3>Wer kümmert sich laufend um Sicherheit, Backups und Änderungen?</h3>
             <p>
               Keine 40 anfälligen WordPress-Plugins mehr, die Updates zerschießen. Auf unseren

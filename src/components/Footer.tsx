@@ -34,13 +34,13 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="wit-site-footer">
-      <div className="wit-wrap wit-footer-grid" data-reveal>
-        {/* Col 1: Brand & Tagline (Exact Windisch IT Footer Rhythm) */}
-        <div className="wit-footer-brand">
+    <footer className="ps-site-footer">
+      <div className="ps-wrap ps-footer-grid" data-reveal>
+        {/* Col 1: Brand & Tagline (PureSite Editorial Footer Rhythm) */}
+        <div className="ps-footer-brand">
           <a
             href="#hero"
-            className="wit-brand"
+            className="ps-brand"
             onClick={e => {
               e.preventDefault();
               scrollToTop();
@@ -71,8 +71,8 @@ export const Footer: React.FC<FooterProps> = ({
                 />
               </picture>
             </div>
-            <span className="wit-brand-text">
-              pure<span className="wit-brand-light">site</span>
+            <span className="ps-brand-text">
+              pure<span className="ps-brand-light">site</span>
             </span>
           </a>
           <p>
@@ -84,7 +84,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Col 2: Services & Modules */}
         <div>
-          <p className="wit-overline">Leistungen &amp; Module</p>
+          <p className="ps-overline">Leistungen &amp; Module</p>
           <ul>
             <li>
               <button type="button" onClick={() => scrollToSection('preise')}>
@@ -121,9 +121,9 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Col 3: Direct Contact */}
         <div>
-          <p className="wit-overline">Kontakt</p>
+          <p className="ps-overline">Kontakt</p>
           <ul>
-            <li className="wit-footer-mail-row">
+            <li className="ps-footer-mail-row">
               <a href="mailto:maximilian.schlacher@outlook.com">maximilian.schlacher@outlook.com</a>
               <button
                 type="button"
@@ -135,7 +135,7 @@ export const Footer: React.FC<FooterProps> = ({
                 {copiedMail ? <Check size={13} /> : <Copy size={13} />}
               </button>
             </li>
-            <li className="wit-footer-phone-row">
+            <li className="ps-footer-phone-row">
               <a href="tel:+436766500468" style={{ color: 'inherit', textDecoration: 'none' }}>
                 +43 676 6500468
               </a>
@@ -145,7 +145,7 @@ export const Footer: React.FC<FooterProps> = ({
                 Kostenlose Erstberatung anfragen ↗
               </button>
             </li>
-            <li className="wit-footer-address">
+            <li className="ps-footer-address">
               Maximilian Schlacher &amp; Loreno Zanaboni
               <br />
               Am Leopoldsgrund 19, 8055 Graz
@@ -154,7 +154,7 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
       </div>
 
-      <div className="wit-wrap wit-footer-bottom">
+      <div className="ps-wrap ps-footer-bottom">
         <small>© 2026 PureSite Software Studio · Webdesign Graz &amp; Steiermark · Am Leopoldsgrund 19, 8055 Graz</small>
         <div>
           <button type="button" onClick={() => onOpenLegal('impressum')}>
@@ -164,7 +164,7 @@ export const Footer: React.FC<FooterProps> = ({
             Datenschutz
           </button>
         </div>
-        <button type="button" className="wit-footer-top-link" onClick={scrollToTop}>
+        <button type="button" className="ps-footer-top-link" onClick={scrollToTop}>
           Nach oben ↑
         </button>
       </div>

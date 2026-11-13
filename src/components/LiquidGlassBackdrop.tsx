@@ -11,7 +11,7 @@ export const LiquidGlassBackdrop: React.FC = () => {
       {/* Subtle Optical SVG Refraction Filter Definition */}
       <svg className="lg-svg-defs" width="0" height="0" focusable="false">
         <defs>
-          <filter id="wit-liquid-refract" x="-10%" y="-10%" width="120%" height="120%">
+          <filter id="ps-liquid-refract" x="-10%" y="-10%" width="120%" height="120%">
             <feTurbulence
               type="fractalNoise"
               baseFrequency="0.012 0.018"

@@ -44,17 +44,17 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenContact }) => {
 
   return (
     <>
-      {/* 1. WINDISCH-LAYOUT ASYMMETRIC 2-COLUMN FAQ SECTION */}
-      <section id="faq" className="wit-section wit-wrap wit-faq-section" aria-labelledby="faq-title">
-        <div className="wit-faq-intro" data-reveal>
-          <p className="wit-overline">Gut zu wissen</p>
+      {/* 1. PURESITE ASYMMETRIC 2-COLUMN FAQ SECTION */}
+      <section id="faq" className="ps-section ps-wrap ps-faq-section" aria-labelledby="faq-title">
+        <div className="ps-faq-intro" data-reveal>
+          <p className="ps-overline">Gut zu wissen</p>
           <h2 id="faq-title">Häufige Fragen</h2>
-          <p className="wit-faq-sub">
+          <p className="ps-faq-sub">
             Offene Antworten ohne Agentur-Floskeln. Falls Ihr Anliegen nicht dabei ist, schreiben
             Sie uns einfach direkt.
           </p>
           {onOpenContact && (
-            <button type="button" className="wit-text-link" onClick={onOpenContact}>
+            <button type="button" className="ps-text-link" onClick={onOpenContact}>
               <span>Direkt eine Frage stellen</span>
               <svg
                 width="20"
@@ -73,14 +73,14 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenContact }) => {
           )}
         </div>
 
-        <div className="wit-faq-list lg-glass-panel" data-reveal>
+        <div className="ps-faq-list lg-glass-panel" data-reveal>
           {faqs.map((faq, idx) => {
             const isOpen = openIdx === idx;
             return (
-              <div key={idx} className={`wit-faq-item ${isOpen ? 'is-open' : ''}`}>
+              <div key={idx} className={`ps-faq-item ${isOpen ? 'is-open' : ''}`}>
                 <button
                   type="button"
-                  className="wit-faq-trigger"
+                  className="ps-faq-trigger"
                   onClick={() => setOpenIdx(isOpen ? null : idx)}
                   aria-expanded={isOpen}
                 >
@@ -94,7 +94,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenContact }) => {
                     strokeWidth="1.6"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className={`wit-faq-plus ${isOpen ? 'is-open' : ''}`}
+                    className={`ps-faq-plus ${isOpen ? 'is-open' : ''}`}
                     aria-hidden="true"
                   >
                     <path d="M12 5v14M5 12h14" />
@@ -103,7 +103,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenContact }) => {
 
                 <div className={`faq-collapse-grid ${isOpen ? 'is-open' : ''}`}>
                   <div className="faq-collapse-inner">
-                    <div className="wit-faq-answer">
+                    <div className="ps-faq-answer">
                       <p>{faq.a}</p>
                     </div>
                   </div>
@@ -114,12 +114,12 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenContact }) => {
         </div>
       </section>
 
-      {/* 2. WINDISCH-LAYOUT FULL-WIDTH CLOSING CONTACT BAND IN PRISMATIC LIQUID GLASS */}
+      {/* 2. PURESITE FULL-WIDTH CLOSING CONTACT BAND IN PRISMATIC LIQUID GLASS */}
       {onOpenContact && (
-        <section className="wit-contact-band" aria-labelledby="closing-cta-heading">
-          <div className="wit-wrap wit-contact-band-inner" data-reveal>
+        <section className="ps-contact-band" aria-labelledby="closing-cta-heading">
+          <div className="ps-wrap ps-contact-band-inner" data-reveal>
             <div>
-              <p className="wit-overline">Der nächste Schritt</p>
+              <p className="ps-overline">Der nächste Schritt</p>
               <h2 id="closing-cta-heading">
                 Was möchten Sie mit Ihrer neuen Website verändern?
               </h2>
@@ -129,10 +129,10 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenContact }) => {
               </p>
             </div>
 
-            <div className="wit-contact-band-action">
+            <div className="ps-contact-band-action">
               <button
                 type="button"
-                className="wit-btn wit-btn-light-glass"
+                className="ps-btn ps-btn-light-glass"
                 onClick={onOpenContact}
               >
                 <span>Kostenlose Erstberatung anfragen</span>
